@@ -1,5 +1,6 @@
-import { TabsTypeEnum } from "stores/tab/tab.types";
 import { useSearchParams } from "react-router-dom";
+
+import { TabsTypeEnum } from "@stores";
 
 export const useTabUrl = (name: TabsTypeEnum, initialValue: string) => {
   const [searchParams, setSearchParams] = useSearchParams();

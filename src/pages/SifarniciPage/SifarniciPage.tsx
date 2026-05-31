@@ -1,28 +1,24 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { FC } from "react";
 
 import { Row, Space } from "antd";
 import { observer } from "mobx-react-lite";
 import { PlusCircleFilled } from "@ant-design/icons";
+import { AppPagination } from "@components/AppCompononets";
 import { UxButton } from "@components/UxComponents";
 import { UxSelect } from "@components/UxFormComponents";
-
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
+import { SIFARNIK_SELECT_OPTIONS } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
 import { handleSearchOptions } from "@utils/handleSearchOptions";
 
 import { SifarniciCrudModal } from "./components/SifarniciCrudModal/SifarniciCrudModal";
 import { SifarniciTable } from "./components/SifarniciTable/SifarniciTable";
 import { useSifarniciHook } from "./hooks/useSifarniciHook";
-import { SIFARNIK_SELECT_OPTIONS } from "@pages/SifarniciPage/components/sifarniciPage.config";
-import { AppPagination } from "@components/AppCompononets";
 
 interface ISifarniciHeaderProps {
   onSifarnikTypeChange: (newType: SifarniciTypeEnum) => void;
   sifarnik_type?: SifarniciTypeEnum;
 }
-
-////////////////// ////////////////////// ////////////////////// ////////////////////// ////////////////////// ////////////////////
 
 const SifarniciHeader: FC<ISifarniciHeaderProps> = observer(
   ({ onSifarnikTypeChange, sifarnik_type }) => {
@@ -60,8 +56,6 @@ const SifarniciHeader: FC<ISifarniciHeaderProps> = observer(
   },
 );
 
-// ////////////////////// ////////////////////// ////////////////////// ////////////////////// ////////////////////// ////////////////////
-
 export const SifarniciPage: FC = observer(() => {
   const { sifarnikType, onSifarnikTypeChange } = useSifarniciHook();
 
@@ -71,9 +65,6 @@ export const SifarniciPage: FC = observer(() => {
         onSifarnikTypeChange={onSifarnikTypeChange}
         sifarnik_type={sifarnikType}
       />
-      {/* <div id="sifarniciFilters">
-          <SifarniciFilters filtersConfig={filtersConfig} />
-        </div> */}
 
       <SifarniciTable sifarnikType={sifarnikType} />
       <AppPagination

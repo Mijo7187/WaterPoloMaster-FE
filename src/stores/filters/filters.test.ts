@@ -36,7 +36,7 @@ describe("FiltersStore – updateFilter", () => {
   });
 
   it("logs error for unknown filter group", () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
     // @ts-expect-error - testing invalid group
     filtersStore.updateFilter("INVALID_GROUP", "key", "value");
     expect(consoleSpy).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("FiltersStore – setFilterGroup", () => {
   });
 
   it("logs error for unknown filter group", () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
     // @ts-expect-error - testing invalid group
     filtersStore.setFilterGroup("BAD_GROUP", { key: "value" });
     expect(consoleSpy).toHaveBeenCalled();

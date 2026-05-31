@@ -1,10 +1,12 @@
+import type { FC } from "react";
+
 import { Segmented as ANTSegmented, SegmentedProps } from "antd";
 
 export interface IUxSegmentedProps extends SegmentedProps {
   name: string;
 }
 
-export const UxSegmented: React.FC<IUxSegmentedProps> = (props) => {
+export const UxSegmented: FC<IUxSegmentedProps> = (props) => {
   return (
     <ANTSegmented
       {...props}

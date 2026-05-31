@@ -6,12 +6,12 @@ import { observer } from "mobx-react-lite";
 import { EditOutlined } from "@ant-design/icons";
 import { UxButton } from "@components/UxComponents";
 import { UxTable } from "@components/UxComponents/UxTable/UxTable";
-import { SIFARNIK_TABLE_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { sifarniciStore } from "@modules/sifarnici/sifarnici.store";
 import {
   IGetSifarnikType,
   SifarniciTypeEnum,
 } from "@modules/sifarnici/sifarnici.types";
+import { SIFARNIK_TABLE_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { modalStore, ModalTypeEnum } from "@stores";
 
 interface ISifarniciTableProps {
@@ -54,17 +54,12 @@ export const SifarniciTable: FC<ISifarniciTableProps> = observer(
       ].filter(Boolean);
     }, [sifarnikType]);
 
-    // const newColumnsSifarnici = ;
-
     return (
       <UxTable<IGetSifarnikType>
         testId="sifarnici"
         pagination={false}
-        // scrollConfig={["#sifarniciHeader", "#sifarniciFilters"]}
         columns={[...columns]}
-        // storePagination={sifarniciStore.sifarniciPagination}
         dataSource={[...sifarniciStore.sifarniciListTable]}
-        // refetchData={sifarniciStore}
       />
     );
   },
