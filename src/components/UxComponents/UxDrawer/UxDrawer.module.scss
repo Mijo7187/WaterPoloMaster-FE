@@ -1,0 +1,54 @@
+@use "@styles/colors";
+@use "@styles/mixins";
+
+.wrapper {
+  :global(.ant-drawer-body) {
+    padding: 0px;
+    overflow: hidden;
+
+    // @include glass-brand-dark;
+    // background: radial-gradient(
+    //     circle at 95% 20%,
+    //     #26828e,
+    //     rgba($color: $yellow-50, $alpha: 0) 30%
+    //   ),
+    //   radial-gradient(
+    //     circle at 50% 120%,
+    //     #ff00fbe2 -40%,
+    //     rgba($color: $yellow-50, $alpha: 0) 40%
+    //   ),
+    //   radial-gradient(
+    //     circle at 15% 20%,
+    //     $mini-impl-color -40%,
+    //     rgba($color: $brand-super-dark, $alpha: 0) 20%
+    //   );
+    // border-radius: 0px !important;
+    // border: 0px solid transparent !important;
+    background-image: url("/images/backgroudnFirst.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  padding: 10px;
+  top: 10;
+  // border: 1px solid $white !important;
+  // background-color: transparent !important;
+  // font-weight: bold !important;
+  // @include glass-middle;
+  color: colors.$white !important;
+
+  &:hover {
+    color: colors.$yellow !important;
+  }
+
+  .left {
+    right: 10px;
+  }
+
+  .right {
+    left: 10px;
+  }
+}

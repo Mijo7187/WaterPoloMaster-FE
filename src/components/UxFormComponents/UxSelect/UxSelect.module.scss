@@ -1,0 +1,33 @@
+@use "@styles/variables";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-select {
+      padding-top: 2px;
+      transition: none;
+      background-color: colors.$input-primary;
+      border: 1px solid transparent;
+      color: colors.$black;
+      font-size: 16px;
+      height: 48px;
+      border-radius: variables.$radius-36;
+      padding: 0 11px;
+      align-items: center;
+      // padding: 30px;
+      //  override antd global styles here
+    }
+    // &::placeholder {
+    //   color: colors.$grey-text;
+    // }
+    .ant-select-selector {
+      background-color: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    .ant-select-content-has-value {
+      display: flex !important;
+    }
+  }
+}

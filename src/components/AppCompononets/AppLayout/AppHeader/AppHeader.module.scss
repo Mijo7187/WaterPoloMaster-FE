@@ -1,0 +1,55 @@
+@use "@styles/colors";
+@use "@styles/mixins";
+@use "@styles/variables";
+
+.container {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+  }
+
+  .logoWrapper {
+    display: flex;
+    text-decoration: none;
+    color: unset;
+  }
+
+  .logoText {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    // margin-left: 16px;
+    font-weight: bold;
+
+    // below 600px there is no space for text
+    @media screen and (max-width: 600px) {
+      display: none;
+    }
+
+    &.showTextOnMobile {
+      display: flex;
+    }
+  }
+
+  .lowerText {
+    font-size: 1.5em;
+  }
+
+  .rightSection {
+    display: flex;
+    align-items: center;
+  }
+
+  :global(.ant-layout-header) {
+    display: flex;
+    align-items: center;
+    height: variables.$header-height !important;
+    background: transparent;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    height: fit-content;
+  }
+}

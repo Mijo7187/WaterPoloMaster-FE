@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "vitest/globals"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@components/AppComponents": ["./src/components/AppComponents/index.ts"],
+      "@components/UxComponents": ["./src/components/UxComponents/index.ts"],
+      "@modules/*": ["./src/modules/*"],
+      "@modules/sifarnici": ["./src/modules/sifarnici/index.ts"],
+      "@modules/users": ["./src/modules/users/index.ts"],
+      "@assets/*": ["./src/assets/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@locales/*": ["./src/locales/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@router/*": ["./src/router/*"],
+      "@config/*": ["./src/config/*"],
+      "@storage/*": ["./src/storage/*"],
+      "@stores": ["./src/stores/index.ts"],
+      "@stores/*": ["./src/stores/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

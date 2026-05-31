@@ -1,0 +1,75 @@
+@use "@styles/variables";
+@use "@styles/responsive";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-input-number {
+      background-color: colors.$input-primary;
+      border: 1px solid transparent;
+      color: colors.$black;
+      font-size: 16px;
+      height: 48px;
+      border-radius: variables.$radius-36;
+      width: 100%;
+      display: flex;
+      align-items: center;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+        height: 36px;
+      }
+
+      &:hover {
+        border-color: transparent;
+      }
+
+      &.ant-input-number-focused {
+        box-shadow: none;
+        border-color: colors.$black;
+      }
+
+      .ant-input-number-input-wrap {
+        height: 100%;
+        display: flex;
+        align-items: center;
+      }
+
+      .ant-input-number-input {
+        height: 100%;
+        padding: 0 15px;
+        font-size: 16px;
+        color: colors.$black;
+
+        &::placeholder {
+          color: colors.$grey;
+        }
+
+        @include responsive.mobile-resolution {
+          font-size: 12px;
+          padding: 0 10px;
+        }
+      }
+
+      .ant-input-number-handler-wrap {
+        border-radius: 0 variables.$radius-36 variables.$radius-36 0;
+        border-left: 1px solid colors.$grey-light;
+        background-color: colors.$input-primary;
+      }
+
+      &.ant-input-number-status-error {
+        background-color: colors.$grey-light !important;
+        border: 1px solid colors.$red !important;
+      }
+
+      &.ant-input-number-disabled {
+        background-color: colors.$grey-light;
+        border-color: colors.$grey-light !important;
+
+        .ant-input-number-input {
+          color: colors.$grey;
+        }
+      }
+    }
+  }
+}

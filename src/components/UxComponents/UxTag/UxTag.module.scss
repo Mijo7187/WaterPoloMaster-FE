@@ -1,0 +1,9 @@
+@use "@styles/colors";
+
+.tag {
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: colors.$yellow-50;
+}

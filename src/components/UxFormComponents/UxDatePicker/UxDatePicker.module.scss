@@ -1,0 +1,60 @@
+@use "@styles/variables";
+@use "@styles/responsive";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-picker {
+      background-color: colors.$input-primary;
+      border: 1px solid transparent;
+      color: colors.$black;
+      font-size: 16px;
+      height: 48px;
+      border-radius: variables.$radius-36;
+      padding: 0 15px;
+      width: 100%;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+        height: 36px;
+        padding: 0 10px;
+      }
+
+      &:hover {
+        border-color: transparent;
+      }
+
+      &.ant-picker-focused {
+        box-shadow: none;
+        border-color: colors.$black;
+      }
+
+      .ant-picker-input > input {
+        font-size: 16px;
+        color: colors.$black;
+
+        &::placeholder {
+          color: colors.$grey;
+        }
+
+        @include responsive.mobile-resolution {
+          font-size: 12px;
+        }
+      }
+
+      &.ant-picker-status-error {
+        background-color: colors.$grey-light !important;
+        border: 1px solid colors.$red !important;
+      }
+
+      &.ant-picker-disabled {
+        background-color: colors.$grey-light;
+        border-color: colors.$grey-light !important;
+
+        .ant-picker-input > input {
+          color: colors.$grey;
+        }
+      }
+    }
+  }
+}

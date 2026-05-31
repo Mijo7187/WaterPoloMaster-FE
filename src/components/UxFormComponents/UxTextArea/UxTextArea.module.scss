@@ -1,0 +1,51 @@
+@use "@styles/variables";
+@use "@styles/responsive";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-input {
+      background-color: colors.$input-primary;
+      border: 1px solid transparent;
+      color: colors.$black;
+      font-size: 16px;
+      border-radius: variables.$radius-10;
+      padding: variables.$spacing-10 variables.$spacing-15;
+      min-height: 80px;
+      resize: vertical;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+        padding: variables.$spacing-10;
+      }
+
+      &:focus {
+        box-shadow: none;
+        border-color: colors.$black;
+      }
+
+      &::placeholder {
+        color: colors.$grey;
+      }
+
+      &:disabled {
+        color: colors.$grey;
+        background-color: colors.$grey-light;
+        border-color: colors.$grey-light !important;
+      }
+    }
+
+    .ant-input-status-error {
+      background-color: colors.$grey-light !important;
+      border: 1px solid colors.$red !important;
+    }
+
+    .ant-input-affix-wrapper {
+      padding: 0 !important;
+
+      .ant-input {
+        padding: variables.$spacing-10 variables.$spacing-15 !important;
+      }
+    }
+  }
+}
