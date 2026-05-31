@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { describe, expect, it, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { arrayToObject } from "./arrayToObject";
 import { EMAIL_FIELD_RULE, REQUIRED_FIELD_RULE } from "./formRules";
@@ -120,8 +120,8 @@ describe("arrayToObject", () => {
       { code: "B", label: "Banana" },
     ];
     const result = arrayToObject(items, "code");
-    expect(result["A"]).toEqual({ code: "A", label: "Apple" });
-    expect(result["B"]).toEqual({ code: "B", label: "Banana" });
+    expect(result.A).toEqual({ code: "A", label: "Apple" });
+    expect(result.B).toEqual({ code: "B", label: "Banana" });
   });
 
   it("returns empty object for empty array", () => {
@@ -190,7 +190,7 @@ describe("setDynamicHeight", () => {
   });
 
   it("does nothing if the wrapper element is not found", () => {
-    expect(() => setDynamicHeight("nonexistent", [])).not.toThrow();
+    expect(() => { setDynamicHeight("nonexistent", []); }).not.toThrow();
   });
 
   it("sets maxHeight to viewport height when no elements subtracted", () => {

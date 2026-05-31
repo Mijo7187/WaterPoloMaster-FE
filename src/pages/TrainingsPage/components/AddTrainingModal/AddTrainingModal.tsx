@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { TrainingForm } from "@components/PagesComponents/Training/TrainingForm/TrainingForm";
 import { UxButton } from "@components/UxComponents";
 import { UxGlobalModal } from "@components/UxComponents/UxGlobalModal/UxGlobalModal";
-import { ModalTypeEnum } from "@modules/globals/modals/modals.types";
+import { ModalTypeEnum } from "@stores";
 import { TRAINING_INITIAL_STATE } from "@modules/trainings/trainings.constants";
 import { trainingsStore } from "@modules/trainings/trainings.store";
 import { IPostTraining } from "@modules/trainings/trainings.types";

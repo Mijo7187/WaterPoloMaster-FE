@@ -1,5 +1,6 @@
-import { Collapse as ANTCollapse, CollapseProps } from "antd";
 import { FC } from "react";
+
+import { Collapse as ANTCollapse, CollapseProps } from "antd";
 
 interface IUxCollapseProps extends CollapseProps {
   name: string;

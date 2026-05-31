@@ -1,5 +1,6 @@
-import { Tabs as ANTTabs, TabsProps } from "antd";
 import { FC } from "react";
+
+import { Tabs as ANTTabs, TabsProps } from "antd";
 
 export interface IUxTabsProps extends TabsProps {
   testId: string;

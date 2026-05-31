@@ -1,6 +1,5 @@
 import { ColumnsType } from "antd/es/table";
 import {
-  FPaymentType,
   IGetPaymentType,
   PaymentDirectionEnum,
 } from "@modules/sifarnici/paymentType/paymentType.types";

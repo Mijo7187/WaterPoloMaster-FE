@@ -1,19 +1,4 @@
 import {
-  CITY_FILTER_FIELDS,
-  CITY_FORM_FIELDS,
-  CITY_TABLE_COLUMNS,
-} from "./components/City/City";
-import {
-  COUNTRY_FILTER_FIELDS,
-  COUNTRY_FORM_FIELDS,
-  COUNTRY_TABLE_COLUMNS,
-} from "./components/Country/Country";
-import {
-  PAYMENT_TYPE_FILTER_FIELDS,
-  PAYMENT_TYPE_FORM_FIELDS,
-  PAYMENT_TYPE_TABLE_COLUMNS,
-} from "./components/PaymentType/PaymentType";
-import {
   CITY_FILTERS_INITIAL_STATE,
   CITY_INITIAL_STATE,
 } from "@modules/sifarnici/city/city.constants";
@@ -31,6 +16,22 @@ import {
   SifarniciTableMapConfig,
   SifarniciTypeEnum,
 } from "@modules/sifarnici/sifarnici.types";
+
+import {
+  CITY_FILTER_FIELDS,
+  CITY_FORM_FIELDS,
+  CITY_TABLE_COLUMNS,
+} from "./components/City/City";
+import {
+  COUNTRY_FILTER_FIELDS,
+  COUNTRY_FORM_FIELDS,
+  COUNTRY_TABLE_COLUMNS,
+} from "./components/Country/Country";
+import {
+  PAYMENT_TYPE_FILTER_FIELDS,
+  PAYMENT_TYPE_FORM_FIELDS,
+  PAYMENT_TYPE_TABLE_COLUMNS,
+} from "./components/PaymentType/PaymentType";
 
 export const SIFARNIK_MODAL_CONFIG_DATA: SifarniciModalMapConfig = {
   [SifarniciTypeEnum.CITY]: {

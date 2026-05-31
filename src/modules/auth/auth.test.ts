@@ -55,7 +55,7 @@ const mockUserInfo = {
 
 // ─── Setup ───────────────────────────────────────────────────────────────────
 
-beforeEach(async () => {
+beforeEach(() => {
   vi.clearAllMocks();
   runInAction(() => {
     authStore.authUser = null as unknown as typeof authStore.authUser;

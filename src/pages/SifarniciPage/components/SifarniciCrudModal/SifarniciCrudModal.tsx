@@ -1,24 +1,23 @@
-import React, { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { Form, Row } from "antd";
 import { FormInstance, useForm } from "antd/es/form/Form";
-import { observer } from "mobx-react-lite";
 import { UxBaseModal, UxButton, UxCrudComp } from "@components/UxComponents";
-import { SIFARNIK_MODAL_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { sifarniciStore } from "@modules/sifarnici/sifarnici.store";
 import {
   IPostSifarnikType,
   ISifarniciModalConfig,
   SifarniciTypeEnum,
 } from "@modules/sifarnici/sifarnici.types";
+import { SIFARNIK_MODAL_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { ICrudOptionsConfig, ModalTypeEnum } from "@stores";
+import { observer } from "mobx-react-lite";
 
 interface ISifarniciFormProps {
   components: (form: FormInstance) => ICrudOptionsConfig[];
   formInitialState: IPostSifarnikType;
   sifarnikType: SifarniciTypeEnum;
-  // onFormFinish: (values: IPostSifarnikType) => void;
 }
 
 export const SifarniciForm: FC<ISifarniciFormProps> = observer(
@@ -78,7 +77,6 @@ export const SifarniciForm: FC<ISifarniciFormProps> = observer(
             testId="sifarnik-submit"
             htmlType="submit"
             name="change-button"
-            // disabled={modalStore?.isLoading}
           >
             Sačuvaj
           </UxButton>

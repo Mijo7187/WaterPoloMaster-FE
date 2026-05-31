@@ -1,22 +1,15 @@
 import { FC, useEffect } from "react";
 
-import { observer } from "mobx-react-lite";
-import {
-  UxButton,
-  UxCard,
-  UxPageHeader,
-  UxPagination,
-} from "@components/UxComponents";
+import { AppPagination } from "@components/AppCompononets";
+import { UxButton, UxPageHeader } from "@components/UxComponents";
+import { UxFilterTableWrapper } from "@components/UxComponents/UxFilterTableWrapper/UxFilterTableWrapper";
 import { usersStore } from "@modules/users";
 import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
+import { observer } from "mobx-react-lite";
 
 import { AddUserModal } from "./components/AddUserModal/AddUserModal";
 import { UserTable } from "./components/UserTable/UserTable";
 import { UserFilters } from "./components/UserTableFilters/UserTableFilters";
-
-import styles from "./UsersListPage.module.scss";
-import { AppPagination } from "@components/AppCompononets";
-import { UxFilterTableWrapper } from "@components/UxComponents/UxFilterTableWrapper/UxFilterTableWrapper";
 
 export const UsersListPage: FC = observer(() => {
   const onAddUserClick = () => {
