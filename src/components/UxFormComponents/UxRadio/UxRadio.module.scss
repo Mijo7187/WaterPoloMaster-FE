@@ -1,0 +1,99 @@
+@use "@styles/variables";
+@use "@styles/responsive";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-radio-wrapper {
+      color: colors.$black;
+      font-size: 16px;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+      }
+    }
+
+    .ant-radio-inner {
+      background-color: colors.$input-primary;
+      border: 1px solid colors.$grey;
+      width: 20px;
+      height: 20px;
+
+      &::after {
+        background-color: colors.$black;
+        width: 10px;
+        height: 10px;
+        margin-block-start: -5px;
+        margin-inline-start: -5px;
+      }
+    }
+
+    .ant-radio-checked .ant-radio-inner {
+      border-color: colors.$black;
+      background-color: colors.$input-primary;
+    }
+
+    .ant-radio:hover .ant-radio-inner,
+    .ant-radio-wrapper:hover .ant-radio-inner {
+      border-color: colors.$black;
+    }
+
+    .ant-radio-disabled .ant-radio-inner {
+      background-color: colors.$grey-light;
+      border-color: colors.$grey-light;
+    }
+
+    // Button variant
+    .ant-radio-button-wrapper {
+      background-color: colors.$input-primary;
+      border-color: colors.$grey-light;
+      color: colors.$black;
+      height: 48px;
+      line-height: 46px;
+      font-size: 16px;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+        height: 36px;
+        line-height: 34px;
+      }
+
+      &:first-child {
+        border-radius: variables.$radius-36 0 0 variables.$radius-36;
+      }
+
+      &:last-child {
+        border-radius: 0 variables.$radius-36 variables.$radius-36 0;
+      }
+
+      &:only-child {
+        border-radius: variables.$radius-36;
+      }
+
+      &::before {
+        background-color: colors.$grey-light;
+      }
+
+      &:hover {
+        color: colors.$grey-dark;
+      }
+
+      &.ant-radio-button-wrapper-checked {
+        background-color: colors.$black;
+        border-color: colors.$black;
+        color: colors.$white;
+
+        &:not(.ant-radio-button-wrapper-disabled):hover {
+          background-color: colors.$grey-dark;
+          border-color: colors.$grey-dark;
+        }
+      }
+
+      &.ant-radio-button-wrapper-disabled {
+        background-color: colors.$grey-light;
+        border-color: colors.$grey-light;
+        color: colors.$grey;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.wrapper {
+  background-color: rgba($color: #ffffff, $alpha: 0.4);
+  border-radius: 20px;
+  flex-direction: column;
+
+  .filters {
+    padding: 20px;
+  }
+
+  .pagination {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,124 @@
+@use "@styles/variables";
+@use "@styles/responsive";
+@use "@styles/colors";
+
+.appInput {
+  :global {
+    .ant-input,
+    .ant-input-affix-wrapper:has(.ant-input) {
+      background-color: colors.$input-primary;
+      border: 1px solid transparent;
+      color: colors.$black;
+      font-size: 16px;
+      height: 48px;
+      border-radius: variables.$radius-36;
+      padding: 0 15px;
+
+      @include responsive.mobile-resolution {
+        font-size: 12px;
+        height: 36px;
+        padding: 0 10px;
+      }
+
+      &:focus {
+        box-shadow: none;
+        border-color: colors.$black;
+      }
+      &::placeholder {
+        color: colors.$grey;
+      }
+      .ant-input {
+        height: 46px;
+        padding-top: 2px;
+        transition: none;
+
+        @include responsive.mobile-resolution {
+          height: 34px; // it has padding-top: 2px
+        }
+      }
+    }
+    .ant-input-affix-wrapper:has(.ant-input-disabled) {
+      color: colors.$grey;
+      background-color: colors.$grey-light;
+      border-color: colors.$grey-light !important;
+
+      :disabled {
+        color: colors.$grey;
+        background-color: colors.$grey-light;
+      }
+    }
+    .ant-input-status-error {
+      background-color: colors.$grey-light !important;
+      border: 1px solid colors.$red !important;
+    }
+    .ant-input-affix-wrapper-focused:not(.ant-input-status-error) {
+      box-shadow: none;
+      border-color: colors.$black;
+      .ant-input {
+        border: none !important;
+      }
+    }
+
+    .ant-input-password-icon {
+      line-height: 0;
+      cursor: pointer;
+    }
+  }
+  &.white {
+    :global {
+      .ant-input,
+      .ant-input-affix-wrapper:has(.ant-input) {
+        background-color: colors.$white;
+        border-color: colors.$white;
+      }
+    }
+  }
+
+  &__textarea {
+    :global {
+      .ant-input-textarea-affix-wrapper {
+        padding: 0 !important;
+      }
+      .ant-input {
+        padding-top: variables.$spacing-10 !important;
+      }
+      .ant-input,
+      .ant-input-affix-wrapper:has(.ant-input) {
+        height: auto;
+        .ant-input {
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
+.appInput.appInputWithAddons {
+  :global {
+    .ant-input-wrapper.ant-input-group {
+      background-color: colors.$grey;
+      border: 1px solid colors.$grey;
+      border-radius: variables.$radius-10;
+      padding: 0;
+      .ant-input {
+        line-height: 1;
+      }
+      .ant-input-group-addon {
+        border: none;
+        background: none;
+        padding: 0;
+      }
+    }
+    .ant-input-group-wrapper.ant-input-group-wrapper-disabled {
+      &,
+      .ant-input-wrapper.ant-input-group {
+        &,
+        .ant-input-affix-wrapper.ant-input-disabled {
+          border-radius: variables.$radius-10;
+          background-color: colors.$grey-light !important;
+          border-color: transparent;
+        }
+      }
+    }
+  }
+}

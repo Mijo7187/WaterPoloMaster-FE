@@ -1,0 +1,131 @@
+@use './mixins';
+@use './fonts';
+
+.hide {
+  display: none;
+}
+
+h2 {
+  letter-spacing: 0.5px;
+  line-height: 25px;
+}
+
+.flex {
+  display: flex;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.textBold {
+  font-weight: bold;
+}
+
+.textHeavy {
+  font-weight: 700;
+}
+
+.spaceBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexStart {
+  display: flex;
+  justify-content: flex-start !important;
+}
+
+.spaceAround {
+  display: flex;
+  justify-content: space-around;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
+.alignRight {
+  text-align: right;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+.center {
+  @include mixins.xy-center();
+}
+
+.yCenter {
+  @include mixins.x-center();
+}
+
+.xCenter {
+  @include mixins.y-center();
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@for $pixel from 0 through 100 {
+  .f-#{$pixel} {
+    font-size: #{$pixel + 'px'} !important;
+  }
+}
+
+@for $percent from 0 through 100 {
+  .w-#{$percent} {
+    width: #{$percent + '%'} !important;
+  }
+
+  .h-#{$percent} {
+    height: #{$percent + '%'} !important;
+  }
+}
+
+@for $pixel from 0 through 1000 {
+  .p-#{$pixel} {
+    padding: #{$pixel + 'px'} !important;
+  }
+
+  .pt-#{$pixel} {
+    padding-top: #{$pixel + 'px'} !important;
+  }
+
+  .pr-#{$pixel} {
+    padding-right: #{$pixel + 'px'} !important;
+  }
+
+  .pb-#{$pixel} {
+    padding-bottom: #{$pixel + 'px'} !important;
+  }
+
+  .pl-#{$pixel} {
+    padding-left: #{$pixel + 'px'} !important;
+  }
+
+  .mt-#{$pixel} {
+    margin-top: #{$pixel + 'px'} !important;
+  }
+
+  .mr-#{$pixel} {
+    margin-right: #{$pixel + 'px'} !important;
+  }
+
+  .mb-#{$pixel} {
+    margin-bottom: #{$pixel + 'px'} !important;
+  }
+
+  .ml-#{$pixel} {
+    margin-left: #{$pixel + 'px'} !important;
+  }
+}

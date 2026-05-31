@@ -1,0 +1,7 @@
+// #region Modal
+export enum ModalTypeEnum {
+  COMPANY_MODAL = "COMPANY_MODAL",
+  TRAINING_MODAL = "TRAINING_MODAL",
+  USER_MODAL = "USER_MODAL",
+  SIFARNIK_MODAL = "SIFARNIK_MODAL",
+}

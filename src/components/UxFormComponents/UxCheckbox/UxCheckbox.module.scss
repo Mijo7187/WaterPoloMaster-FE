@@ -1,0 +1,44 @@
+@use "@styles/variables";
+@use "@styles/colors";
+
+.container {
+  :global {
+    .ant-checkbox-wrapper {
+      color: colors.$black;
+      font-size: 16px;
+      align-items: center;
+    }
+
+    .ant-checkbox-inner {
+      background-color: colors.$input-primary;
+      border: 1px solid colors.$grey;
+      border-radius: variables.$radius-5;
+      width: 20px;
+      height: 20px;
+
+      &::after {
+        width: 6px;
+        height: 10px;
+      }
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner {
+      background-color: colors.$black;
+      border-color: colors.$black;
+    }
+
+    .ant-checkbox:hover .ant-checkbox-inner,
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+      border-color: colors.$black;
+    }
+
+    .ant-checkbox-disabled .ant-checkbox-inner {
+      background-color: colors.$grey-light;
+      border-color: colors.$grey-light;
+    }
+
+    .ant-checkbox-disabled + span {
+      color: colors.$grey;
+    }
+  }
+}
