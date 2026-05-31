@@ -1,0 +1,146 @@
+@use './breakpoints' as bp;
+@mixin xs {
+  @media (min-width: #{bp.$screen-xs-min}) {
+    @content;
+  }
+}
+
+@mixin xs-max {
+  @media (max-width: #{bp.$screen-xs-min}) {
+    @content;
+  }
+}
+
+// Small devices
+
+@mixin sm {
+  @media (min-width: #{bp.$screen-sm-min}) {
+    @content;
+  }
+}
+
+@mixin sm-max {
+  @media (max-width: #{bp.$screen-sm-min}) {
+    @content;
+  }
+}
+
+// Medium devices
+@mixin md {
+  @media (min-width: #{bp.$screen-md-min}) {
+    @content;
+  }
+}
+
+@mixin md-max {
+  @media (max-width: #{bp.$screen-md-min}) {
+    @content;
+  }
+}
+
+// Large devices
+@mixin lg {
+  @media (min-width: #{bp.$screen-lg-min}) {
+    @content;
+  }
+}
+
+@mixin lg-max {
+  @media (max-width: #{bp.$screen-lg-min}) {
+    @content;
+  }
+}
+
+// Extra large devices
+@mixin xl {
+  @media (min-width: #{bp.$screen-xl-min}) {
+    @content;
+  }
+}
+
+@mixin xl-max {
+  @media (max-width: #{bp.$screen-xl-min}) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: #{bp.$screen-xxl-min}) {
+    @content;
+  }
+}
+
+@mixin xxl-max {
+  @media (max-width: #{bp.$screen-xxl-min}) {
+    @content;
+  }
+}
+
+@mixin mobile-hidden {
+  @include sm-max {
+    display: none !important;
+  }
+}
+
+@mixin visible-mobile-up {
+  display: none !important;
+
+  @include md {
+    display: flex !important;
+  }
+}
+
+@mixin visible-mobile-down {
+  @include md {
+    display: none !important;
+  }
+}
+
+@mixin visible-tablet-up {
+  display: none !important;
+
+  @include lg {
+    display: flex !important;
+  }
+}
+
+@mixin visible-tablet-down {
+  @include lg {
+    display: none !important;
+  }
+}
+
+@mixin visible-desktop-up {
+  display: none !important;
+
+  @include xl {
+    display: flex !important;
+  }
+}
+
+@mixin visible-desktop-down {
+  @include xl {
+    display: none !important;
+  }
+}
+
+// ANTD MD for colspan is 768 breakpoint
+// its configurable via theme provider if needed
+
+@mixin mobile-resolution() {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet-resolution() {
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin desktop-resolution() {
+  @media screen and (min-width: 992px) {
+    @content;
+  }
+}

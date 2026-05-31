@@ -1,0 +1,16 @@
+.trainingsCalendar {
+  height: 100%;
+}
+
+.events {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
