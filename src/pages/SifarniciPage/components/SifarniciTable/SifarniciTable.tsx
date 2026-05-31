@@ -1,6 +1,8 @@
 import { FC, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { ColumnsType } from "antd/es/table";
+import { observer } from "mobx-react-lite";
 import { EditOutlined } from "@ant-design/icons";
 import { UxButton } from "@components/UxComponents";
 import { UxTable } from "@components/UxComponents/UxTable/UxTable";
@@ -11,8 +13,6 @@ import {
 } from "@modules/sifarnici/sifarnici.types";
 import { SIFARNIK_TABLE_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { modalStore, ModalTypeEnum } from "@stores";
-import { ColumnsType } from "antd/es/table";
-import { observer } from "mobx-react-lite";
 
 interface ISifarniciTableProps {
   sifarnikType: SifarniciTypeEnum;

@@ -5,10 +5,10 @@ import { observer } from "mobx-react-lite";
 import {
   UxFormDatePicker,
   UxFormInputNumber,
+  UxFormScrollSelect,
   UxFormSelect,
   UxFormSwitch,
 } from "@components/UxFormComponents";
-import { UxFormScrollSelect } from "@components/UxFormComponents/UxFormScrollSelect/UxFormScrollSelect";
 import { CompanyTypeEnum } from "@modules/company/company.types";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { TRAINING_INITIAL_STATE } from "@modules/trainings/trainings.constants";
@@ -44,7 +44,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
           <Col span={12}>
             <UxFormScrollSelect
               storeKey={`pool`}
-              name="pool_id"
+              formName="pool_id"
               objName={"pool"}
               sifarnikName={SifarniciTypeEnum.CITY}
               label={"Bazen"}
@@ -56,7 +56,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
 
           <Col span={12}>
             <UxFormDatePicker
-              name="start_training_date_time"
+              formName="start_training_date_time"
               label="Početak treninga"
               rules={[REQUIRED_FIELD_RULE(true)]}
               readOnly={readOnly}
@@ -67,7 +67,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
 
           <Col span={12}>
             <UxFormDatePicker
-              name="end_training_date_time"
+              formName="end_training_date_time"
               label="Kraj treninga"
               rules={[REQUIRED_FIELD_RULE(true)]}
               readOnly={readOnly}
@@ -78,7 +78,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
 
           <Col span={12}>
             <UxFormInputNumber
-              name="price"
+              formName="price"
               label="Cena"
               readOnly={readOnly}
               testId="training-price"
@@ -87,7 +87,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
 
           <Col span={12}>
             <UxFormSelect
-              name="status"
+              formName="status"
               label="Status"
               rules={[REQUIRED_FIELD_RULE(true)]}
               testId="training-status"

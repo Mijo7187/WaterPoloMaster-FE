@@ -1,11 +1,11 @@
 import { FC, useEffect } from "react";
 
+import { observer } from "mobx-react-lite";
 import { AppPagination } from "@components/AppCompononets";
 import { UxButton, UxPageHeader } from "@components/UxComponents";
 import { UxFilterTableWrapper } from "@components/UxComponents/UxFilterTableWrapper/UxFilterTableWrapper";
 import { usersStore } from "@modules/users";
 import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
-import { observer } from "mobx-react-lite";
 
 import { AddUserModal } from "./components/AddUserModal/AddUserModal";
 import { UserTable } from "./components/UserTable/UserTable";

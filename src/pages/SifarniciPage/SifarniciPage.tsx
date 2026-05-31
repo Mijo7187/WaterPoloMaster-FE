@@ -1,5 +1,7 @@
 import { FC } from "react";
 
+import { Row, Space } from "antd";
+import { observer } from "mobx-react-lite";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { AppPagination } from "@components/AppCompononets";
 import { UxButton } from "@components/UxComponents";
@@ -8,8 +10,6 @@ import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { SIFARNIK_SELECT_OPTIONS } from "@pages/SifarniciPage/components/sifarniciPage.config";
 import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
 import { handleSearchOptions } from "@utils/handleSearchOptions";
-import { Row, Space } from "antd";
-import { observer } from "mobx-react-lite";
 
 import { SifarniciCrudModal } from "./components/SifarniciCrudModal/SifarniciCrudModal";
 import { SifarniciTable } from "./components/SifarniciTable/SifarniciTable";

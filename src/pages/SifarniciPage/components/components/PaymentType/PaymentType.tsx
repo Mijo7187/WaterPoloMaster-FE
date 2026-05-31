@@ -78,8 +78,8 @@ export const PAYMENT_TYPE_FILTER_FIELDS = (): ICrudOptionsConfig[] => {
       formName: "active",
       label: "Aktivan",
       options: [
-        { label: "Da", value: true },
-        { label: "Ne", value: false },
+        { label: "Da", value: 1 },
+        { label: "Ne", value: 0 },
       ],
       allowClear: true,
     },
