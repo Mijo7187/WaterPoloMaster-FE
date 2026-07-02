@@ -3,12 +3,12 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { PAGINATION_INITIAL_STATE } from "./pagination.constants";
 import { paginationStore } from "./pagination.store";
-import { PaginationEnum } from "./pagination.types";
+import { IGetPagination, PaginationEnum } from "./pagination.types";
 
 const KEY = PaginationEnum.USER_PAGINATION;
 const OTHER_KEY = PaginationEnum.COMPANY_PAGINATION;
 
-const FULL_PAGINATION = {
+const FULL_PAGINATION: IGetPagination = {
   page: 1,
   size: 50,
   total: 100,
@@ -17,20 +17,26 @@ const FULL_PAGINATION = {
 
 beforeEach(() => {
   runInAction(() => {
-    paginationStore.params = {};
+    paginationStore.params = Object.values(PaginationEnum).reduce(
+      (acc, key) => {
+        acc[key] = { ...PAGINATION_INITIAL_STATE };
+        return acc;
+      },
+      {} as Record<PaginationEnum, IGetPagination>,
+    );
   });
 });
 
 describe("PaginationStore – get", () => {
-  it("returns null when key does not exist", () => {
-    expect(paginationStore.get(KEY)).toBeNull();
+  it("returns the initial state for an untouched key", () => {
+    expect(paginationStore.get(KEY)).toEqual(PAGINATION_INITIAL_STATE);
   });
 
-  it("returns stored pagination when key exists", () => {
+  it("returns stored pagination when key has been set", () => {
     paginationStore.set(KEY, { page: 2, size: 25 });
     const result = paginationStore.get(KEY);
-    expect(result?.page).toBe(2);
-    expect(result?.size).toBe(25);
+    expect(result.page).toBe(2);
+    expect(result.size).toBe(25);
   });
 });
 
@@ -38,28 +44,28 @@ describe("PaginationStore – set", () => {
   it("creates an entry merged with default values", () => {
     paginationStore.set(KEY, { page: 3, size: 25 });
     const result = paginationStore.get(KEY);
-    expect(result?.page).toBe(3);
-    expect(result?.size).toBe(25);
-    expect(result?.total).toBe(PAGINATION_INITIAL_STATE.total);
-    expect(result?.pages).toBe(PAGINATION_INITIAL_STATE.pages);
+    expect(result.page).toBe(3);
+    expect(result.size).toBe(25);
+    expect(result.total).toBe(PAGINATION_INITIAL_STATE.total);
+    expect(result.pages).toBe(PAGINATION_INITIAL_STATE.pages);
   });
 
   it("merges over existing entry without losing untouched fields", () => {
     paginationStore.setFromResponse(KEY, FULL_PAGINATION);
     paginationStore.set(KEY, { page: 2, size: 50 });
     const result = paginationStore.get(KEY);
-    expect(result?.page).toBe(2);
-    expect(result?.total).toBe(100);
+    expect(result.page).toBe(2);
+    expect(result.total).toBe(100);
   });
 
   it("does not affect other keys", () => {
     paginationStore.set(KEY, { page: 5, size: 50 });
-    expect(paginationStore.get(OTHER_KEY)).toBeNull();
+    expect(paginationStore.get(OTHER_KEY)).toEqual(PAGINATION_INITIAL_STATE);
   });
 });
 
 describe("PaginationStore – getRequestPaginationParams", () => {
-  it("returns default page and size when no entry exists", () => {
+  it("returns default page and size for an untouched key", () => {
     const params = paginationStore.getRequestPaginationParams(KEY);
     expect(params).toEqual({
       page: PAGINATION_INITIAL_STATE.page,
@@ -83,7 +89,7 @@ describe("PaginationStore – setFromResponse", () => {
   it("overwrites existing entry completely", () => {
     paginationStore.set(KEY, { page: 1, size: 50 });
     paginationStore.setFromResponse(KEY, { ...FULL_PAGINATION, page: 3 });
-    expect(paginationStore.get(KEY)?.page).toBe(3);
+    expect(paginationStore.get(KEY).page).toBe(3);
   });
 });
 
@@ -91,20 +97,14 @@ describe("PaginationStore – resetPage", () => {
   it("resets page to 1", () => {
     paginationStore.set(KEY, { page: 5, size: 50 });
     paginationStore.resetPage(KEY);
-    expect(paginationStore.get(KEY)?.page).toBe(1);
+    expect(paginationStore.get(KEY).page).toBe(1);
   });
 
   it("preserves other fields when resetting page", () => {
     paginationStore.setFromResponse(KEY, { ...FULL_PAGINATION, page: 5 });
     paginationStore.resetPage(KEY);
-    expect(paginationStore.get(KEY)?.size).toBe(50);
-    expect(paginationStore.get(KEY)?.total).toBe(100);
-  });
-
-  it("does nothing when key does not exist", () => {
-    expect(() => {
-      paginationStore.resetPage(KEY);
-    }).not.toThrow();
+    expect(paginationStore.get(KEY).size).toBe(50);
+    expect(paginationStore.get(KEY).total).toBe(100);
   });
 });
 
@@ -112,67 +112,35 @@ describe("PaginationStore – updateField", () => {
   it("updates a specific numeric field", () => {
     paginationStore.set(KEY, { page: 1, size: 50 });
     paginationStore.updateField(KEY, "page", 7);
-    expect(paginationStore.get(KEY)?.page).toBe(7);
+    expect(paginationStore.get(KEY).page).toBe(7);
   });
 
-  it("updates totalRecords field", () => {
+  it("updates the total field", () => {
     paginationStore.setFromResponse(KEY, FULL_PAGINATION);
     paginationStore.updateField(KEY, "total", 200);
-    expect(paginationStore.get(KEY)?.total).toBe(200);
+    expect(paginationStore.get(KEY).total).toBe(200);
   });
 });
 
-describe("PaginationStore – increaseTotalRecords", () => {
-  it("increments totalRecords by 1", () => {
-    paginationStore.setFromResponse(KEY, {
-      ...FULL_PAGINATION,
-      total: 10,
-    });
-    paginationStore.increaseTotalRecords(KEY);
-    expect(paginationStore.get(KEY)?.total).toBe(11);
-  });
-
-  it("works when totalRecords starts at 0", () => {
-    paginationStore.setFromResponse(KEY, {
-      ...FULL_PAGINATION,
-      total: 0,
-    });
-    paginationStore.increaseTotalRecords(KEY);
-    expect(paginationStore.get(KEY)?.total).toBe(1);
-  });
-});
-
-describe("PaginationStore – decreaseTotalRecords", () => {
-  it("decrements totalRecords by 1", () => {
-    paginationStore.setFromResponse(KEY, {
-      ...FULL_PAGINATION,
-      total: 5,
-    });
-    paginationStore.decreaseTotalRecords(KEY);
-    expect(paginationStore.get(KEY)?.total).toBe(4);
-  });
-
-  it("does not go below 0", () => {
-    paginationStore.setFromResponse(KEY, {
-      ...FULL_PAGINATION,
-      total: 0,
-    });
-    paginationStore.decreaseTotalRecords(KEY);
-    expect(paginationStore.get(KEY)?.total).toBe(0);
+describe("PaginationStore – setTotal", () => {
+  it("sets the total for the key", () => {
+    paginationStore.setFromResponse(KEY, FULL_PAGINATION);
+    paginationStore.setTotal(KEY, 42);
+    expect(paginationStore.get(KEY).total).toBe(42);
   });
 });
 
 describe("PaginationStore – remove", () => {
-  it("removes the key from params", () => {
+  it("resets the key back to the initial state", () => {
     paginationStore.set(KEY, { page: 1, size: 50 });
     paginationStore.remove(KEY);
-    expect(paginationStore.get(KEY)).toBeNull();
+    expect(paginationStore.get(KEY)).toEqual(PAGINATION_INITIAL_STATE);
   });
 
   it("does not affect other keys when removing one", () => {
     paginationStore.set(KEY, { page: 1, size: 50 });
     paginationStore.set(OTHER_KEY, { page: 2, size: 10 });
     paginationStore.remove(KEY);
-    expect(paginationStore.get(OTHER_KEY)?.page).toBe(2);
+    expect(paginationStore.get(OTHER_KEY).page).toBe(2);
   });
 });

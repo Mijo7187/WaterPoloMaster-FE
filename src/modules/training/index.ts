@@ -1,4 +1,4 @@
-export {trainingStore} from './training.store';
-export {trainingService} from './training.service';
-export * from './training.types';
-export * from './training.constants';
+export * from "./training.constants";
+export { trainingService } from "./training.service";
+export { trainingStore } from "./training.store";
+export * from "./training.types";

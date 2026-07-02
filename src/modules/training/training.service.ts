@@ -1,10 +1,10 @@
+import type { IGetUser } from "@modules/users/users.types";
 import {
   IApiGetResponse,
   IApiNoContentResponse,
   IApiPaginatedResponse,
   IApiPostResponse,
 } from "@stores";
-import type { IGetUser } from "@modules/users/users.types";
 
 import { trainingRepo } from "./training.repo";
 import type {

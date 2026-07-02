@@ -306,9 +306,9 @@ describe("SifarniciStore – fetchSifarnikListTable", () => {
     await sifarniciStore.fetchSifarnikListTable(SifarniciTypeEnum.CITY);
 
     expect(sifarniciStore.sifarniciListTable).toEqual([mockCity]);
-    expect(
-      paginationStore.get(PaginationEnum.SIFARNICI_PAGINATION)?.total,
-    ).toBe(1);
+    expect(paginationStore.get(PaginationEnum.SIFARNICI_PAGINATION).total).toBe(
+      1,
+    );
   });
 
   it("does not throw on service error (silent fail)", async () => {

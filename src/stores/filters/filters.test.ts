@@ -36,7 +36,9 @@ describe("FiltersStore – updateFilter", () => {
   });
 
   it("logs error for unknown filter group", () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const consoleSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     // @ts-expect-error - testing invalid group
     filtersStore.updateFilter("INVALID_GROUP", "key", "value");
     expect(consoleSpy).toHaveBeenCalled();
@@ -61,9 +63,9 @@ describe("FiltersStore – clearFilters", () => {
     filtersStore.updateFilter(FilterGroupsEnum.USERS, "name", "John");
     filtersStore.updateFilter(FilterGroupsEnum.COMPANY, "name", "Corp");
     filtersStore.clearFilters(FilterGroupsEnum.USERS);
-    expect(
-      filtersStore.getFilterValue(FilterGroupsEnum.COMPANY, "name"),
-    ).toBe("Corp");
+    expect(filtersStore.getFilterValue(FilterGroupsEnum.COMPANY, "name")).toBe(
+      "Corp",
+    );
   });
 });
 
@@ -91,7 +93,7 @@ describe("FiltersStore – getFilterGroupValues", () => {
   });
 
   it("returns empty object when group has no filters set", () => {
-    const values = filtersStore.getFilterGroupValues(FilterGroupsEnum.ORDER);
+    const values = filtersStore.getFilterGroupValues(FilterGroupsEnum.COMPANY);
     expect(values).toEqual({});
   });
 });
@@ -106,9 +108,7 @@ describe("FiltersStore – setFilterGroup", () => {
     expect(filtersStore.getFilterValue(FilterGroupsEnum.USERS, "name")).toBe(
       "John",
     );
-    expect(filtersStore.getFilterValue(FilterGroupsEnum.USERS, "age")).toBe(
-      30,
-    );
+    expect(filtersStore.getFilterValue(FilterGroupsEnum.USERS, "age")).toBe(30);
   });
 
   it("merges with existing group filters", () => {
@@ -123,7 +123,9 @@ describe("FiltersStore – setFilterGroup", () => {
   });
 
   it("logs error for unknown filter group", () => {
-    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const consoleSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
     // @ts-expect-error - testing invalid group
     filtersStore.setFilterGroup("BAD_GROUP", { key: "value" });
     expect(consoleSpy).toHaveBeenCalled();

@@ -1,7 +1,6 @@
 import { FC, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-
 import { observer } from "mobx-react-lite";
 import { UrlTabs } from "@components/UrlComponents";
 import { UxPageHeader } from "@components/UxComponents";
