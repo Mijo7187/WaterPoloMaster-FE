@@ -48,15 +48,6 @@ export const CompanyForm: FC<ICompanyFormProps> = observer(
           </Col>
 
           <Col span={12}>
-            <UxFormInput
-              readOnly={readOnly}
-              testId="company-address"
-              formName="address"
-              label="Adresa"
-            />
-          </Col>
-
-          <Col span={12}>
             <UxFormScrollSelect
               formName={"country_id"}
               objName={"country"}
@@ -71,6 +62,7 @@ export const CompanyForm: FC<ICompanyFormProps> = observer(
               }}
             />
           </Col>
+
           <Col span={12}>
             <UxFormScrollSelect
               formName={"city_id"}
@@ -82,6 +74,14 @@ export const CompanyForm: FC<ICompanyFormProps> = observer(
               label="Grad"
               filtersForGet={{ country_id: countryId }}
               disabled={!countryId}
+            />
+          </Col>
+          <Col span={12}>
+            <UxFormInput
+              readOnly={readOnly}
+              testId="company-address"
+              formName="address"
+              label="Adresa"
             />
           </Col>
 
@@ -103,6 +103,7 @@ export const CompanyForm: FC<ICompanyFormProps> = observer(
               rules={[EMAIL_FIELD_RULE]}
             />
           </Col>
+
           <Col span={12}>
             <UxFormSelect
               // readOnly={readOnly}

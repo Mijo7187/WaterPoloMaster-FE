@@ -3,13 +3,20 @@ import { ReactNode } from "react";
 export enum RoutePathsEnum {
   HOME_PAGE = "home",
   LOGIN = "login",
-  USERS_LIST = "users",
+  USERS_LIST = "user",
   USER_PROFILE = "user-profile",
-  COMPANY_LIST = "company-list",
+  COMPANY_LIST = "companies",
+  COMPANY_PROFILE = "companies-profile",
   COMPANY = "company",
-  // TRAININGS = "trainings",
-  CALENDAR = "calendar",
+  TRAINING = "training",
+  TRAINING_PROFILE = "training-profile",
+  PAYMENTS = "payments",
+  // CALENDAR = "calendar",
   SIFARNICI = "sifarnici",
+  QUARTER = "quarter",
+  QUARTER_PROFILE = "quarter-profile",
+  TOURNAMENT = "tournament",
+  TOURNAMENT_PROFILE = "tournament-profile",
 }
 
 export interface IRoutesType {

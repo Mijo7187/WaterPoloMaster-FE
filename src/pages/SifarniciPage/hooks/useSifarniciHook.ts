@@ -20,20 +20,19 @@ export const useSifarniciHook = () => {
 
   const sifarnik_id = searchParams.get("sifarnik_id");
 
-  const fetchSifarnikList = (sifarnikType: SifarniciTypeEnum) => {
+  const fetchSifarnikList = () => {
     void sifarniciStore.fetchSifarnikListTable(sifarnikType);
   };
 
   const onSifarnikTypeChange = (newType: SifarniciTypeEnum) => {
     filtersStore.clearFilters(FilterGroupsEnum.SIFARNICI);
-
     setSifarnikType(newType);
-    fetchSifarnikList(newType);
+    void sifarniciStore.fetchSifarnikListTable(newType);
     setSearchParams({ sifarnik_type: newType });
   };
 
   useEffect(() => {
-    fetchSifarnikList(sifarnikType);
+    fetchSifarnikList();
     if (sifarnik_id) {
       modalStore.openModal(ModalTypeEnum.SIFARNIK_MODAL);
     }

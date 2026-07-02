@@ -62,7 +62,7 @@ class CompanyStore implements IBaseStoreConfig<CompanyStore> {
     void this.getCompanies();
   }
 
-  async updateCompany(id: number, payload: IGetCompany) {
+  async updateCompany(id: number, payload: IPostCompany) {
     this.isLoading = true;
     const [err, _res] = await to<INoContentResponse>(
       companyService.updateCompany(id, payload),

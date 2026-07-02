@@ -3,6 +3,8 @@ import { FC } from "react";
 import { Col, Row } from "antd";
 import { observer } from "mobx-react-lite";
 
+import styles from "./UxSmallHeader.module.scss";
+
 interface IUxSmallHeaderProps {
   title: string;
   subtitle?: string;
@@ -16,7 +18,7 @@ export const UxSmallHeader: FC<IUxSmallHeaderProps> = observer(
         id="smallHeader"
         justify={"space-between"}
         align={"middle"}
-        //   className={styles.pageHeader}
+        className={styles.smallHeaderWrapper}
       >
         <Col>
           <h3>{title}</h3>

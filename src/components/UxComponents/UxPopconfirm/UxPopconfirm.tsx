@@ -5,9 +5,9 @@ import { Popconfirm as PopconfirmPop, PopconfirmProps } from "antd";
 import "./UxPopconfirm.module.scss";
 
 interface IUxPopconfirm extends PopconfirmProps {
-  name: string;
+  testId: string;
 }
 
-export const UxPopconfirm: React.FC<IUxPopconfirm> = (props) => {
-  return <PopconfirmPop {...props} data-testid={`${props.name}-popconfirm`} />;
+export const UxPopconfirm: React.FC<IUxPopconfirm> = ({ testId, ...props }) => {
+  return <PopconfirmPop {...props} data-testid={`${testId}-popconfirm`} />;
 };

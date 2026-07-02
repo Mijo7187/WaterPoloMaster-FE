@@ -23,4 +23,5 @@ export interface FUser {
   is_active: boolean;
   first_name__ilike: string;
   last_name__ilike: string;
+  company_id: string;
 }

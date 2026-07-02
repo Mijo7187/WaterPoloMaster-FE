@@ -162,16 +162,21 @@ export const UxFormScrollSelect = observer(
   }: IUxFormScrollSelect<T, F>) => {
     const form = useFormInstance();
 
-    const objItemWatch = Form.useWatch(objName, form) as T;
+    const objItemWatch = Form.useWatch(objName, { form, preserve: true }) as T;
 
     useEffect(() => {
       const objItem = form.getFieldValue(objName) as T;
       const formNameValue = form.getFieldValue(formName) as unknown;
       if (!formNameValue && objItem) {
+        console.log(objName, "objName");
+        console.log(formNameValue, "formNameValue");
         const sifarnikConfig = SIFARNICI_MAP_CONFIG[sifarnikName];
         const valueKey = sifarnikConfig.valueAccessor ?? "id";
         const defaultValue = (objItem as Record<string, unknown>)[valueKey];
         form.setFieldValue(formName, defaultValue);
+      }
+
+      if (objItem) {
         sifarniciStore.setDefaultOptions(storeKey, objItem, sifarnikName);
       }
     }, [objItemWatch]);

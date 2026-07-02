@@ -22,19 +22,56 @@ const CompaniesListPage = lazy(() =>
     default: m.CompaniesListPage,
   })),
 );
+
+const CompaniesProfilePage = lazy(() =>
+  import("@pages/CompaniesProfilePage/CompaniesProfilePage").then((m) => ({
+    default: m.CompaniesProfilePage,
+  })),
+);
+
 const CompanyPage = lazy(() =>
   import("@pages/CompanyPage/CompanyPage").then((m) => ({
     default: m.CompanyPage,
   })),
 );
-const TrainingsPage = lazy(() =>
-  import("@pages/TrainingsPage/TrainingsPage").then((m) => ({
-    default: m.TrainingsPage,
+const TrainingsListPage = lazy(() =>
+  import("@pages/TrainingsListPage/TrainingsListPage").then((m) => ({
+    default: m.TrainingsListPage,
+  })),
+);
+const TrainingProfilePage = lazy(() =>
+  import("@pages/TrainingProfilePage/TrainingProfilePage").then((m) => ({
+    default: m.TrainingProfilePage,
   })),
 );
 const SifarniciPage = lazy(() =>
   import("@pages/SifarniciPage/SifarniciPage").then((m) => ({
     default: m.SifarniciPage,
+  })),
+);
+const PaymentsListPage = lazy(() =>
+  import("@pages/PaymentsListPage/PaymentsListPage").then((m) => ({
+    default: m.PaymentsListPage,
+  })),
+);
+const QuarterListPage = lazy(() =>
+  import("@pages/QuarterListPage/QuarterListPage").then((m) => ({
+    default: m.QuarterListPage,
+  })),
+);
+const QuarterProfilePage = lazy(() =>
+  import("@pages/QuarterProfilePage/QuarterProfilePage").then((m) => ({
+    default: m.QuarterProfilePage,
+  })),
+);
+const TournamentListPage = lazy(() =>
+  import("@pages/TournamentListPage/TournamentListPage").then((m) => ({
+    default: m.TournamentListPage,
+  })),
+);
+const TournamentProfilePage = lazy(() =>
+  import("@pages/TournamentProfilePage/TournamentProfilePage").then((m) => ({
+    default: m.TournamentProfilePage,
   })),
 );
 
@@ -67,7 +104,7 @@ const ROUTE_USERS_LIST: IRouteConfig = {
 const ROUTE_USER_PROFILE: IRouteConfig = {
   key: RoutePathsEnum.USER_PROFILE,
   label: "Korisnik",
-  path: `/${RoutePathsEnum.USER_PROFILE}/:id`,
+  path: `/${RoutePathsEnum.USER_PROFILE}/:userId`,
   // icon: <UserIcon />,
   element: (
     <Suspense>
@@ -88,6 +125,18 @@ const ROUTE_COMPANY_LIST_PAGE: IRouteConfig = {
     </Suspense>
   ),
 };
+const ROUTE_COMPANY_PROFILE_PAGE: IRouteConfig = {
+  key: RoutePathsEnum.COMPANY_PROFILE,
+  path: `/${RoutePathsEnum.COMPANY_PROFILE}/:id`,
+  // icon: <CompanyIcon />,
+  element: (
+    <Suspense>
+      <CompaniesProfilePage />
+    </Suspense>
+  ),
+  hideInMenu: true,
+};
+
 const ROUTE_COMPANY: IRouteConfig = {
   key: RoutePathsEnum.COMPANY,
   label: "Klub",
@@ -100,16 +149,89 @@ const ROUTE_COMPANY: IRouteConfig = {
   ),
 };
 
-const ROUTE_CALENDAR: IRouteConfig = {
-  key: RoutePathsEnum.CALENDAR,
-  label: "Kalendar",
-  path: RoutePathsEnum.CALENDAR,
+const ROUTE_TRAINING: IRouteConfig = {
+  key: RoutePathsEnum.TRAINING,
+  label: "Trening",
+  path: RoutePathsEnum.TRAINING,
   element: (
     <Suspense>
-      <TrainingsPage />
+      <TrainingsListPage />
     </Suspense>
   ),
 };
+const ROUTE_TRAINING_PROFILE: IRouteConfig = {
+  key: RoutePathsEnum.TRAINING_PROFILE,
+  path: `/${RoutePathsEnum.TRAINING_PROFILE}/:trainingId`,
+  element: (
+    <Suspense>
+      <TrainingProfilePage />
+    </Suspense>
+  ),
+  hideInMenu: true,
+};
+// const ROUTE_CALENDAR: IRouteConfig = {
+//   key: RoutePathsEnum.CALENDAR,
+//   label: "Kalendar",
+//   path: RoutePathsEnum.CALENDAR,
+//   element: (
+//     <Suspense>
+//       <TrainingsPage />
+//     </Suspense>
+//   ),
+// };
+const ROUTE_PAYMENTS: IRouteConfig = {
+  key: RoutePathsEnum.PAYMENTS,
+  label: "Plaćanja",
+  path: RoutePathsEnum.PAYMENTS,
+  element: (
+    <Suspense>
+      <PaymentsListPage />
+    </Suspense>
+  ),
+};
+
+const ROUTE_QUARTER: IRouteConfig = {
+  key: RoutePathsEnum.QUARTER,
+  label: "Kvartali",
+  path: RoutePathsEnum.QUARTER,
+  element: (
+    <Suspense>
+      <QuarterListPage />
+    </Suspense>
+  ),
+};
+const ROUTE_QUARTER_PROFILE: IRouteConfig = {
+  key: RoutePathsEnum.QUARTER_PROFILE,
+  path: `/${RoutePathsEnum.QUARTER_PROFILE}/:quarterId`,
+  element: (
+    <Suspense>
+      <QuarterProfilePage />
+    </Suspense>
+  ),
+  hideInMenu: true,
+};
+
+const ROUTE_TOURNAMENT: IRouteConfig = {
+  key: RoutePathsEnum.TOURNAMENT,
+  label: "Turniri",
+  path: RoutePathsEnum.TOURNAMENT,
+  element: (
+    <Suspense>
+      <TournamentListPage />
+    </Suspense>
+  ),
+};
+const ROUTE_TOURNAMENT_PROFILE: IRouteConfig = {
+  key: RoutePathsEnum.TOURNAMENT_PROFILE,
+  path: `/${RoutePathsEnum.TOURNAMENT_PROFILE}/:tournamentId`,
+  element: (
+    <Suspense>
+      <TournamentProfilePage />
+    </Suspense>
+  ),
+  hideInMenu: true,
+};
+
 const ROUTE_SIFARNICI: IRouteConfig = {
   key: RoutePathsEnum.SIFARNICI,
   label: "Šifarnici",
@@ -129,9 +251,17 @@ export const ALL_ROUTE_CONFIG: Record<
   [RoutePathsEnum.USERS_LIST]: ROUTE_USERS_LIST,
   [RoutePathsEnum.USER_PROFILE]: ROUTE_USER_PROFILE,
   [RoutePathsEnum.COMPANY]: ROUTE_COMPANY,
-  [RoutePathsEnum.CALENDAR]: ROUTE_CALENDAR,
+  // [RoutePathsEnum.CALENDAR]: ROUTE_CALENDAR,
   [RoutePathsEnum.COMPANY_LIST]: ROUTE_COMPANY_LIST_PAGE,
+  [RoutePathsEnum.COMPANY_PROFILE]: ROUTE_COMPANY_PROFILE_PAGE,
   [RoutePathsEnum.SIFARNICI]: ROUTE_SIFARNICI,
+  [RoutePathsEnum.TRAINING]: ROUTE_TRAINING,
+  [RoutePathsEnum.TRAINING_PROFILE]: ROUTE_TRAINING_PROFILE,
+  [RoutePathsEnum.PAYMENTS]: ROUTE_PAYMENTS,
+  [RoutePathsEnum.QUARTER]: ROUTE_QUARTER,
+  [RoutePathsEnum.QUARTER_PROFILE]: ROUTE_QUARTER_PROFILE,
+  [RoutePathsEnum.TOURNAMENT]: ROUTE_TOURNAMENT,
+  [RoutePathsEnum.TOURNAMENT_PROFILE]: ROUTE_TOURNAMENT_PROFILE,
 };
 
 export type AuthenticatedRoutePathsEnum = Exclude<
@@ -144,9 +274,16 @@ const ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.USERS_LIST,
   RoutePathsEnum.USER_PROFILE,
   RoutePathsEnum.COMPANY,
-  RoutePathsEnum.CALENDAR,
+  RoutePathsEnum.TRAINING,
+  RoutePathsEnum.TRAINING_PROFILE,
+  RoutePathsEnum.PAYMENTS,
   RoutePathsEnum.COMPANY_LIST,
+  RoutePathsEnum.COMPANY_PROFILE,
   RoutePathsEnum.SIFARNICI,
+  RoutePathsEnum.QUARTER,
+  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.TOURNAMENT,
+  RoutePathsEnum.TOURNAMENT_PROFILE,
 ];
 
 const SUPER_ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
@@ -154,21 +291,35 @@ const SUPER_ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.USERS_LIST,
   RoutePathsEnum.USER_PROFILE,
   RoutePathsEnum.COMPANY,
-  RoutePathsEnum.CALENDAR,
+  RoutePathsEnum.TRAINING,
+  RoutePathsEnum.TRAINING_PROFILE,
+  RoutePathsEnum.PAYMENTS,
+  RoutePathsEnum.COMPANY_LIST,
+  RoutePathsEnum.COMPANY_PROFILE,
   RoutePathsEnum.SIFARNICI,
+  RoutePathsEnum.QUARTER,
+  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.TOURNAMENT,
+  RoutePathsEnum.TOURNAMENT_PROFILE,
 ];
 
 const COACH_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.HOME_PAGE,
   RoutePathsEnum.USERS_LIST,
   RoutePathsEnum.COMPANY,
-  RoutePathsEnum.CALENDAR,
+  RoutePathsEnum.TRAINING,
+  RoutePathsEnum.TRAINING_PROFILE,
+  RoutePathsEnum.PAYMENTS,
+  RoutePathsEnum.QUARTER,
+  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.TOURNAMENT,
+  RoutePathsEnum.TOURNAMENT_PROFILE,
 ];
 
 const PLAYER_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.HOME_PAGE,
   RoutePathsEnum.COMPANY,
-  RoutePathsEnum.CALENDAR,
+  RoutePathsEnum.TRAINING,
 ];
 
 export const ROUTES_BY_ROLE: Record<

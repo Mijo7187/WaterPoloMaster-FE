@@ -9,17 +9,25 @@ import {
 } from "./pagination.types";
 
 class PaginationStore {
-  params: Partial<Record<PaginationEnum, IGetPagination>> = {};
+  params: Record<PaginationEnum, IGetPagination> = {
+    [PaginationEnum.USER_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.COMPANY_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.SIFARNICI_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.TRAINING_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.PAYMENT_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.QUARTER_PAGINATION]: PAGINATION_INITIAL_STATE,
+    [PaginationEnum.TOURNAMENT_PAGINATION]: PAGINATION_INITIAL_STATE,
+  };
 
   constructor() {
-    makeAutoObservable(this);
+    makeAutoObservable(this, { get: false });
   }
 
   get = computedFn(function (
     this: PaginationStore,
     key: PaginationEnum,
-  ): IGetPagination | null {
-    return this.params[key] ?? null;
+  ): IGetPagination {
+    return this.params[key];
   });
 
   set(key: PaginationEnum, value: IPostPagination) {
@@ -33,10 +41,10 @@ class PaginationStore {
   }
 
   getRequestPaginationParams(key: PaginationEnum): IPostPagination {
-    const params = this.params[key];
+    const params = this.get(key);
     return {
-      page: params?.page ?? PAGINATION_INITIAL_STATE.page,
-      size: params?.size ?? PAGINATION_INITIAL_STATE.size,
+      page: params.page,
+      size: params.size,
     };
   }
 
@@ -48,43 +56,24 @@ class PaginationStore {
 
   resetPage(key: PaginationEnum) {
     runInAction(() => {
-      if (this.params[key]) {
-        this.params[key].page = 1;
-      }
+      this.params[key].page = 1;
     });
   }
 
   updateField(key: PaginationEnum, field: keyof IGetPagination, value: number) {
     runInAction(() => {
-      if (this.params[key]) {
-        this.params[key][field] = value;
-      }
-    });
-  }
-
-  increaseTotalRecords(key: PaginationEnum) {
-    runInAction(() => {
-      const current = this.params[key];
-      if (current) {
-        current.total = (current.total || 0) + 1;
-      }
-    });
-  }
-
-  decreaseTotalRecords(key: PaginationEnum) {
-    runInAction(() => {
-      const current = this.params[key];
-      if (current && current.total > 0) {
-        current.total -= 1;
-      }
+      this.params[key][field] = value;
     });
   }
 
   remove(key: PaginationEnum) {
     runInAction(() => {
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete this.params[key];
+      this.params[key] = PAGINATION_INITIAL_STATE;
     });
+  }
+
+  setTotal(key: PaginationEnum, total: number) {
+    this.params[key].total = total;
   }
 }
 

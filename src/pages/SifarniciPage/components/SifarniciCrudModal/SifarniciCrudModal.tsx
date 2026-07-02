@@ -12,16 +12,17 @@ import {
   SifarniciTypeEnum,
 } from "@modules/sifarnici/sifarnici.types";
 import { SIFARNIK_MODAL_CONFIG_DATA } from "@pages/SifarniciPage/components/sifarniciPage.config";
-import { ICrudOptionsConfig, ModalTypeEnum } from "@stores";
+import { ICrudOptionsConfig, modalStore, ModalTypeEnum } from "@stores";
 
 interface ISifarniciFormProps {
   components: (form: FormInstance) => ICrudOptionsConfig[];
   formInitialState: IPostSifarnikType;
   sifarnikType: SifarniciTypeEnum;
+  onCancel: () => void;
 }
 
 export const SifarniciForm: FC<ISifarniciFormProps> = observer(
-  ({ components, formInitialState, sifarnikType }) => {
+  ({ components, formInitialState, sifarnikType, onCancel }) => {
     const [form] = useForm();
     const [searchParams] = useSearchParams();
     const sifarnik_id = searchParams.get("sifarnik_id");
@@ -43,15 +44,17 @@ export const SifarniciForm: FC<ISifarniciFormProps> = observer(
       }
     }, [sifarnik_id]);
 
-    const onFormFinish = (values: IPostSifarnikType) => {
-      if (sifarnik_id) {
-        void sifarniciStore.updateSifarnik(
-          sifarnikType,
-          Number(sifarnik_id),
-          values,
-        );
-      } else {
-        void sifarniciStore.postSifarnik(sifarnikType, values);
+    const onFormFinish = async (values: IPostSifarnikType) => {
+      const response = await (sifarnik_id
+        ? sifarniciStore.updateSifarnik(
+            sifarnikType,
+            Number(sifarnik_id),
+            values,
+          )
+        : sifarniciStore.postSifarnik(sifarnikType, values));
+      if (response) {
+        onCancel();
+        void sifarniciStore.fetchSifarnikListTable(sifarnikType);
       }
     };
 
@@ -62,9 +65,10 @@ export const SifarniciForm: FC<ISifarniciFormProps> = observer(
         name={`sifarnik-form`}
         onFinish={(_) => {
           const allValues = form.getFieldsValue(true) as IPostSifarnikType;
-          onFormFinish(allValues);
+          void onFormFinish(allValues);
         }}
         labelAlign="left"
+        layout="vertical"
       >
         <Row gutter={10}>
           {componentsMemo.map((item: ICrudOptionsConfig, index) => (
@@ -92,21 +96,32 @@ interface ISifarniciCrudModalProps {
 
 export const SifarniciCrudModal: FC<ISifarniciCrudModalProps> = observer(
   ({ sifarnikType }) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+
     const { title, components, formInitialState, width } = useMemo(() => {
       // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
       return SIFARNIK_MODAL_CONFIG_DATA[sifarnikType] as ISifarniciModalConfig;
     }, [sifarnikType]);
+
+    const onCancel = () => {
+      sifarniciStore.handleChange("sifarnik", formInitialState);
+      modalStore.clearModal(ModalTypeEnum.SIFARNIK_MODAL);
+      searchParams.delete("sifarnik_id");
+      setSearchParams(searchParams);
+    };
 
     return (
       <UxBaseModal
         width={width ?? "fit-content"}
         name={ModalTypeEnum.SIFARNIK_MODAL}
         title={title}
+        onCancel={onCancel}
       >
         <SifarniciForm
           components={components}
           formInitialState={formInitialState}
           sifarnikType={sifarnikType}
+          onCancel={onCancel}
         />
       </UxBaseModal>
     );

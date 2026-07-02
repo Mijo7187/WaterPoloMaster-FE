@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Row, Space } from "antd";
 import { observer } from "mobx-react-lite";
 import { PlusCircleFilled } from "@ant-design/icons";
-import { AppPagination } from "@components/AppCompononets";
+import { UrlPagination } from "@components/UrlComponents";
 import { UxButton } from "@components/UxComponents";
 import { UxSelect } from "@components/UxFormComponents";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
@@ -23,7 +23,7 @@ interface ISifarniciHeaderProps {
 const SifarniciHeader: FC<ISifarniciHeaderProps> = observer(
   ({ onSifarnikTypeChange, sifarnik_type }) => {
     return (
-      <Row justify={"space-between"} id="sifarniciHeader">
+      <Row justify={"space-between"} id="sifarniciHeader" className="pb-20">
         <h1>{"Šifarnici"}</h1>
         <Row justify={"end"}>
           <Space>
@@ -57,7 +57,8 @@ const SifarniciHeader: FC<ISifarniciHeaderProps> = observer(
 );
 
 export const SifarniciPage: FC = observer(() => {
-  const { sifarnikType, onSifarnikTypeChange } = useSifarniciHook();
+  const { sifarnikType, onSifarnikTypeChange, fetchSifarnikList } =
+    useSifarniciHook();
 
   return (
     <>
@@ -67,10 +68,8 @@ export const SifarniciPage: FC = observer(() => {
       />
 
       <SifarniciTable sifarnikType={sifarnikType} />
-      <AppPagination
-        handlePaginationChange={function (): void {
-          throw new Error("Function not implemented.");
-        }}
+      <UrlPagination
+        handlePaginationChange={fetchSifarnikList}
         paginationName={PaginationEnum.SIFARNICI_PAGINATION}
         testId={PaginationEnum.SIFARNICI_PAGINATION}
       />

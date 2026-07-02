@@ -1,0 +1,47 @@
+@use "@styles/colors";
+
+.wrapper {
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 20px;
+      &::before {
+        display: none;
+      }
+      .ant-tabs-nav-list {
+        padding: 7px 14px;
+        border-radius: 36px;
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(4px);
+        .ant-tabs-tab {
+          border-radius: 36px;
+          padding: 6px 16px;
+          background: transparent;
+          border: none !important;
+          border-bottom: none !important;
+          color: colors.$grey;
+
+          &:hover {
+            .ant-tabs-tab-btn {
+              color: colors.$black;
+            }
+          }
+
+          &.ant-tabs-tab-active {
+            background-color: colors.$yellow;
+
+            .ant-tabs-tab-btn {
+              color: colors.$black;
+            }
+          }
+        }
+      }
+      .ant-tabs-ink-bar {
+        height: 0 !important;
+      }
+    }
+    .ant-tabs-content-holder {
+      border-radius: 8px;
+    }
+  }
+}

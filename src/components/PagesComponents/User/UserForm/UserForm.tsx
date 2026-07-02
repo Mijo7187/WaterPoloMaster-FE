@@ -75,7 +75,7 @@ export const UserForm: FC<IUserFormProps> = observer(
             />
           </Col>
 
-          <Col span={14}>
+          <Col span={18}>
             <UxFormSelect
               //   readOnly={readOnly}
               testId="user-roles"

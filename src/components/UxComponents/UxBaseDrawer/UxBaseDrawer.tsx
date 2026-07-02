@@ -3,21 +3,20 @@ import { FC } from "react";
 import { observer } from "mobx-react-lite";
 import { drawerStore, DrawerTypeEnum } from "@stores";
 
-import { UxDrawer } from "../UxDrawer/UxDrawer";
+import { IUxDrawerProps, UxDrawer } from "../UxDrawer/UxDrawer";
 
-interface IUxBaseDrawerProps {
+interface IUxBaseDrawerProps extends IUxDrawerProps {
   name: DrawerTypeEnum;
   children: React.ReactNode;
-  title?: string;
   onCancel?: () => void;
 }
 
 export const UxBaseDrawer: FC<IUxBaseDrawerProps> = observer(
-  ({ name, children, title, onCancel }) => {
+  ({ name, children, title, onCancel, ...rest }) => {
     return (
       <>
         {drawerStore.getterDrawerListNames.includes(name) && (
-          <UxDrawer testId={name} title={title} onClose={onCancel}>
+          <UxDrawer title={title} onClose={onCancel} {...rest}>
             {children}
           </UxDrawer>
         )}

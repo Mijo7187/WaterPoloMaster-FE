@@ -10,12 +10,25 @@ import {
   IGetPaymentType,
   IPostPaymentType,
 } from "./paymentType/paymentType.types";
+import {
+  FSwimmingDiscipline,
+  IGetSwimmingDiscipline,
+  IPostSwimmingDiscipline,
+} from "./swimmingDiscipline/swimmingDiscipline.types";
+import {
+  FTrainingType,
+  IGetTrainingType,
+  IPostTrainingType,
+} from "./trainingType/trainingType.types";
 
 export enum SifarniciTypeEnum {
   COMPANY = "COMPANY",
   CITY = "CITY",
   COUNTRY = "COUNTRY",
   PAYMENT_TYPE = "PAYMENT_TYPE",
+  TRAINING_TYPE = "TRAINING_TYPE",
+  SWIMMING_DISCIPLINE = "SWIMMING_DISCIPLINE",
+  USER_NOT_IN_QUARTER = "USER_NOT_IN_QUARTER",
 }
 
 // #region SELECT SCROLL
@@ -24,7 +37,9 @@ export type IGetSifarnikType =
   | IGetCity
   | IGetCompany
   | IGetCountry
-  | IGetPaymentType;
+  | IGetPaymentType
+  | IGetTrainingType
+  | IGetSwimmingDiscipline;
 
 interface ISifarniciSelectConfig {
   labelAccessor: string[] | ((item: unknown) => React.ReactNode);
@@ -53,7 +68,12 @@ export interface SifarniciValueConfig<T = unknown> {
 // #endregion SELECT SCROLL
 // #region CRUD
 
-export type IPostSifarnikType = IPostCity | IPostCountry | IPostPaymentType;
+export type IPostSifarnikType =
+  | IPostCity
+  | IPostCountry
+  | IPostPaymentType
+  | IPostTrainingType
+  | IPostSwimmingDiscipline;
 
 export type SifarniciModalMapConfig = Partial<
   Record<SifarniciTypeEnum, ISifarniciModalConfig>
@@ -67,7 +87,12 @@ export interface ISifarniciModalConfig {
   // tableColumns: () => ColumnsType<any>;
 }
 
-export type FSifarnici = FCity | FCountry | FPaymentType;
+export type FSifarnici =
+  | FCity
+  | FCountry
+  | FPaymentType
+  | FTrainingType
+  | FSwimmingDiscipline;
 export type SifarniciFiltersMapConfig = Partial<
   Record<SifarniciTypeEnum, ISifarniciFiltersConfig>
 >;

@@ -7,15 +7,15 @@ import {
   UxFormInputNumber,
   UxFormScrollSelect,
   UxFormSelect,
-  UxFormSwitch,
 } from "@components/UxFormComponents";
+import { authStore } from "@modules/auth/auth.store";
 import { CompanyTypeEnum } from "@modules/company/company.types";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
-import { TRAINING_INITIAL_STATE } from "@modules/trainings/trainings.constants";
+import { TRAINING_INITIAL_STATE } from "@modules/training/training.constants";
 import {
   IGetTraining,
   TrainingStatusEnum,
-} from "@modules/trainings/trainings.types";
+} from "@modules/training/training.types";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 
 const TRAINING_STATUS_OPTIONS = Object.values(TrainingStatusEnum).map(
@@ -41,12 +41,24 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
         layout="vertical"
       >
         <Row gutter={16}>
-          <Col span={12}>
+          <Col span={24}>
+            <UxFormScrollSelect
+              storeKey={"training_type"}
+              formName="training_type_id"
+              objName={"training_type"}
+              testId={"training_type"}
+              sifarnikName={SifarniciTypeEnum.TRAINING_TYPE}
+              label={"Tip treninga"}
+              filtersForGet={{ company_id: authStore.getAuthUser.company_id }}
+              rules={[REQUIRED_FIELD_RULE(true)]}
+            />
+          </Col>
+          <Col span={24}>
             <UxFormScrollSelect
               storeKey={`pool`}
               formName="pool_id"
               objName={"pool"}
-              sifarnikName={SifarniciTypeEnum.CITY}
+              sifarnikName={SifarniciTypeEnum.COMPANY}
               label={"Bazen"}
               filtersForGet={{ company_type: CompanyTypeEnum.POOL }}
               rules={[REQUIRED_FIELD_RULE(true)]}
@@ -56,23 +68,36 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
 
           <Col span={12}>
             <UxFormDatePicker
-              formName="start_training_date_time"
-              label="Početak treninga"
+              formName="training_date"
+              label="Datum treninga"
               rules={[REQUIRED_FIELD_RULE(true)]}
               readOnly={readOnly}
-              testId="training-start-date"
-              showTime
+              testId="training-date"
+              format="DD-MM-YYYY"
             />
           </Col>
 
-          <Col span={12}>
+          <Col span={6}>
             <UxFormDatePicker
-              formName="end_training_date_time"
-              label="Kraj treninga"
+              formName="start_time"
+              label="Početak"
               rules={[REQUIRED_FIELD_RULE(true)]}
               readOnly={readOnly}
-              testId="training-end-date"
-              showTime
+              testId="training-start-time"
+              picker="time"
+              format={"HH:mm"}
+            />
+          </Col>
+
+          <Col span={6}>
+            <UxFormDatePicker
+              formName="end_time"
+              label="Kraj"
+              rules={[REQUIRED_FIELD_RULE(true)]}
+              readOnly={readOnly}
+              testId="training-end-time"
+              picker="time"
+              format={"HH:mm"}
             />
           </Col>
 
@@ -82,6 +107,7 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
               label="Cena"
               readOnly={readOnly}
               testId="training-price"
+              rules={[REQUIRED_FIELD_RULE(true)]}
             />
           </Col>
 
@@ -92,15 +118,6 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
               rules={[REQUIRED_FIELD_RULE(true)]}
               testId="training-status"
               options={TRAINING_STATUS_OPTIONS}
-              disabled={readOnly}
-            />
-          </Col>
-
-          <Col span={12}>
-            <UxFormSwitch
-              formName="payed"
-              label="Plaćeno"
-              testId="training-payed"
               disabled={readOnly}
             />
           </Col>

@@ -8,4 +8,5 @@ export interface IGetWallet {
   owner_id: string;
   owner_type: WalletTypeEnum;
   created_at: string;
+  name: string;
 }

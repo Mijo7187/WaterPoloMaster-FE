@@ -26,11 +26,20 @@ export const CompanyTable: FC = observer(() => {
       key: "address",
     },
     {
+      title: "Država",
+      width: 200,
+      minWidth: 200,
+      key: "country",
+      dataIndex: ["country", "name"],
+      // render: (_: unknown, record: IGetCompany) => record.city?.name ?? "",
+    },
+    {
       title: "Grad",
       width: 200,
       minWidth: 200,
-      dataIndex: "city",
       key: "city",
+      dataIndex: ["city", "name"],
+      // render: (_: unknown, record: IGetCompany) => record.city?.name ?? "",
     },
     {
       title: "Telefon",
@@ -50,7 +59,8 @@ export const CompanyTable: FC = observer(() => {
       title: ``,
       key: "operation",
       fixed: "right" as const,
-      width: 80,
+      width: 50,
+      minWidth: 50,
       align: "center" as const,
       render: (_: unknown, record: IGetCompany) => {
         return (
@@ -58,11 +68,7 @@ export const CompanyTable: FC = observer(() => {
             icon={<EditOutlined />}
             name={`edit-company-${record.id}`}
             onClick={() => {
-              void navigate(`${RoutePathsEnum.COMPANY}/${record.id}`);
-              // setSearchParams({
-              //   sifarnik_type: sifarnikType,
-              //   sifarnik_id: String(record.id),
-              // });
+              void navigate(`/${RoutePathsEnum.COMPANY_PROFILE}/${record.id}`);
             }}
             testId={`edit-company-${record.id}`}
           />

@@ -16,7 +16,7 @@ export const AppNav: FC = observer(() => {
   const userRoles = authStore.getAuthUserRoles;
   const menuConfig = routerService.getMenuConfig(userRoles);
   const selectedItem = menuConfig.find((item: IMenuType) =>
-    pathName.includes(item.path),
+    pathName.startsWith(`/${item.key}`),
   );
 
   const handleMenuClick: MenuProps["onClick"] = (e) => {

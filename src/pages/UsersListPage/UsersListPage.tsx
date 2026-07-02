@@ -1,7 +1,7 @@
 import { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
-import { AppPagination } from "@components/AppCompononets";
+import { UrlPagination } from "@components/UrlComponents";
 import { UxButton, UxPageHeader } from "@components/UxComponents";
 import { UxFilterTableWrapper } from "@components/UxComponents/UxFilterTableWrapper/UxFilterTableWrapper";
 import { usersStore } from "@modules/users";
@@ -39,7 +39,7 @@ export const UsersListPage: FC = observer(() => {
         filters={<UserFilters />}
         table={<UserTable />}
         pagination={
-          <AppPagination
+          <UrlPagination
             align="end"
             handlePaginationChange={fetchUsers}
             paginationName={PaginationEnum.USER_PAGINATION}

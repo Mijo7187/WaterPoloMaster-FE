@@ -1,8 +1,11 @@
 import {
   IUxFormDatePickerProps,
+  IUxFormInputNumberProps,
   IUxFormInputProps,
   IUxFormScrollSelect,
   IUxFormSelectProps,
+  IUxFormSwitchProps,
+  IUxFormTextAreaProps,
 } from "@components/UxFormComponents";
 import { IGetPagination, TypeOfFormEnum } from "@stores";
 
@@ -37,5 +40,15 @@ interface CScrollSelect
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   extends IUxFormScrollSelect<any, any>, ICrudBaseProps {}
 export interface CDatePicker extends IUxFormDatePickerProps, ICrudBaseProps {}
+interface CInputNumber extends IUxFormInputNumberProps, ICrudBaseProps {}
+interface CSwitch extends IUxFormSwitchProps, ICrudBaseProps {}
+interface CTextArea extends IUxFormTextAreaProps, ICrudBaseProps {}
 
-export type ICrudOptionsConfig = CInput | CSelect | CScrollSelect | CDatePicker;
+export type ICrudOptionsConfig =
+  | CInput
+  | CSelect
+  | CScrollSelect
+  | CDatePicker
+  | CInputNumber
+  | CSwitch
+  | CTextArea;

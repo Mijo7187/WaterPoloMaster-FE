@@ -37,6 +37,7 @@ src/
 @.claude/conventions.md
 @.claude/error-handling.md
 @.claude/state.md
+@.claude/testing.md
 
 ## Feature Modules
 @src/modules/CLAUDE_MODULES.md

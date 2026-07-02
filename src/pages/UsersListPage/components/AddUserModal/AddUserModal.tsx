@@ -38,6 +38,7 @@ export const AddUserModal = observer(() => {
       onCancel={() => {
         usersStore.handleChange("user", USER_INITIAL_STATE);
       }}
+      width={"70%"}
     >
       <AddUserForm />
     </UxBaseModal>

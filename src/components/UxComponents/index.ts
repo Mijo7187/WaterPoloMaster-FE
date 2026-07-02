@@ -5,6 +5,7 @@ import { UxCalendar } from "./UxCalendar/UxCalendar";
 import { UxCard } from "./UxCard/UxCard";
 import { UxCrudComp } from "./UxCrudComp/UxCrudComp";
 import { UxDrawer } from "./UxDrawer/UxDrawer";
+import { IUxInfiniteListProps, UxInfiniteList } from "./UxInfiniteList/UxInfiniteList";
 import { UxList } from "./UxList/UxList";
 import { UxModal } from "./UxModal/UxModal";
 import { UxPageHeader } from "./UxPageHeader/UxPageHeader";
@@ -18,6 +19,7 @@ import { UxTag } from "./UxTag/UxTag";
 import { UxTheme } from "./UxTheme/UxTheme";
 
 export {
+  type IUxInfiniteListProps,
   type IUxPaginationProps,
   UxBaseDrawer,
   UxBaseModal,
@@ -26,6 +28,7 @@ export {
   UxCard,
   UxCrudComp,
   UxDrawer,
+  UxInfiniteList,
   UxList,
   UxModal,
   UxPageHeader,

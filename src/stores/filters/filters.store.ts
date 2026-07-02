@@ -6,10 +6,7 @@ const initialFilterGroups = (): Record<FilterGroupsEnum, FilterGroupMap> => ({
   [FilterGroupsEnum.USERS]: new Map<string, FilterValue>(),
   [FilterGroupsEnum.COMPANY]: new Map<string, FilterValue>(),
   [FilterGroupsEnum.SIFARNICI]: new Map<string, FilterValue>(),
-  [FilterGroupsEnum.INVENTORY]: new Map<string, FilterValue>(),
-  [FilterGroupsEnum.PRODUCT]: new Map<string, FilterValue>(),
-  [FilterGroupsEnum.ORDER]: new Map<string, FilterValue>(),
-  [FilterGroupsEnum.DIMENSION]: new Map<string, FilterValue>(),
+  [FilterGroupsEnum.TRAINING]: new Map<string, FilterValue>(),
 });
 
 const initialFilterEntries = Object.entries(initialFilterGroups()) as [

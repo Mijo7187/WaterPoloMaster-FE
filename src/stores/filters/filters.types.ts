@@ -1,3 +1,4 @@
+import { FPayment } from "@modules/payment/payment.types";
 import { FSifarnici } from "@modules/sifarnici";
 import { FUser } from "@modules/users";
 import { IPostPagination } from "@stores";
@@ -6,15 +7,13 @@ export enum FilterGroupsEnum {
   USERS = "users",
   COMPANY = "company",
   SIFARNICI = "sifarnici",
-  INVENTORY = "inventory",
-  PRODUCT = "product",
-  ORDER = "order",
-  DIMENSION = "dimension",
+  TRAINING = "training",
+  PAYMENT = "payment",
 }
 
 export type FiltersWithPagination<T = GlobalFilters> = T & IPostPagination;
 
-export type GlobalFilters = FSifarnici | FUser;
+export type GlobalFilters = FSifarnici | FUser | FPayment;
 // | IFiltersCompany
 // | IFiltersCategory
 // | IFiltersUserList;

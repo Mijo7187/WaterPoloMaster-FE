@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { ColumnsType } from "antd/es/table";
 import { observer } from "mobx-react-lite";
+import { EditOutlined } from "@ant-design/icons";
 import { UxButton, UxTable } from "@components/UxComponents";
 import { IGetUser, usersStore } from "@modules/users";
 import { RoutePathsEnum } from "@router/router.types";
@@ -61,21 +62,21 @@ export const UserTable: FC = observer(() => {
     },
     {
       title: "",
-      width: 100,
-      minWidth: 100,
+      width: 50,
+      minWidth: 50,
       dataIndex: "actions",
       key: "actions",
       fixed: "right",
       render: (_: unknown, record: IGetUser) => {
         return (
           <UxButton
-            testId={`detalji-user-${record.id}`}
+            icon={<EditOutlined />}
+            name={`edit-user-${record.id}`}
             onClick={() => {
               void navigate(`/${RoutePathsEnum.USER_PROFILE}/${record.id}`);
             }}
-          >
-            Detalji
-          </UxButton>
+            testId={`edit-user-${record.id}`}
+          />
         );
       },
     },

@@ -13,7 +13,9 @@ export interface IUxSelectProps extends SelectProps {
 export const UxSelect: React.FC<IUxSelectProps> = ({ testId, ...props }) => {
   return (
     <div className={styles.container}>
-      <ANTSelect {...props} data-testid={testId} />
+      {/* autoComplete is a valid DOM attr on the internal input; antd types omit it */}
+      {/* @ts-expect-error: autoComplete not in antd SelectProps but valid on the DOM node */}
+      <ANTSelect autoComplete="new-password" {...props} data-testid={testId} />
     </div>
   );
 };

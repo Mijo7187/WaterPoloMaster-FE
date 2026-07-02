@@ -17,6 +17,9 @@ export const SIFARNICI_API_URL_MAP: SifarniciApiMapConfig = {
   [SifarniciTypeEnum.CITY]: "/city",
   [SifarniciTypeEnum.COUNTRY]: "/country",
   [SifarniciTypeEnum.PAYMENT_TYPE]: "/payment-type",
+  [SifarniciTypeEnum.TRAINING_TYPE]: "/training-type",
+  [SifarniciTypeEnum.SWIMMING_DISCIPLINE]: "/swimming-discipline",
+  [SifarniciTypeEnum.USER_NOT_IN_QUARTER]: "/quarter-users/users-not-in-quarter",
 };
 
 export const SIFARNICI_MAP_CONFIG: SifarniciMapConfig = {
@@ -31,5 +34,14 @@ export const SIFARNICI_MAP_CONFIG: SifarniciMapConfig = {
   },
   [SifarniciTypeEnum.PAYMENT_TYPE]: {
     labelAccessor: ["name"],
+  },
+  [SifarniciTypeEnum.TRAINING_TYPE]: {
+    labelAccessor: ["name"],
+  },
+  [SifarniciTypeEnum.SWIMMING_DISCIPLINE]: {
+    labelAccessor: ["name"],
+  },
+  [SifarniciTypeEnum.USER_NOT_IN_QUARTER]: {
+    labelAccessor: ["first_name", "last_name"],
   },
 };

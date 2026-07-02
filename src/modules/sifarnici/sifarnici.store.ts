@@ -95,10 +95,7 @@ class SifarniciStore {
           return;
         }
 
-        return sifarniciService.makeSifarnikOption(
-          storeKey as SifarniciTypeEnum,
-          item,
-        );
+        return sifarniciService.makeSifarnikOption(sifarnikName, item);
       })
       .filter(Boolean) as ISifarnikSelectOptions<T>[];
 
@@ -131,6 +128,9 @@ class SifarniciStore {
     // Setuj default kao jedinu opciju
     const newDefaultValue: ISifarnikSelectOptions<T> =
       sifarniciService.makeSifarnikOption(sifarnikName, defaultObj);
+    console.log(storeKey, "storeKey");
+    console.log(defaultObj, "defaultObj");
+    console.log(sifarnikName, "sifarnikName");
 
     this.sifarniciSelectValues.set(storeKey, {
       pagination: PAGINATION_INITIAL_STATE,
@@ -187,17 +187,18 @@ class SifarniciStore {
       sifarniciService.fetchSifarnikById(sifarnikType, id),
     );
     if (err) return;
-    return res;
+    this.handleChange("sifarnik", res);
   };
 
   postSifarnik = async (
     sifarnikType: SifarniciTypeEnum,
     data: IPostSifarnikType,
   ) => {
-    const [err, _res] = await to<IPostResponse>(
+    const [err, res] = await to<IPostResponse>(
       sifarniciService.postSifarnik(sifarnikType, data),
     );
     if (err) return;
+    return res;
   };
 
   updateSifarnik = async (
@@ -205,10 +206,11 @@ class SifarniciStore {
     id: number,
     data: IPostSifarnikType,
   ) => {
-    const [err, _res] = await to<INoContentResponse>(
+    const [err, res] = await to<INoContentResponse>(
       sifarniciService.updateSifarnik(sifarnikType, id, data),
     );
     if (err) return;
+    return res;
   };
   // #endregion CRUD
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 import to from "await-to-js";
 import dayjs from "dayjs";
 import { makeAutoObservable } from "mobx";
+import { authStore } from "@modules/auth/auth.store";
 import {
   FilterGroupsEnum,
   FiltersWithPagination,
@@ -21,6 +22,7 @@ import { FUser, IGetUser, IPostUser } from "./users.types";
 
 class UsersStore implements IBaseStoreConfig<UsersStore> {
   usersList: IGetUser[] = [];
+  usersListTotal = 0;
   user: IGetUser | IPostUser = USER_INITIAL_STATE;
   isLoading = false;
 
@@ -52,6 +54,7 @@ class UsersStore implements IBaseStoreConfig<UsersStore> {
     const [err, res] = await to<IPaginatedResponse<IGetUser>>(
       usersService.getAllUsers(filters),
     );
+    this.isLoading = false;
     if (err) return Promise.reject(err);
     this.handleChange("usersList", [...res.items]);
     paginationStore.set(PaginationEnum.USER_PAGINATION, res.pagination);
@@ -60,6 +63,7 @@ class UsersStore implements IBaseStoreConfig<UsersStore> {
   async getUserById(id: number) {
     this.isLoading = true;
     const [err, res] = await to<IGetUser>(usersService.getUserById(id));
+    this.isLoading = false;
     if (err) return Promise.reject(err);
     this.handleChange("user", {
       ...res,
@@ -72,19 +76,39 @@ class UsersStore implements IBaseStoreConfig<UsersStore> {
     const [err, _res] = await to<IPostResponse>(
       usersService.createUser(payload),
     );
+    this.isLoading = false;
     if (err) return Promise.reject(err);
     modalStore.clearModal(ModalTypeEnum.USER_MODAL);
     void this.getAllUsers();
   }
 
-  async updateUser(id: number, payload: IGetUser) {
+  async updateUser(id: number, payload: IPostUser) {
     this.isLoading = true;
     const [err, _res] = await to<INoContentResponse>(
       usersService.updateUser(id, payload),
     );
+    this.isLoading = false;
     if (err) return Promise.reject(err);
     this.handleChange("user", payload);
   }
+
+  getUsersTraining = async (params: FUser) => {
+    this.isLoading = true;
+    const filters = {
+      ...params,
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.USER_PAGINATION,
+      ),
+      company_id: authStore.getAuthUser.company_id,
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetUser>>(
+      usersService.getAllUsers(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("usersList", [...res.items]);
+    paginationStore.set(PaginationEnum.USER_PAGINATION, res.pagination);
+    this.handleChange("isLoading", false);
+  };
 }
 
 export const usersStore = new UsersStore();
