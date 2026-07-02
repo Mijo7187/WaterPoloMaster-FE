@@ -122,7 +122,7 @@ describe("TrainingStore – getTrainingsList", () => {
     );
 
     const filters = { status: TrainingStatusEnum.INCOMING };
-    await trainingStore.getTrainingsList(filters);
+    await trainingStore.getTrainingsList();
 
     expect(trainingService.getTrainingsList).toHaveBeenCalledWith(filters);
   });
