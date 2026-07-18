@@ -5,10 +5,6 @@ export const PAYMENT_ENDPOINTS = {
 };
 
 export const PAYMENT_INITIAL_STATE: IPostPayment = {
-  sender_wallet_id: "",
-  receiver_wallet_id: "",
-  payment_type: PaymentTypeEnum.USER_QUARTERLY_FEE,
-  amount: 0,
   status: PaymentStatusEnum.PENDING,
   description: "",
 };

@@ -14,6 +14,7 @@ export const MOCK_USERS: IGetUser[] = [
     roles: [UserRolesEnum.ADMIN],
     createdAt: "2026-01-15T10:00:00Z",
     updatedAt: "2026-01-15T10:00:00Z",
+    w_id: "1",
   },
   {
     id: 2,
@@ -26,6 +27,7 @@ export const MOCK_USERS: IGetUser[] = [
     roles: [UserRolesEnum.PLAYER],
     createdAt: "2026-02-10T08:30:00Z",
     updatedAt: "2026-02-10T08:30:00Z",
+    w_id: "2",
   },
   {
     id: 3,
@@ -38,5 +40,6 @@ export const MOCK_USERS: IGetUser[] = [
     roles: [UserRolesEnum.COACH],
     createdAt: "2026-03-01T14:00:00Z",
     updatedAt: "2026-03-01T14:00:00Z",
+    w_id: "3",
   },
 ];

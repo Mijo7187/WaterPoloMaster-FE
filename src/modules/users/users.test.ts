@@ -30,6 +30,7 @@ const mockUser = {
   date_of_birth: "1990-05-15",
   createdAt: "2024-01-01",
   updatedAt: "2024-01-01",
+  w_id: "1",
 };
 
 const mockPaginatedResponse = {
