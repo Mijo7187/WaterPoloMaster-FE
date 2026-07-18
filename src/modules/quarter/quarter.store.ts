@@ -97,6 +97,38 @@ class QuarterStore implements IBaseStoreConfig<QuarterStore> {
 
   // #region User
 
+  getQuartersListByUserId = async (userId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.QUARTER_PAGINATION,
+      ),
+      user_id: userId,
+      order_by: "year",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetQuarter>>(
+      quarterService.getQuartersList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("quartersList", res.items);
+  };
+
+  getQuartersListByCompanyId = async (companyId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.QUARTER_PAGINATION,
+      ),
+      company_id: companyId,
+      order_by: "year",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetQuarter>>(
+      quarterService.getQuartersList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("quartersList", res.items);
+  };
+
   getQuarterUsersList = async () => {
     this.isLoading = true;
     const filters = {

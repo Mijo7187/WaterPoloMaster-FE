@@ -129,6 +129,74 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
 
   // #region User
 
+  getTrainingsListByUserId = async (userId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.TRAINING),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TRAINING_PAGINATION,
+      ),
+      user_id: userId,
+      order_by: "training_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTraining>>(
+      trainingService.getTrainingsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("trainingsList", res.items);
+  };
+
+  getTrainingsListByCompanyId = async (companyId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.TRAINING),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TRAINING_PAGINATION,
+      ),
+      company_id: companyId,
+      order_by: "training_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTraining>>(
+      trainingService.getTrainingsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("trainingsList", res.items);
+  };
+
+  getTrainingsListByPoolId = async (poolId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.TRAINING),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TRAINING_PAGINATION,
+      ),
+      pool_id: poolId,
+      order_by: "training_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTraining>>(
+      trainingService.getTrainingsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("trainingsList", res.items);
+  };
+
+  getTrainingsListByQuarterId = async (quarterId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.TRAINING),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TRAINING_PAGINATION,
+      ),
+      quarter_id: quarterId,
+      order_by: "training_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTraining>>(
+      trainingService.getTrainingsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("trainingsList", res.items);
+  };
+
   getTrainingUsersList = async () => {
     this.isLoading = true;
     const filters = {
@@ -146,10 +214,7 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     this.isLoading = false;
   };
 
-  getUsersNotInTraining = async (
-    training_id: number,
-    company_id: number,
-  ) => {
+  getUsersNotInTraining = async (training_id: number, company_id: number) => {
     const filters: FUsersNotInTraining = { training_id, company_id };
     const [err, res] = await to<{ items: IGetUser[] }>(
       trainingService.getUsersNotInTraining(filters),

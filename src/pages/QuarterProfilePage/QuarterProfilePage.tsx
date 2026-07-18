@@ -7,6 +7,9 @@ import { UxPageHeader } from "@components/UxComponents";
 import { IGetQuarter, quarterStore } from "@modules/quarter";
 
 import { GeneralQuarterTab } from "./components/GeneralQuarterTab/GeneralQuarterTab";
+import { QuarterPaymentTab } from "./components/QuarterPaymentTab/QuarterPaymentTab";
+import { QuarterTournamentTab } from "./components/QuarterTournamentTab/QuarterTournamentTab";
+import { QuarterTrainingTab } from "./components/QuarterTrainingTab/QuarterTrainingTab";
 import { UsersQuarterTab } from "./components/UsersQuarterTab/UsersQuarterTab";
 
 export const QuarterProfilePage: FC = observer(() => {
@@ -30,6 +33,21 @@ export const QuarterProfilePage: FC = observer(() => {
       key: "users",
       label: "Korisnici",
       children: <UsersQuarterTab quarter={quarter} />,
+    },
+    {
+      key: "training",
+      label: "Trening",
+      children: <QuarterTrainingTab quarterId={id} />,
+    },
+    {
+      key: "tournament",
+      label: "Turnir",
+      children: <QuarterTournamentTab quarterId={id} />,
+    },
+    {
+      key: "payment",
+      label: "Plaćanja",
+      children: <QuarterPaymentTab quarterId={id} />,
     },
   ];
 

@@ -39,6 +39,7 @@ const mockCompany = {
   country_id: "1",
   created_at: "2024-01-01",
   updated_at: "2024-01-01",
+  w_id: "1",
   city: {
     id: 1,
     name: "Beograd",

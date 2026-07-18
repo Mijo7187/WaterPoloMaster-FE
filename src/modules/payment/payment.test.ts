@@ -7,7 +7,7 @@ import { ModalTypeEnum } from "@stores/modal/modal.types";
 
 import { PAYMENT_INITIAL_STATE } from "./payment.constants";
 import { paymentStore } from "./payment.store";
-import { PaymentStatusEnum } from "./payment.types";
+import { PaymentStatusEnum, PaymentTypeEnum } from "./payment.types";
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
@@ -26,21 +26,13 @@ const mockPayment = {
   id: "550e8400-e29b-41d4-a716-446655440000",
   sender_wallet_id: "aaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
   receiver_wallet_id: "ffff-gggg-hhhh-iiii-jjjjjjjjjjjj",
-  payment_type_id: 1,
+  payment_type: PaymentTypeEnum.USER_QUARTERLY_FEE,
   amount: 500,
   status: PaymentStatusEnum.PENDING,
   description: "Test payment",
   created_at: "2024-01-01T00:00:00Z",
   sender_wallet: { id: 1, name: "Club A" } as never,
   receiver_wallet: { id: 2, name: "Club B" } as never,
-  payment_type: {
-    id: 1,
-    name: "Membership",
-    payment_direction: "c_c" as never,
-    active: true,
-    created_at: "",
-    updated_at: "",
-  },
 };
 
 const mockPaginatedResponse = {

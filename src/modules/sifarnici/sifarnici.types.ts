@@ -6,11 +6,6 @@ import { ICrudOptionsConfig, IGetPagination, IPostPagination } from "@stores";
 import { FCity, IGetCity, IPostCity } from "./city/city.types";
 import { FCountry, IGetCountry, IPostCountry } from "./country/country.types";
 import {
-  FPaymentType,
-  IGetPaymentType,
-  IPostPaymentType,
-} from "./paymentType/paymentType.types";
-import {
   FSwimmingDiscipline,
   IGetSwimmingDiscipline,
   IPostSwimmingDiscipline,
@@ -25,9 +20,8 @@ export enum SifarniciTypeEnum {
   COMPANY = "COMPANY",
   CITY = "CITY",
   COUNTRY = "COUNTRY",
-  PAYMENT_TYPE = "PAYMENT_TYPE",
-  TRAINING_TYPE = "TRAINING_TYPE",
-  SWIMMING_DISCIPLINE = "SWIMMING_DISCIPLINE",
+  // TRAINING_TYPE = "TRAINING_TYPE",
+  // SWIMMING_DISCIPLINE = "SWIMMING_DISCIPLINE",
   USER_NOT_IN_QUARTER = "USER_NOT_IN_QUARTER",
 }
 
@@ -37,7 +31,6 @@ export type IGetSifarnikType =
   | IGetCity
   | IGetCompany
   | IGetCountry
-  | IGetPaymentType
   | IGetTrainingType
   | IGetSwimmingDiscipline;
 
@@ -71,7 +64,6 @@ export interface SifarniciValueConfig<T = unknown> {
 export type IPostSifarnikType =
   | IPostCity
   | IPostCountry
-  | IPostPaymentType
   | IPostTrainingType
   | IPostSwimmingDiscipline;
 
@@ -87,12 +79,7 @@ export interface ISifarniciModalConfig {
   // tableColumns: () => ColumnsType<any>;
 }
 
-export type FSifarnici =
-  | FCity
-  | FCountry
-  | FPaymentType
-  | FTrainingType
-  | FSwimmingDiscipline;
+export type FSifarnici = FCity | FCountry | FTrainingType | FSwimmingDiscipline;
 export type SifarniciFiltersMapConfig = Partial<
   Record<SifarniciTypeEnum, ISifarniciFiltersConfig>
 >;
