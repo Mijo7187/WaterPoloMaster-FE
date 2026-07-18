@@ -17,6 +17,7 @@ export interface IGetUser extends IPostUser {
   id: number;
   createdAt: string;
   updatedAt: string;
+  w_id: string;
 }
 
 export interface FUser {

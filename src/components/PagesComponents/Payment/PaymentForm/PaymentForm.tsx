@@ -5,16 +5,15 @@ import { observer } from "mobx-react-lite";
 import {
   UxFormInput,
   UxFormInputNumber,
-  UxFormScrollSelect,
   UxFormSelect,
   UxFormTextArea,
 } from "@components/UxFormComponents";
 import {
   PAYMENT_INITIAL_STATE,
   PAYMENT_STATUS_OPTIONS,
+  PAYMENT_TYPE_OPTIONS,
 } from "@modules/payment/payment.constants";
 import { IGetPayment, IPostPayment } from "@modules/payment/payment.types";
-import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 
 interface IPaymentFormProps {
@@ -38,8 +37,9 @@ export const PaymentForm: FC<IPaymentFormProps> = observer(
               testId="sender-wallet-id"
               formName="sender_wallet_id"
               label="ID novčanika pošiljaoca"
-              rules={[REQUIRED_FIELD_RULE(true)]}
-              readOnly={readOnly}
+              // rules={[REQUIRED_FIELD_RULE(true)]}
+              // readOnly={readOnly}
+              disabled={true}
             />
           </Col>
 
@@ -48,20 +48,20 @@ export const PaymentForm: FC<IPaymentFormProps> = observer(
               testId="receiver-wallet-id"
               formName="receiver_wallet_id"
               label="ID novčanika primaoca"
-              rules={[REQUIRED_FIELD_RULE(true)]}
-              readOnly={readOnly}
+              // rules={[REQUIRED_FIELD_RULE(true)]}
+              // readOnly={readOnly}
+              disabled={true}
             />
           </Col>
 
           <Col span={24}>
-            <UxFormScrollSelect
-              formName="payment_type_id"
-              objName="payment_type"
-              storeKey={SifarniciTypeEnum.PAYMENT_TYPE}
-              sifarnikName={SifarniciTypeEnum.PAYMENT_TYPE}
-              testId={SifarniciTypeEnum.PAYMENT_TYPE}
+            <UxFormSelect
+              formName="payment_type"
               label="Tip plaćanja"
-              rules={[REQUIRED_FIELD_RULE(true)]}
+              testId="payment-type"
+              options={PAYMENT_TYPE_OPTIONS}
+              // rules={[REQUIRED_FIELD_RULE(true)]}
+              disabled={true}
             />
           </Col>
 
@@ -72,6 +72,7 @@ export const PaymentForm: FC<IPaymentFormProps> = observer(
               testId="payment-amount"
               rules={[REQUIRED_FIELD_RULE(true)]}
               readOnly={readOnly}
+              disabled={true}
             />
           </Col>
 

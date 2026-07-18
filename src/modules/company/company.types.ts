@@ -24,6 +24,7 @@ export interface IGetCompany extends IPostCompany {
   updated_at: string;
   city: IGetCity;
   country: IGetCountry;
+  w_id: string;
 }
 
 export interface FCompany {

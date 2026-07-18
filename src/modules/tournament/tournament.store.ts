@@ -122,6 +122,54 @@ class TournamentStore implements IBaseStoreConfig<TournamentStore> {
 
   // #region User
 
+  getTournamentsListByUserId = async (userId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TOURNAMENT_PAGINATION,
+      ),
+      user_id: userId,
+      order_by: "from_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTournament>>(
+      tournamentService.getTournamentsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("tournamentsList", res.items);
+  };
+
+  getTournamentsListByCompanyId = async (companyId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TOURNAMENT_PAGINATION,
+      ),
+      company_id: companyId,
+      order_by: "from_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTournament>>(
+      tournamentService.getTournamentsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("tournamentsList", res.items);
+  };
+
+  getTournamentsListByQuarterId = async (quarterId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.TOURNAMENT_PAGINATION,
+      ),
+      quarter_id: quarterId,
+      order_by: "from_date",
+    };
+    const [err, res] = await to<IPaginatedResponse<IGetTournament>>(
+      tournamentService.getTournamentsList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("tournamentsList", res.items);
+  };
+
   getTournamentUsersList = async () => {
     this.isLoading = true;
     const filters = {

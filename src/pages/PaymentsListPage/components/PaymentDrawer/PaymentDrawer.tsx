@@ -22,7 +22,9 @@ export const PaymentDrawer: FC = observer(() => {
   };
 
   const onFinish = (values: IPostPayment) => {
-    void paymentStore.updatePayment(payment.id, values);
+    void paymentStore.updatePayment(payment.id, {
+      status: values.status,
+    });
   };
 
   useEffect(() => {

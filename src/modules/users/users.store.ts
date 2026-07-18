@@ -92,6 +92,25 @@ class UsersStore implements IBaseStoreConfig<UsersStore> {
     this.handleChange("user", payload);
   }
 
+  getUsersListByCompanyId = async (companyId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.USERS),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.USER_PAGINATION,
+      ),
+      company_id: companyId,
+    };
+
+    const [err, res] = await to<IPaginatedResponse<IGetUser>>(
+      usersService.getAllUsers(filters),
+    );
+    this.isLoading = false;
+    if (err) return Promise.reject(err);
+    this.handleChange("usersList", [...res.items]);
+    paginationStore.set(PaginationEnum.USER_PAGINATION, res.pagination);
+  };
+
   getUsersTraining = async (params: FUser) => {
     this.isLoading = true;
     const filters = {

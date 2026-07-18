@@ -41,6 +41,16 @@ export const UsersQuarterTab: FC<IUsersQuarterTabProps> = observer(
         key: "last_name",
       },
       {
+        title: "Tip treninga",
+        dataIndex: "type_of_training",
+        key: "type_of_training",
+      },
+      {
+        title: "Status uplate",
+        dataIndex: "payment_status",
+        key: "payment_status",
+      },
+      {
         title: "",
         key: "action",
         fixed: "right" as const,

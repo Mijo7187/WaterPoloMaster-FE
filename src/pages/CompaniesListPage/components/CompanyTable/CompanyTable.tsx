@@ -19,6 +19,13 @@ export const CompanyTable: FC = observer(() => {
       key: "name",
     },
     {
+      title: "Tip",
+      width: 250,
+      minWidth: 250,
+      dataIndex: "company_type",
+      key: "company_type",
+    },
+    {
       title: "Adresa",
       width: 250,
       minWidth: 250,

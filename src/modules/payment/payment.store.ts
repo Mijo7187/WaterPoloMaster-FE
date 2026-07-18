@@ -57,12 +57,45 @@ class PaymentStore implements IBaseStoreConfig<PaymentStore> {
     this.handleChange("paymentList", [...res.items]);
     paginationStore.set(PaginationEnum.PAYMENT_PAGINATION, res.pagination);
   };
+  getPaymentListByWallet = async (walletId: string) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.PAYMENT),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.PAYMENT_PAGINATION,
+      ),
+      wallet_id: walletId,
+    } as FiltersWithPagination<FPayment>;
+
+    const [err, res] = await to<IPaginatedResponse<IGetPayment>>(
+      paymentService.getPaymentList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("paymentList", [...res.items]);
+    paginationStore.set(PaginationEnum.PAYMENT_PAGINATION, res.pagination);
+  };
+
+  getPaymentListByQuarter = async (quarterId: number) => {
+    this.isLoading = true;
+    const filters = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.PAYMENT),
+      ...paginationStore.getRequestPaginationParams(
+        PaginationEnum.PAYMENT_PAGINATION,
+      ),
+      quarter_id: quarterId,
+    } as FiltersWithPagination<FPayment>;
+
+    const [err, res] = await to<IPaginatedResponse<IGetPayment>>(
+      paymentService.getPaymentList(filters),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("paymentList", [...res.items]);
+    paginationStore.set(PaginationEnum.PAYMENT_PAGINATION, res.pagination);
+  };
 
   getPaymentById = async (id: string) => {
     this.isLoading = true;
-    const [err, res] = await to<IGetPayment>(
-      paymentService.getPaymentById(id),
-    );
+    const [err, res] = await to<IGetPayment>(paymentService.getPaymentById(id));
     if (err) return Promise.reject(err);
     this.handleChange("payment", res);
   };

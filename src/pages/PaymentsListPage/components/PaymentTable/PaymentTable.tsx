@@ -5,8 +5,9 @@ import dayjs from "dayjs";
 import { observer } from "mobx-react-lite";
 import { EditOutlined } from "@ant-design/icons";
 import { UxButton, UxTable } from "@components/UxComponents";
+import { PAYMENT_TYPE_LABELS } from "@modules/payment/payment.constants";
 import { paymentStore } from "@modules/payment/payment.store";
-import { IGetPayment } from "@modules/payment/payment.types";
+import { IGetPayment, PaymentTypeEnum } from "@modules/payment/payment.types";
 import { drawerStore, DrawerTypeEnum } from "@stores";
 
 export const PaymentTable: FC = observer(() => {
@@ -29,8 +30,9 @@ export const PaymentTable: FC = observer(() => {
       title: "Tip plaćanja",
       width: 150,
       minWidth: 150,
-      dataIndex: ["payment_type", "name"],
-      key: "payment_type_id",
+      dataIndex: "payment_type",
+      key: "payment_type",
+      render: (value: PaymentTypeEnum) => PAYMENT_TYPE_LABELS[value],
     },
     {
       title: "Iznos",
