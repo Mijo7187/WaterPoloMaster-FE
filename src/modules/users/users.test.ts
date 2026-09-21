@@ -31,6 +31,7 @@ const mockUser = {
   createdAt: "2024-01-01",
   updatedAt: "2024-01-01",
   w_id: "1",
+  company_id: 1,
 };
 
 const mockPaginatedResponse = {

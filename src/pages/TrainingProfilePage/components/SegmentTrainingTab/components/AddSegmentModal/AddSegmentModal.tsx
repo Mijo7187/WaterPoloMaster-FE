@@ -11,6 +11,7 @@ import { TrainingSegmentEnum } from "@modules/sifarnici/exerciseOption/exerciseO
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import {
   IPostSegmentModalForm,
+  IPostTrainingSegment,
   SEGMENT_MODAL_INITIAL_STATE,
   SEGMENT_TYPE_OPTIONS,
   trainingStore,
@@ -33,7 +34,9 @@ const AddSegmentForm: FC<IAddSegmentModalProps> = observer(({ trainingId }) => {
 
   // Kad se promeni jedan klub, ponovo validiraj drugi da se ukloni/prikaže greška.
   useEffect(() => {
-    const fieldsToValidate = ["home_company_id", "away_company_id"].filter(
+    const fieldsToValidate = (
+      ["home_company_id", "away_company_id"] as const
+    ).filter(
       (name) => form.getFieldValue(name) != null,
     );
     if (fieldsToValidate.length) {
@@ -42,12 +45,22 @@ const AddSegmentForm: FC<IAddSegmentModalProps> = observer(({ trainingId }) => {
   }, [homeCompanyId, awayCompanyId, form]);
 
   const onSubmit = (values: IPostSegmentModalForm) => {
-    void trainingStore.createSegment({
-      segment_type: values.segment_type,
-      training_id: trainingId,
-      exercises: [],
-      sparring: {},
-    });
+    const payload: IPostTrainingSegment =
+      values.segment_type === TrainingSegmentEnum.SPARRING
+        ? {
+            segment_type: values.segment_type,
+            training_id: trainingId,
+            sparring: {
+              home_company_id: values.home_company_id ?? null,
+              away_company_id: values.away_company_id ?? null,
+            },
+          }
+        : {
+            segment_type: values.segment_type,
+            training_id: trainingId,
+            exercises: [],
+          };
+    void trainingStore.createSegment(payload);
   };
 
   return (

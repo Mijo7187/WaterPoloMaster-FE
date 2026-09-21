@@ -11,7 +11,7 @@ export interface IPostUser {
   address?: string;
   address_number?: string;
   date_of_birth: string | Dayjs;
-  company_id: number;
+  company_id: number | null;
 }
 
 export interface IGetUser extends IPostUser {

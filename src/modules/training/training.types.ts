@@ -122,7 +122,7 @@ export interface IGetSparringSegment extends IPostSparringSegment {
 
 export interface IPostBaseSparringSegment extends ISegmentCreateBase {
   segment_type: TrainingSegmentEnum.SPARRING;
-  sparring?: IGetSparringSegment;
+  sparring?: IPostSparringSegment;
 }
 
 // #endregion Sparring

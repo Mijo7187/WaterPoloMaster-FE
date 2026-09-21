@@ -8,4 +8,5 @@ export const USER_INITIAL_STATE: IPostUser = {
   is_active: true,
   phone_number: "",
   date_of_birth: "",
+  company_id: null,
 };
