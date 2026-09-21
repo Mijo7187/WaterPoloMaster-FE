@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
 import { IUxPaginationProps, UxPagination } from "@components/UxComponents";
@@ -14,6 +14,14 @@ interface IUrlPaginationProps extends IUxPaginationProps {
 export const UrlPagination: FC<IUrlPaginationProps> = observer(
   ({ paginationName, handlePaginationChange, ...rest }) => {
     // usePaginationUrl(paginationName);
+
+    // Reset on unmount — list pages and profile tabs share a pagination key,
+    // so a page left on e.g. page 3 must not leak into the next table.
+    useEffect(() => {
+      return () => {
+        paginationStore.remove(paginationName);
+      };
+    }, [paginationName]);
 
     const pagination = paginationStore.get(paginationName);
 

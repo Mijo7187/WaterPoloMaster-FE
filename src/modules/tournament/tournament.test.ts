@@ -29,6 +29,7 @@ const mockTournament = {
   id: 1,
   company_id: 42,
   pool_id: 5,
+  season_id: 1,
   from_date: "2024-06-01",
   to_date: "2024-06-10",
   price: 1000,

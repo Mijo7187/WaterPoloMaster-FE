@@ -15,6 +15,7 @@ export const MOCK_USERS: IGetUser[] = [
     createdAt: "2026-01-15T10:00:00Z",
     updatedAt: "2026-01-15T10:00:00Z",
     w_id: "1",
+    company_id: 1,
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ export const MOCK_USERS: IGetUser[] = [
     createdAt: "2026-02-10T08:30:00Z",
     updatedAt: "2026-02-10T08:30:00Z",
     w_id: "2",
+    company_id: 1,
   },
   {
     id: 3,
@@ -41,5 +43,6 @@ export const MOCK_USERS: IGetUser[] = [
     createdAt: "2026-03-01T14:00:00Z",
     updatedAt: "2026-03-01T14:00:00Z",
     w_id: "3",
+    company_id: 1,
   },
 ];

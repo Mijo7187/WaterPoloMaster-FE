@@ -1,9 +1,14 @@
 import { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
-import { UxButton, UxPageHeader } from "@components/UxComponents";
+import { UrlPagination } from "@components/UrlComponents";
+import {
+  UxButton,
+  UxFilterTableWrapper,
+  UxPageHeader,
+} from "@components/UxComponents";
 import { companyStore } from "@modules/company/company.store";
-import { modalStore, ModalTypeEnum } from "@stores";
+import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
 
 import { AddCompanyModal } from "./components/AddCompanyModal/AddCompanyModal";
 import { CompanyFilters } from "./components/CompanyFilters/CompanyFilters";
@@ -14,8 +19,12 @@ export const CompaniesListPage: FC = observer(() => {
     modalStore.openModal(ModalTypeEnum.COMPANY_MODAL);
   };
 
-  useEffect(() => {
+  const fetchCompanies = () => {
     void companyStore.getCompanies();
+  };
+
+  useEffect(() => {
+    fetchCompanies();
   }, []);
 
   return (
@@ -28,8 +37,19 @@ export const CompaniesListPage: FC = observer(() => {
           </UxButton>
         }
       />
-      <CompanyFilters />
-      <CompanyTable />
+
+      <UxFilterTableWrapper
+        filters={<CompanyFilters />}
+        table={<CompanyTable />}
+        pagination={
+          <UrlPagination
+            testId={PaginationEnum.COMPANY_PAGINATION}
+            paginationName={PaginationEnum.COMPANY_PAGINATION}
+            handlePaginationChange={fetchCompanies}
+          />
+        }
+      />
+
       <AddCompanyModal />
     </div>
   );

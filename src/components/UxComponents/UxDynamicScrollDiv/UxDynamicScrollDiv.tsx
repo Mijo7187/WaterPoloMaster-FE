@@ -23,7 +23,7 @@ export const UxDynamicScrollDiv: FC<IUxDynamicScrollDivProps> = observer(
       return () => {
         window.removeEventListener("resize", update);
       };
-    }, []);
+    }, [wrapperId, idsToSubtract, extraMinus]);
 
     return <div id={wrapperId}>{children}</div>;
   },

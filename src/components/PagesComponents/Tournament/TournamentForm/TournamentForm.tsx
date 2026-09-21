@@ -8,6 +8,7 @@ import {
   UxFormScrollSelect,
   UxFormTextArea,
 } from "@components/UxFormComponents";
+import { authStore } from "@modules/auth/auth.store";
 import { CompanyTypeEnum } from "@modules/company/company.types";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { TOURNAMENT_INITIAL_STATE } from "@modules/tournament/tournament.constants";
@@ -40,6 +41,21 @@ export const TournamentForm: FC<ITournamentFormProps> = observer(
               filtersForGet={{ company_type: CompanyTypeEnum.POOL }}
               rules={[REQUIRED_FIELD_RULE(true)]}
               testId={"pool"}
+            />
+          </Col>
+
+          <Col span={24}>
+            <UxFormScrollSelect
+              storeKey={"tournament_season"}
+              formName="season_id"
+              objName={"season"}
+              sifarnikName={SifarniciTypeEnum.SEASON}
+              label={"Sezona"}
+              filtersForGet={{
+                company_id: authStore.getAuthUser.company_id,
+              }}
+              rules={[REQUIRED_FIELD_RULE(true)]}
+              testId={"tournament-season"}
             />
           </Col>
 

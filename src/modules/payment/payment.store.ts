@@ -18,7 +18,13 @@ import { filtersStore } from "@stores/filters/filters.store";
 
 import { PAYMENT_INITIAL_STATE } from "./payment.constants";
 import { paymentService } from "./payment.service";
-import { FPayment, IGetPayment, IPostPayment } from "./payment.types";
+import {
+  FPayment,
+  IGetPayment,
+  IPostPayment,
+  IPutPayment,
+  PayableTypeEnum,
+} from "./payment.types";
 
 class PaymentStore implements IBaseStoreConfig<PaymentStore> {
   paymentList: IGetPayment[] = [];
@@ -75,14 +81,18 @@ class PaymentStore implements IBaseStoreConfig<PaymentStore> {
     paginationStore.set(PaginationEnum.PAYMENT_PAGINATION, res.pagination);
   };
 
-  getPaymentListByQuarter = async (quarterId: number) => {
+  getPaymentListByPayable = async (
+    payableType: PayableTypeEnum,
+    payableId: number,
+  ) => {
     this.isLoading = true;
     const filters = {
       ...filtersStore.getFilterGroupValues(FilterGroupsEnum.PAYMENT),
       ...paginationStore.getRequestPaginationParams(
         PaginationEnum.PAYMENT_PAGINATION,
       ),
-      quarter_id: quarterId,
+      payable_type: payableType,
+      payable_id: payableId,
     } as FiltersWithPagination<FPayment>;
 
     const [err, res] = await to<IPaginatedResponse<IGetPayment>>(
@@ -100,17 +110,30 @@ class PaymentStore implements IBaseStoreConfig<PaymentStore> {
     this.handleChange("payment", res);
   };
 
+  /**
+   * The payable pair is all-or-nothing: sending one half is a 422. Drop both
+   * keys unless the form supplied both.
+   */
+  private normalizeCreatePayload(payload: IPostPayment): IPostPayment {
+    const normalized = { ...payload };
+    if (!normalized.payable_type || !normalized.payable_id) {
+      delete normalized.payable_type;
+      delete normalized.payable_id;
+    }
+    return normalized;
+  }
+
   createPayment = async (payload: IPostPayment) => {
     this.isLoading = true;
     const [err] = await to<IPostResponse>(
-      paymentService.createPayment(payload),
+      paymentService.createPayment(this.normalizeCreatePayload(payload)),
     );
     if (err) return Promise.reject(err);
     modalStore.clearModal(ModalTypeEnum.PAYMENT_MODAL);
     void this.getPaymentList();
   };
 
-  updatePayment = async (id: string, payload: IPostPayment) => {
+  updatePayment = async (id: string, payload: IPutPayment) => {
     this.isLoading = true;
     const [err] = await to<INoContentResponse>(
       paymentService.updatePayment(id, payload),

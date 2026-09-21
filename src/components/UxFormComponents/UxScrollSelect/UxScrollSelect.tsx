@@ -135,14 +135,31 @@ export const UxScrollSelect = observer(
   },
 );
 
+type FormNamePath = string | number | (string | number)[] | string[];
+
+const toSegments = (name: FormNamePath): (string | number)[] =>
+  Array.isArray(name) ? name : [name];
+
+// Kad je polje unutar Form.List-a, formName/objName su relativni na listu
+// (npr. [field.name, "exercise_option"]), a form.getFieldValue/setFieldValue/useWatch
+// traže apsolutnu putanju. listName je prefiks liste (npr. "exercises").
+const buildFieldPath = (
+  listName: FormNamePath | undefined,
+  name: FormNamePath,
+): (string | number)[] =>
+  listName != null
+    ? [...toSegments(listName), ...toSegments(name)]
+    : toSegments(name);
+
 export interface IUxFormScrollSelect<T, F> extends IUxScrollSelectProps<T, F> {
-  formName: string | (string | number)[] | string[];
-  objName: string; // npr. "inventory"   => čuva ceo objekat (option.item)
+  formName: FormNamePath;
+  objName: FormNamePath; // npr. "inventory" ili [field.name, "exercise_option"] => čuva ceo objekat (option.item)
   label?: string;
   rules?: Rule[];
   labelCol?: ColProps;
   wrapperCol?: ColProps;
   colon?: boolean;
+  listName?: FormNamePath;
 }
 // #endregion SCROLL
 // #region FORM
@@ -158,32 +175,37 @@ export const UxFormScrollSelect = observer(
     colon,
     objName, // "inventory"
     sifarnikName,
+    listName,
     ...rest
   }: IUxFormScrollSelect<T, F>) => {
     const form = useFormInstance();
 
-    const objItemWatch = Form.useWatch(objName, { form, preserve: true }) as T;
+    // Apsolutne putanje (uključuju listName prefiks kad je polje u Form.List-u).
+    const objPath = buildFieldPath(listName, objName);
+    const formPath = buildFieldPath(listName, formName);
+
+    const objItemWatch = Form.useWatch(objPath, { form, preserve: true }) as T;
 
     useEffect(() => {
-      const objItem = form.getFieldValue(objName) as T;
-      const formNameValue = form.getFieldValue(formName) as unknown;
+      const objItem = form.getFieldValue(objPath) as T;
+      const formNameValue: unknown = form.getFieldValue(formPath);
+
       if (!formNameValue && objItem) {
-        console.log(objName, "objName");
-        console.log(formNameValue, "formNameValue");
         const sifarnikConfig = SIFARNICI_MAP_CONFIG[sifarnikName];
         const valueKey = sifarnikConfig.valueAccessor ?? "id";
         const defaultValue = (objItem as Record<string, unknown>)[valueKey];
-        form.setFieldValue(formName, defaultValue);
+        form.setFieldValue(formPath, defaultValue);
       }
 
       if (objItem) {
         sifarniciStore.setDefaultOptions(storeKey, objItem, sifarnikName);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [objItemWatch]);
 
     const handleClear = () => {
       // da obrisemo iz form-e
-      form.setFieldValue(objName, undefined);
+      form.setFieldValue(objPath, undefined);
     };
 
     return (

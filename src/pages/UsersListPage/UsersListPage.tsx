@@ -2,8 +2,11 @@ import { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
 import { UrlPagination } from "@components/UrlComponents";
-import { UxButton, UxPageHeader } from "@components/UxComponents";
-import { UxFilterTableWrapper } from "@components/UxComponents/UxFilterTableWrapper/UxFilterTableWrapper";
+import {
+  UxButton,
+  UxFilterTableWrapper,
+  UxPageHeader,
+} from "@components/UxComponents";
 import { usersStore } from "@modules/users";
 import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
 

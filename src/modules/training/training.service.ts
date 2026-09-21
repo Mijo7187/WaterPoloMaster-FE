@@ -7,14 +7,19 @@ import {
 } from "@stores";
 
 import { trainingRepo } from "./training.repo";
-import type {
-  FTrainingList,
-  FTrainingUsersList,
-  FUsersNotInTraining,
-  IGetTraining,
-  IGetTrainingUsersList,
-  IPostTraining,
-  IPostTrainingUsersList,
+import {
+  EventTypeEnum,
+  type FTrainingList,
+  type FTrainingUsersList,
+  type FUsersNotInTraining,
+  type IGetSparringEvent,
+  type IGetTraining,
+  type IGetTrainingSegmente,
+  type IGetTrainingUsersList,
+  type IPostTraining,
+  type IPostTrainingSegment,
+  type IPostTrainingUsersList,
+  type SparringSideEnum,
 } from "./training.types";
 
 class TrainingService {
@@ -63,6 +68,37 @@ class TrainingService {
     trainingRepo.getUsersNotInTraining(filters);
 
   // #endregion User
+
+  // #region Segments
+
+  getSegmentsByTrainingId = (
+    trainingId: number,
+  ): IApiGetResponse<IGetTrainingSegmente[]> =>
+    trainingRepo.getSegmentsByTrainingId(trainingId);
+
+  getSegmentById = (id: number): IApiGetResponse<IGetTrainingSegmente> =>
+    trainingRepo.getSegmentById(id);
+
+  createSegment = (payload: IPostTrainingSegment): IApiPostResponse =>
+    trainingRepo.createSegment(payload);
+
+  updateSegment = (
+    id: number,
+    payload: IPostTrainingSegment,
+  ): IApiNoContentResponse => trainingRepo.updateSegment(id, payload);
+
+  deleteSegment = (id: number): IApiNoContentResponse =>
+    trainingRepo.deleteSegment(id);
+
+  goalsForSide = (
+    side: SparringSideEnum,
+    events: IGetSparringEvent[],
+  ): number =>
+    events.filter(
+      (event) => event.side === side && event.event_type === EventTypeEnum.GOAL,
+    ).length;
+
+  // #endregion Segments
 }
 
 export const trainingService = new TrainingService();

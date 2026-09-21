@@ -21,8 +21,10 @@ import { trainingService } from "./training.service";
 import {
   FUsersNotInTraining,
   IGetTraining,
+  IGetTrainingSegmente,
   IGetTrainingUsersList,
   IPostTraining,
+  IPostTrainingSegment,
   IPostTrainingUsersList,
 } from "./training.types";
 
@@ -30,7 +32,7 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
   trainingsList: IGetTraining[] = [];
   training: IGetTraining | IPostTraining = TRAINING_INITIAL_STATE;
   trainingUsersList: IGetTrainingUsersList[] = [];
-  usersNotInTrainingList: IGetUser[] = [];
+  trainingSegments: IGetTrainingSegmente[] = [];
   isLoading = false;
 
   constructor() {
@@ -49,8 +51,8 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     return this.trainingUsersList;
   }
 
-  get getterUsersNotInTrainingList(): IGetUser[] {
-    return this.usersNotInTrainingList;
+  get getterTrainingSegments(): IGetTrainingSegmente[] {
+    return this.trainingSegments;
   }
 
   handleChange<K extends keyof TrainingStore>(key: K, value: TrainingStore[K]) {
@@ -90,6 +92,8 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     );
     if (err) return Promise.reject(err);
     this.handleChange("trainingsList", res.items);
+    paginationStore.set(PaginationEnum.TRAINING_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
   async getTrainingById(id: number) {
@@ -144,6 +148,8 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     );
     if (err) return Promise.reject(err);
     this.handleChange("trainingsList", res.items);
+    paginationStore.set(PaginationEnum.TRAINING_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
   getTrainingsListByCompanyId = async (companyId: number) => {
@@ -161,6 +167,8 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     );
     if (err) return Promise.reject(err);
     this.handleChange("trainingsList", res.items);
+    paginationStore.set(PaginationEnum.TRAINING_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
   getTrainingsListByPoolId = async (poolId: number) => {
@@ -178,16 +186,18 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     );
     if (err) return Promise.reject(err);
     this.handleChange("trainingsList", res.items);
+    paginationStore.set(PaginationEnum.TRAINING_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
-  getTrainingsListByQuarterId = async (quarterId: number) => {
+  getTrainingsListBySeasonId = async (seasonId: number) => {
     this.isLoading = true;
     const filters = {
       ...filtersStore.getFilterGroupValues(FilterGroupsEnum.TRAINING),
       ...paginationStore.getRequestPaginationParams(
         PaginationEnum.TRAINING_PAGINATION,
       ),
-      quarter_id: quarterId,
+      season_id: seasonId,
       order_by: "training_date",
     };
     const [err, res] = await to<IPaginatedResponse<IGetTraining>>(
@@ -195,6 +205,8 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
     );
     if (err) return Promise.reject(err);
     this.handleChange("trainingsList", res.items);
+    paginationStore.set(PaginationEnum.TRAINING_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
   getTrainingUsersList = async () => {
@@ -215,24 +227,26 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
   };
 
   getUsersNotInTraining = async (training_id: number, company_id: number) => {
-    const filters: FUsersNotInTraining = { training_id, company_id };
+    const filters: FUsersNotInTraining = {
+      ...filtersStore.getFilterGroupValues(FilterGroupsEnum.USERS),
+      training_id,
+      company_id,
+    };
     const [err, res] = await to<{ items: IGetUser[] }>(
       trainingService.getUsersNotInTraining(filters),
     );
     if (err) return Promise.reject(err);
-    this.handleChange("usersNotInTrainingList", res.items);
+    return Promise.resolve(res);
+    // this.handleChange("usersNotInTrainingList", res.items);
   };
 
   addUserToTraining = async (payload: IPostTrainingUsersList) => {
-    const [err] = await to<IPostResponse>(
+    const [err, res] = await to<IPostResponse>(
       trainingService.createTrainingUsersList(payload),
     );
     if (err) return Promise.reject(err);
     void this.getTrainingUsersList();
-    void this.getUsersNotInTraining(
-      payload.training_id,
-      authStore.getAuthUser.company_id,
-    );
+    return Promise.resolve(res);
   };
 
   removeUserFromTraining = async (id: number, trainingId: number) => {
@@ -248,6 +262,64 @@ class TrainingStore implements IBaseStoreConfig<TrainingStore> {
   };
 
   // #endregion User
+
+  // #region Segments
+
+  getSegmentsByTrainingId = async (trainingId: number) => {
+    this.isLoading = true;
+    const [err, res] = await to<IGetTrainingSegmente[]>(
+      trainingService.getSegmentsByTrainingId(trainingId),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange("trainingSegments", res);
+    this.isLoading = false;
+  };
+
+  // Refreshes a single segment in place — used by the sparring board, where another
+  // device may have added events since the list was last fetched.
+  getSegmentById = async (id: number) => {
+    const [err, res] = await to<IGetTrainingSegmente>(
+      trainingService.getSegmentById(id),
+    );
+    if (err) return Promise.reject(err);
+    this.handleChange(
+      "trainingSegments",
+      this.trainingSegments.map((segment) =>
+        segment.id === id ? res : segment,
+      ),
+    );
+  };
+
+  createSegment = async (payload: IPostTrainingSegment) => {
+    const [err] = await to<IPostResponse>(
+      trainingService.createSegment(payload),
+    );
+    if (err) return Promise.reject(err);
+    await this.getSegmentsByTrainingId(payload.training_id);
+    modalStore.clearModal(ModalTypeEnum.ADD_SEGMENTE_MODAL);
+  };
+
+  updateSegment = async (
+    id: number,
+    trainingId: number,
+    payload: IPostTrainingSegment,
+  ) => {
+    const [err] = await to<INoContentResponse>(
+      trainingService.updateSegment(id, payload),
+    );
+    if (err) return Promise.reject(err);
+    void this.getSegmentsByTrainingId(trainingId);
+  };
+
+  deleteSegment = async (id: number, trainingId: number) => {
+    const [err] = await to<INoContentResponse>(
+      trainingService.deleteSegment(id),
+    );
+    if (err) return Promise.reject(err);
+    void this.getSegmentsByTrainingId(trainingId);
+  };
+
+  // #endregion Segments
 }
 
 export const trainingStore = new TrainingStore();

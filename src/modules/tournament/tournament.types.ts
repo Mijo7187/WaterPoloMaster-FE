@@ -5,6 +5,7 @@ import { IPostPagination } from "@stores";
 export interface IPostTournament {
   company_id: number | null;
   pool_id: number | null;
+  season_id: number | null;
   from_date: string;
   to_date: string;
   price: number | null;
@@ -22,6 +23,9 @@ export interface IGetTournament extends IPostTournament {
 
 export interface FTournamentList extends IPostPagination {
   order_by: string;
+  season_id?: number | null;
+  company_id?: number | null;
+  user_id?: number | null;
 }
 
 export interface IPostTournamentUsersList {
@@ -46,4 +50,5 @@ export interface FTournamentUsersList {
 export interface FUsersNotInTournament {
   tournament_id: number;
   company_id: number;
+  first_name__ilike?: string;
 }

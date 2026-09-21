@@ -9,13 +9,17 @@ import axios, {
 import { observer } from "mobx-react-lite";
 import { IGetAuthUser } from "@modules/auth/auth.types";
 import storage, { StorageEnum } from "@storage/storage";
+// Deep path, not the @stores barrel: that barrel pulls in components, and repos
+// already import axiosMain from here.
+import { messageStore } from "@stores/message/message.store";
 
-// Backend always returns this shape
+// Backend always returns this shape. `messages`/`detail` are optional because a
+// failure can also come from a proxy or the network, with no envelope at all.
 interface ApiResponseData<T = unknown> {
   status: number;
-  messages: string[];
+  messages?: string[];
   data: T | null;
-  detail: string;
+  detail?: string;
 }
 
 // Typed axios response & error using the backend shape
@@ -57,8 +61,10 @@ const redirectToLogin = () => {
   window.location.replace("/login");
 };
 
-export const errorHandling = (_messages: string[]) => {
-  //   void AppMessage.error({ content: messages.join(", ") });
+const GENERIC_ERROR_MESSAGE = "Došlo je do greške. Pokušajte ponovo.";
+
+export const errorHandling = (messages: string[]) => {
+  messageStore.error(messages.join(", ") || GENERIC_ERROR_MESSAGE);
 };
 
 const getHeaders = (config: InternalAxiosRequestConfig) => {
@@ -175,11 +181,19 @@ export const WithAxios = observer(({ children }: { children: ReactNode }) => {
       }
     }
 
-    const messages = error.response?.data.messages;
-    if (messages?.length) {
-      errorHandling(messages);
-    }
-    return Promise.reject(new Error(error.message));
+    // Falls back through the envelope so network failures and 500s carrying
+    // only `detail` are surfaced too, not just validation errors.
+    const data = error.response?.data;
+    const displayMessage =
+      (data?.messages?.length ? data.messages.join(", ") : null) ??
+      data?.detail ??
+      error.message;
+
+    // errorHandling falls back to the generic text when this is empty.
+    errorHandling([displayMessage]);
+    // Must still reject: every store does `if (err) return Promise.reject(err)`,
+    // and resolving would run success paths on undefined.
+    return Promise.reject(new Error(displayMessage || GENERIC_ERROR_MESSAGE));
   };
 
   const setInterceptor = useCallback((axiosInstance: AxiosInstance) => {

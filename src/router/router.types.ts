@@ -13,10 +13,13 @@ export enum RoutePathsEnum {
   PAYMENTS = "payments",
   // CALENDAR = "calendar",
   SIFARNICI = "sifarnici",
-  QUARTER = "quarter",
-  QUARTER_PROFILE = "quarter-profile",
+  CONTRACT = "contract",
+  CONTRACT_PROFILE = "contract-profile",
+  SEASON = "season",
+  SEASON_PROFILE = "season-profile",
   TOURNAMENT = "tournament",
   TOURNAMENT_PROFILE = "tournament-profile",
+  MEMBERSHIP = "membership",
 }
 
 export interface IRoutesType {

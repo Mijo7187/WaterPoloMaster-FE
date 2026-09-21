@@ -6,6 +6,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { UrlPagination } from "@components/UrlComponents";
 import {
   UxButton,
+  UxFilterTableWrapper,
   UxPopconfirm,
   UxSmallHeader,
   UxTable,
@@ -83,18 +84,24 @@ export const UsersTournamentTab: FC<IUsersTournamentTabProps> = observer(
             </UxButton>
           }
         />
-        <UxTable
-          testId="tournament-users-list"
-          columns={columns}
-          dataSource={tournamentStore.getterTournamentUsersList}
-          loading={tournamentStore.isLoading}
-        />
-        <UrlPagination
-          testId="tournament-users-pagination"
-          paginationName={PaginationEnum.USER_PAGINATION}
-          handlePaginationChange={() => {
-            void tournamentStore.getTournamentUsersList();
-          }}
+        <UxFilterTableWrapper
+          table={
+            <UxTable
+              testId="tournament-users-list"
+              columns={columns}
+              dataSource={tournamentStore.getterTournamentUsersList}
+              loading={tournamentStore.isLoading}
+            />
+          }
+          pagination={
+            <UrlPagination
+              testId="tournament-users-pagination"
+              paginationName={PaginationEnum.USER_PAGINATION}
+              handlePaginationChange={() => {
+                void tournamentStore.getTournamentUsersList();
+              }}
+            />
+          }
         />
         <TournamentUsersDrawer tournament={tournament} />
       </div>

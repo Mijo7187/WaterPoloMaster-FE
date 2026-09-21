@@ -6,8 +6,8 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { UrlPagination } from "@components/UrlComponents";
 import {
   UxButton,
+  UxFilterTableWrapper,
   UxPopconfirm,
-  UxSmallHeader,
   UxTable,
 } from "@components/UxComponents";
 import { trainingStore } from "@modules/training/training.store";
@@ -15,7 +15,7 @@ import {
   IGetTraining,
   IGetTrainingUsersList,
 } from "@modules/training/training.types";
-import { drawerStore, DrawerTypeEnum, PaginationEnum } from "@stores";
+import { PaginationEnum } from "@stores";
 
 import { TrainingUsersDrawer } from "./TrainingUsersDrawer/TrainingUsersDrawer";
 
@@ -67,31 +67,24 @@ export const UsersTrainingTab: FC<IUsersTrainingTabProps> = observer(
 
     return (
       <div>
-        <UxSmallHeader
-          title="Igrači"
-          rightContent={
-            <UxButton
-              testId="add-training-user"
-              onClick={() => {
-                drawerStore.openDrawer(DrawerTypeEnum.TRAINING_USERS_DRAWER);
-              }}
-            >
-              + Dodaj igrača
-            </UxButton>
+        <UxFilterTableWrapper
+          table={
+            <UxTable
+              testId="training-users-list"
+              columns={columns}
+              dataSource={trainingStore.getterTrainingUsersList}
+              loading={trainingStore.isLoading}
+            />
           }
-        />
-        <UxTable
-          testId="training-users-list"
-          columns={columns}
-          dataSource={trainingStore.getterTrainingUsersList}
-          loading={trainingStore.isLoading}
-        />
-        <UrlPagination
-          testId="training-users-pagination"
-          paginationName={PaginationEnum.USER_PAGINATION}
-          handlePaginationChange={() => {
-            void trainingStore.getTrainingUsersList();
-          }}
+          pagination={
+            <UrlPagination
+              testId="training-users-pagination"
+              paginationName={PaginationEnum.USER_PAGINATION}
+              handlePaginationChange={() => {
+                void trainingStore.getTrainingUsersList();
+              }}
+            />
+          }
         />
         <TrainingUsersDrawer training={training} />
       </div>

@@ -8,8 +8,11 @@ import {
 } from "./UxCheckbox/UxCheckbox";
 import {
   IUxFormDatePickerProps,
+  IUxFormRangeDatePickerProps,
   UxDatePicker,
   UxFormDatePicker,
+  UxFormRangeDatePicker,
+  UxRangeDatePicker,
 } from "./UxDatePicker/UxDatePicker";
 import { IUxFormInputProps, UxFormInput, UxInput } from "./UxInput/UxInput";
 import {
@@ -44,6 +47,7 @@ export {
   type IUxFormDatePickerProps,
   type IUxFormInputNumberProps,
   type IUxFormInputProps,
+  type IUxFormRangeDatePickerProps,
   type IUxFormScrollSelect,
   type IUxFormSelectProps,
   type IUxFormSwitchProps,
@@ -56,12 +60,14 @@ export {
   UxFormDatePicker,
   UxFormInput,
   UxFormInputNumber,
+  UxFormRangeDatePicker,
   UxFormScrollSelect,
   UxFormSelect,
   UxFormSwitch,
   UxFormTextArea,
   UxInput,
   UxInputNumber,
+  UxRangeDatePicker,
   UxScrollSelect,
   UxSelect,
   UxSwitch,

@@ -1,7 +1,13 @@
 import dayjs from "dayjs";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { ContractStatusEnum } from "@modules/contract/contract.types";
 
 import { arrayToObject } from "./arrayToObject";
+import {
+  computeContractStatus,
+  splitMembershipIntoInstallments,
+  sumInstallments,
+} from "./contractHelpers";
 import { EMAIL_FIELD_RULE, REQUIRED_FIELD_RULE } from "./formRules";
 import { handleSearchOptions } from "./handleSearchOptions";
 import { pickFields } from "./pickFields";
@@ -250,5 +256,148 @@ describe("setDynamicHeight", () => {
     setDynamicHeight("wrapper", [], 9999);
 
     expect(wrapper.style.maxHeight).toBe("0px");
+  });
+});
+
+// ─── contractHelpers ─────────────────────────────────────────────────────────
+
+describe("computeContractStatus", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 8, 21, 12, 0, 0));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("is DRAFT when the start is in the future", () => {
+    expect(computeContractStatus("2026-10-01", "2027-06-30")).toBe(
+      ContractStatusEnum.DRAFT,
+    );
+  });
+
+  it("is DRAFT when there is no start date", () => {
+    expect(computeContractStatus(null, null)).toBe(ContractStatusEnum.DRAFT);
+    expect(computeContractStatus("", null)).toBe(ContractStatusEnum.DRAFT);
+  });
+
+  it("is ACTIVE when started and open-ended", () => {
+    expect(computeContractStatus("2026-01-01", null)).toBe(
+      ContractStatusEnum.ACTIVE,
+    );
+  });
+
+  it("is ACTIVE when started and the end is in the future", () => {
+    expect(computeContractStatus("2026-01-01", "2026-12-31")).toBe(
+      ContractStatusEnum.ACTIVE,
+    );
+  });
+
+  it("is ENDED when both start and end are in the past", () => {
+    expect(computeContractStatus("2025-09-01", "2026-06-30")).toBe(
+      ContractStatusEnum.ENDED,
+    );
+  });
+
+  it("treats today as started and still running", () => {
+    expect(computeContractStatus("2026-09-21", "2026-09-21")).toBe(
+      ContractStatusEnum.ACTIVE,
+    );
+  });
+
+  it("accepts dayjs values", () => {
+    expect(computeContractStatus(dayjs("2025-09-01"), dayjs("2026-06-30"))).toBe(
+      ContractStatusEnum.ENDED,
+    );
+  });
+
+  it("keeps a CANCELLED contract cancelled", () => {
+    expect(
+      computeContractStatus(
+        "2026-01-01",
+        null,
+        ContractStatusEnum.CANCELLED,
+      ),
+    ).toBe(ContractStatusEnum.CANCELLED);
+  });
+});
+
+describe("sumInstallments", () => {
+  it("sums the amounts", () => {
+    expect(sumInstallments([{ amount: 100 }, { amount: 250 }])).toBe(350);
+  });
+
+  it("treats null amounts as 0", () => {
+    expect(sumInstallments([{ amount: null }, { amount: 50 }])).toBe(50);
+  });
+
+  it("rounds to 2 decimals", () => {
+    expect(sumInstallments([{ amount: 0.1 }, { amount: 0.2 }])).toBe(0.3);
+  });
+
+  it("returns 0 for empty or missing rows", () => {
+    expect(sumInstallments([])).toBe(0);
+    expect(sumInstallments(null)).toBe(0);
+  });
+});
+
+describe("splitMembershipIntoInstallments", () => {
+  it("splits evenly by months and amount", () => {
+    const rows = splitMembershipIntoInstallments({
+      startMonth: "2025-09-15",
+      monthsCount: 10,
+      installmentsCount: 2,
+      total: 5000,
+    });
+
+    expect(rows).toEqual([
+      {
+        period_start: "2025-09-01",
+        period_end: "2026-01-31",
+        due_date: "2025-09-01",
+        amount: 2500,
+      },
+      {
+        period_start: "2026-02-01",
+        period_end: "2026-06-30",
+        due_date: "2026-02-01",
+        amount: 2500,
+      },
+    ]);
+  });
+
+  it("puts the leftover months and cents on the last row", () => {
+    const rows = splitMembershipIntoInstallments({
+      startMonth: "2025-09-01",
+      monthsCount: 10,
+      installmentsCount: 3,
+      total: 1000,
+    });
+
+    expect(rows.map((r) => r.amount)).toEqual([333.33, 333.33, 333.34]);
+    expect(rows[2]).toMatchObject({
+      period_start: "2026-03-01",
+      period_end: "2026-06-30",
+    });
+    expect(sumInstallments(rows)).toBe(1000);
+  });
+
+  it("returns a single row covering the whole term", () => {
+    const rows = splitMembershipIntoInstallments({
+      startMonth: "2025-09-01",
+      monthsCount: 10,
+      installmentsCount: 1,
+      total: 5000,
+    });
+
+    expect(rows).toEqual([
+      {
+        period_start: "2025-09-01",
+        period_end: "2026-06-30",
+        due_date: "2025-09-01",
+        amount: 5000,
+      },
+    ]);
   });
 });

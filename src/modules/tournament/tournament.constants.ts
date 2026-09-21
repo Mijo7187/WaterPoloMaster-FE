@@ -9,6 +9,7 @@ export const TOURNAMENT_ENDPOINTS = {
 export const TOURNAMENT_INITIAL_STATE: IPostTournament = {
   company_id: null,
   pool_id: null,
+  season_id: null,
   from_date: "",
   to_date: "",
   price: null,

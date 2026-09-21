@@ -54,14 +54,24 @@ const PaymentsListPage = lazy(() =>
     default: m.PaymentsListPage,
   })),
 );
-const QuarterListPage = lazy(() =>
-  import("@pages/QuarterListPage/QuarterListPage").then((m) => ({
-    default: m.QuarterListPage,
+const ContractListPage = lazy(() =>
+  import("@pages/ContractListPage/ContractListPage").then((m) => ({
+    default: m.ContractListPage,
   })),
 );
-const QuarterProfilePage = lazy(() =>
-  import("@pages/QuarterProfilePage/QuarterProfilePage").then((m) => ({
-    default: m.QuarterProfilePage,
+const ContractProfilePage = lazy(() =>
+  import("@pages/ContractProfilePage/ContractProfilePage").then((m) => ({
+    default: m.ContractProfilePage,
+  })),
+);
+const SeasonListPage = lazy(() =>
+  import("@pages/SeasonListPage/SeasonListPage").then((m) => ({
+    default: m.SeasonListPage,
+  })),
+);
+const SeasonProfilePage = lazy(() =>
+  import("@pages/SeasonProfilePage/SeasonProfilePage").then((m) => ({
+    default: m.SeasonProfilePage,
   })),
 );
 const TournamentListPage = lazy(() =>
@@ -72,6 +82,11 @@ const TournamentListPage = lazy(() =>
 const TournamentProfilePage = lazy(() =>
   import("@pages/TournamentProfilePage/TournamentProfilePage").then((m) => ({
     default: m.TournamentProfilePage,
+  })),
+);
+const MembershipListPage = lazy(() =>
+  import("@pages/MembershipListPage/MembershipListPage").then((m) => ({
+    default: m.MembershipListPage,
   })),
 );
 
@@ -190,22 +205,43 @@ const ROUTE_PAYMENTS: IRouteConfig = {
   ),
 };
 
-const ROUTE_QUARTER: IRouteConfig = {
-  key: RoutePathsEnum.QUARTER,
-  label: "Kvartali",
-  path: RoutePathsEnum.QUARTER,
+const ROUTE_CONTRACT: IRouteConfig = {
+  key: RoutePathsEnum.CONTRACT,
+  label: "Ugovori",
+  path: RoutePathsEnum.CONTRACT,
   element: (
     <Suspense>
-      <QuarterListPage />
+      <ContractListPage />
     </Suspense>
   ),
 };
-const ROUTE_QUARTER_PROFILE: IRouteConfig = {
-  key: RoutePathsEnum.QUARTER_PROFILE,
-  path: `/${RoutePathsEnum.QUARTER_PROFILE}/:quarterId`,
+const ROUTE_CONTRACT_PROFILE: IRouteConfig = {
+  key: RoutePathsEnum.CONTRACT_PROFILE,
+  path: `/${RoutePathsEnum.CONTRACT_PROFILE}/:contractId`,
   element: (
     <Suspense>
-      <QuarterProfilePage />
+      <ContractProfilePage />
+    </Suspense>
+  ),
+  hideInMenu: true,
+};
+
+const ROUTE_SEASON: IRouteConfig = {
+  key: RoutePathsEnum.SEASON,
+  label: "Sezone",
+  path: RoutePathsEnum.SEASON,
+  element: (
+    <Suspense>
+      <SeasonListPage />
+    </Suspense>
+  ),
+};
+const ROUTE_SEASON_PROFILE: IRouteConfig = {
+  key: RoutePathsEnum.SEASON_PROFILE,
+  path: `/${RoutePathsEnum.SEASON_PROFILE}/:seasonId`,
+  element: (
+    <Suspense>
+      <SeasonProfilePage />
     </Suspense>
   ),
   hideInMenu: true,
@@ -230,6 +266,17 @@ const ROUTE_TOURNAMENT_PROFILE: IRouteConfig = {
     </Suspense>
   ),
   hideInMenu: true,
+};
+
+const ROUTE_MEMBERSHIP: IRouteConfig = {
+  key: RoutePathsEnum.MEMBERSHIP,
+  label: "Članarine",
+  path: RoutePathsEnum.MEMBERSHIP,
+  element: (
+    <Suspense>
+      <MembershipListPage />
+    </Suspense>
+  ),
 };
 
 const ROUTE_SIFARNICI: IRouteConfig = {
@@ -258,10 +305,13 @@ export const ALL_ROUTE_CONFIG: Record<
   [RoutePathsEnum.TRAINING]: ROUTE_TRAINING,
   [RoutePathsEnum.TRAINING_PROFILE]: ROUTE_TRAINING_PROFILE,
   [RoutePathsEnum.PAYMENTS]: ROUTE_PAYMENTS,
-  [RoutePathsEnum.QUARTER]: ROUTE_QUARTER,
-  [RoutePathsEnum.QUARTER_PROFILE]: ROUTE_QUARTER_PROFILE,
+  [RoutePathsEnum.CONTRACT]: ROUTE_CONTRACT,
+  [RoutePathsEnum.CONTRACT_PROFILE]: ROUTE_CONTRACT_PROFILE,
+  [RoutePathsEnum.SEASON]: ROUTE_SEASON,
+  [RoutePathsEnum.SEASON_PROFILE]: ROUTE_SEASON_PROFILE,
   [RoutePathsEnum.TOURNAMENT]: ROUTE_TOURNAMENT,
   [RoutePathsEnum.TOURNAMENT_PROFILE]: ROUTE_TOURNAMENT_PROFILE,
+  [RoutePathsEnum.MEMBERSHIP]: ROUTE_MEMBERSHIP,
 };
 
 export type AuthenticatedRoutePathsEnum = Exclude<
@@ -280,10 +330,13 @@ const ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.COMPANY_LIST,
   RoutePathsEnum.COMPANY_PROFILE,
   RoutePathsEnum.SIFARNICI,
-  RoutePathsEnum.QUARTER,
-  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.CONTRACT,
+  RoutePathsEnum.CONTRACT_PROFILE,
+  RoutePathsEnum.SEASON,
+  RoutePathsEnum.SEASON_PROFILE,
   RoutePathsEnum.TOURNAMENT,
   RoutePathsEnum.TOURNAMENT_PROFILE,
+  RoutePathsEnum.MEMBERSHIP,
 ];
 
 const SUPER_ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
@@ -297,10 +350,13 @@ const SUPER_ADMIN_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.COMPANY_LIST,
   RoutePathsEnum.COMPANY_PROFILE,
   RoutePathsEnum.SIFARNICI,
-  RoutePathsEnum.QUARTER,
-  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.CONTRACT,
+  RoutePathsEnum.CONTRACT_PROFILE,
+  RoutePathsEnum.SEASON,
+  RoutePathsEnum.SEASON_PROFILE,
   RoutePathsEnum.TOURNAMENT,
   RoutePathsEnum.TOURNAMENT_PROFILE,
+  RoutePathsEnum.MEMBERSHIP,
 ];
 
 const COACH_ROUTES: AuthenticatedRoutePathsEnum[] = [
@@ -310,8 +366,10 @@ const COACH_ROUTES: AuthenticatedRoutePathsEnum[] = [
   RoutePathsEnum.TRAINING,
   RoutePathsEnum.TRAINING_PROFILE,
   RoutePathsEnum.PAYMENTS,
-  RoutePathsEnum.QUARTER,
-  RoutePathsEnum.QUARTER_PROFILE,
+  RoutePathsEnum.CONTRACT,
+  RoutePathsEnum.CONTRACT_PROFILE,
+  RoutePathsEnum.SEASON,
+  RoutePathsEnum.SEASON_PROFILE,
   RoutePathsEnum.TOURNAMENT,
   RoutePathsEnum.TOURNAMENT_PROFILE,
 ];

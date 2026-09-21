@@ -1,5 +1,7 @@
 import { runInAction } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { FilterGroupsEnum, PaginationEnum, paginationStore } from "@stores";
+import { filtersStore } from "@stores/filters/filters.store";
 import { modalStore } from "@stores/modal/modal.store";
 import { ModalTypeEnum } from "@stores/modal/modal.types";
 
@@ -66,6 +68,8 @@ beforeEach(() => {
     companyStore.isLoading = false;
   });
   modalStore.removeAllModals();
+  filtersStore.resetStore();
+  paginationStore.remove(PaginationEnum.COMPANY_PAGINATION);
 });
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
@@ -136,7 +140,42 @@ describe("CompanyStore – getCompanies", () => {
     const filters = { name__ilike: "Beograd" };
     await companyStore.getCompanies(filters);
 
-    expect(companyService.getCompanies).toHaveBeenCalledWith(filters);
+    expect(companyService.getCompanies).toHaveBeenCalledWith(
+      expect.objectContaining(filters),
+    );
+  });
+
+  it("sends the COMPANY filter group and pagination params", async () => {
+    const { companyService } = await import("./company.service");
+    vi.mocked(companyService.getCompanies).mockResolvedValue(
+      mockPaginatedResponse as never,
+    );
+    filtersStore.updateFilter(FilterGroupsEnum.COMPANY, "name__ilike", "PK");
+    paginationStore.set(PaginationEnum.COMPANY_PAGINATION, {
+      page: 2,
+      size: 50,
+    });
+
+    await companyStore.getCompanies();
+
+    expect(companyService.getCompanies).toHaveBeenCalledWith({
+      name__ilike: "PK",
+      page: 2,
+      size: 50,
+    });
+  });
+
+  it("stores the response pagination", async () => {
+    const { companyService } = await import("./company.service");
+    vi.mocked(companyService.getCompanies).mockResolvedValue(
+      mockPaginatedResponse as never,
+    );
+
+    await companyStore.getCompanies();
+
+    expect(paginationStore.get(PaginationEnum.COMPANY_PAGINATION)).toEqual(
+      mockPaginatedResponse.pagination,
+    );
   });
 
   it("rejects on service error", async () => {
