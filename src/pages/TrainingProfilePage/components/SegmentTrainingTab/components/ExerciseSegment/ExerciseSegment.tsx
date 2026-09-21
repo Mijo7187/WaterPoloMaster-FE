@@ -18,11 +18,10 @@ import {
 } from "@modules/training/training.constants";
 import { trainingStore } from "@modules/training/training.store";
 import {
+  IGetBaseExerciseSegment,
   IGetTraining,
+  IPostBaseExerciseSegment,
   IPostExerciseSegment,
-  ISegmentExerciseInput,
-  ITrainingSegment,
-  ITrainingSegmentUpdate,
 } from "@modules/training/training.types";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 
@@ -31,7 +30,7 @@ type ExerciseSegmentType =
   | TrainingSegmentEnum.GYM
   | TrainingSegmentEnum.WORK_WITH_BALL;
 
-interface IExerciseFormRow extends Partial<ISegmentExerciseInput> {
+interface IExerciseFormRow extends Partial<IPostExerciseSegment> {
   exercise_option?: unknown;
 }
 
@@ -44,7 +43,7 @@ interface IExerciseSegmentFormValues {
 interface IExerciseSegmentProps {
   training: IGetTraining;
   segmentType: ExerciseSegmentType;
-  segment?: ITrainingSegment;
+  segment?: IGetBaseExerciseSegment;
   onSaved?: () => void;
 }
 
@@ -58,9 +57,12 @@ export const ExerciseSegment: FC<IExerciseSegmentProps> = observer(
       form.setFieldsValue({
         duration_minutes: segment.duration_minutes,
         notes: segment.notes,
-        exercises: segment.exercises.map((exercise) => ({
+        exercises: (segment.exercises ?? []).map((exercise) => ({
           exercise_option_id: exercise.exercise_option_id,
-          exercise_option: exercise.exercise_option,
+          exercise_option:
+            "exercise_option" in exercise
+              ? exercise.exercise_option
+              : undefined,
           meters: exercise.meters,
           sets: exercise.sets,
           reps: exercise.reps,
@@ -71,10 +73,10 @@ export const ExerciseSegment: FC<IExerciseSegmentProps> = observer(
     }, [segment]);
 
     const onFinish = (values: IExerciseSegmentFormValues) => {
-      const exercises: ISegmentExerciseInput[] = (values.exercises ?? [])
+      const exercises: IPostExerciseSegment[] = (values.exercises ?? [])
         .map((row, index) => {
           if (row.exercise_option_id == null) return null;
-          const input: ISegmentExerciseInput = {
+          const input: IPostExerciseSegment = {
             exercise_option_id: row.exercise_option_id,
             position: index,
           };
@@ -83,25 +85,21 @@ export const ExerciseSegment: FC<IExerciseSegmentProps> = observer(
           });
           return input;
         })
-        .filter((row): row is ISegmentExerciseInput => row !== null);
+        .filter((row): row is IPostExerciseSegment => row !== null);
 
-      if (segment) {
-        const payload: ITrainingSegmentUpdate = {
-          duration_minutes: values.duration_minutes ?? null,
-          notes: values.notes ?? null,
-          exercises,
-        };
-        void trainingStore.updateSegment(segment.id, training.id, payload);
-        return;
-      }
-
-      const payload: IPostExerciseSegment = {
+      const payload: IPostBaseExerciseSegment = {
         training_id: training.id,
         segment_type: segmentType,
         duration_minutes: values.duration_minutes ?? null,
         notes: values.notes ?? null,
         exercises,
       };
+
+      if (segment) {
+        void trainingStore.updateSegment(segment.id, training.id, payload);
+        return;
+      }
+
       void trainingStore.createSegment(payload).then(() => onSaved?.());
     };
 

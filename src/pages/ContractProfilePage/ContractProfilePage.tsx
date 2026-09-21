@@ -38,15 +38,19 @@ export const ContractProfilePage: FC = observer(() => {
     },
   ];
   console.log("contract", contract);
+  // Before the fetch resolves the store holds the initial state, which has no user.
+  const storeContract = contractStore.getterContract;
   const userName =
-    `${contract?.user?.first_name} ${contract?.user?.last_name}`.trim();
+    "user" in storeContract
+      ? `${storeContract.user.first_name} ${storeContract.user.last_name}`
+      : "";
 
   return (
     <div>
       <UxPageHeader
-        title={`Ugovor / ${CONTRACT_TYPE_LABELS[contract?.contract_type]} ${userName}`}
+        title={`Ugovor / ${CONTRACT_TYPE_LABELS[contract.contract_type]} ${userName}`}
         rightContent={
-          contract?.status === ContractStatusEnum.DRAFT ? (
+          contract.status === ContractStatusEnum.DRAFT ? (
             <UxPopconfirm
               title="Aktiviraj ugovor"
               description="Generisaće se rate. Da li ste sigurni?"

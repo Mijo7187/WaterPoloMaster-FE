@@ -13,28 +13,32 @@ import {
   SparringSideEnum,
 } from "@modules/training/training.types";
 
+import type { IUseStopwatch } from "../../useStopwatch";
+
 import styles from "../../SparringSegment.module.scss";
 
 interface ISparringScoreboardProps {
   segment: IGetSparringSegment;
-  // segmentKey: string;
-  // homeName: string;
-  // awayName: string;
-  // homeGoals: number;
-  // awayGoals: number;
-  // formatted: string;
-  // isRunning: boolean;
-  // hasStarted: boolean;
-  // onStart: () => void;
-  // onPause: () => void;
-  // onResume: () => void;
-  // onReset: () => void;
-  // onOpenModal: (side: SparringSideEnum) => void;
+  stopwatch: IUseStopwatch;
+  onOpenModal?: (side: SparringSideEnum) => void;
 }
 
 export const SparringScoreboard: FC<ISparringScoreboardProps> = ({
   segment,
+  stopwatch,
+  onOpenModal,
 }) => {
+  const segmentKey = String(segment.id);
+  const {
+    formatted,
+    isRunning,
+    hasStarted,
+    start: onStart,
+    pause: onPause,
+    resume: onResume,
+    reset: onReset,
+  } = stopwatch;
+
   const homeGoals = trainingService.goalsForSide(
     SparringSideEnum.HOME,
     segment.events ?? [],
@@ -133,7 +137,7 @@ export const SparringScoreboard: FC<ISparringScoreboardProps> = ({
           className={`${styles.eventBtn} ${styles.eventBtnHome}`}
           disabled={!hasStarted}
           onClick={() => {
-            onOpenModal(SparringSideEnum.HOME);
+            onOpenModal?.(SparringSideEnum.HOME);
           }}
           data-testid={`sparring-home-event-${segmentKey}`}
         >
@@ -145,7 +149,7 @@ export const SparringScoreboard: FC<ISparringScoreboardProps> = ({
           className={`${styles.eventBtn} ${styles.eventBtnAway}`}
           disabled={!hasStarted}
           onClick={() => {
-            onOpenModal(SparringSideEnum.AWAY);
+            onOpenModal?.(SparringSideEnum.AWAY);
           }}
           data-testid={`sparring-away-event-${segmentKey}`}
         >

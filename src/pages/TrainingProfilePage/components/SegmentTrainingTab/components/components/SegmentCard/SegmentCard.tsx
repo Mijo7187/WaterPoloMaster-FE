@@ -16,9 +16,6 @@ import {
   IGetTrainingSegmente,
 } from "@modules/training/training.types";
 
-import { ExerciseSegment } from "../../ExerciseSegment/ExerciseSegment";
-import { SparringSegment } from "../../SparringSegment/SparringSegment";
-
 interface ISegmentCardProps {
   training: IGetTraining;
   segmentType: TrainingSegmentEnum;

@@ -5,6 +5,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { UxButton } from "@components/UxComponents";
 import { UxFormSelect, UxFormTextArea } from "@components/UxFormComponents";
 import { SPARRING_SIDE_OPTIONS } from "@modules/training/training.constants";
+import { IPlayerOption } from "@modules/training/training.types";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 
 interface ISparringLineupProps {

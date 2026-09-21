@@ -147,12 +147,30 @@ export type IGetTrainingSegmente = IPostTrainingSegment & {
   id: number;
 };
 
-// Write payloads — the create body is a discriminated union on `segment_type`.
+export type IGetBaseExerciseSegment = IPostBaseExerciseSegment & {
+  id: number;
+};
 
 // Live sparring scoreboard view models (client-side UI state).
 
+export interface IPlayerOption {
+  label: string;
+  value: number;
+}
+
 // A logged event held in local scoreboard state. `clientId` keys the React list
 // and lets us remove a single event; it is dropped when building the API payload.
+export interface ISparringEventRow extends IPostSparringEvent {
+  clientId: string;
+  side: SparringSideEnum;
+}
+
+// An unfinished row in the event modal — the action is picked last.
+export interface IEventDraftRow {
+  clientId: string;
+  user_id: number | null;
+  event_type?: EventTypeEnum;
+}
 
 // #endregion Segments
 

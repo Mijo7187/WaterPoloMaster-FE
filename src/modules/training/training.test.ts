@@ -6,7 +6,10 @@ import { ModalTypeEnum } from "@stores/modal/modal.types";
 
 import { TRAINING_INITIAL_STATE } from "./training.constants";
 import { trainingStore } from "./training.store";
-import { IPostExerciseSegment, TrainingStatusEnum } from "./training.types";
+import {
+  IPostBaseExerciseSegment,
+  TrainingStatusEnum,
+} from "./training.types";
 
 // ─── Mocks ───────────────────────────────────────────────────────────────────
 
@@ -16,7 +19,7 @@ vi.mock("./training.service", () => ({
     getTrainingById: vi.fn(),
     createTraining: vi.fn(),
     updateTraining: vi.fn(),
-    getSegmentsByTraining: vi.fn(),
+    getSegmentsByTrainingId: vi.fn(),
     getSegmentById: vi.fn(),
     createSegment: vi.fn(),
     updateSegment: vi.fn(),
@@ -51,12 +54,17 @@ const mockPaginatedResponse = {
   pagination: { page: 1, size: 50, total: 1, pages: 1 },
 };
 
-const mockExerciseSegmentPayload: IPostExerciseSegment = {
+const mockExerciseSegmentPayload: IPostBaseExerciseSegment = {
   training_id: 1,
   segment_type: TrainingSegmentEnum.SWIMMING,
   duration_minutes: 30,
   notes: null,
   exercises: [{ exercise_option_id: 7, position: 0, meters: 100 }],
+};
+
+const mockUpdatedSegmentPayload: IPostBaseExerciseSegment = {
+  ...mockExerciseSegmentPayload,
+  duration_minutes: 45,
 };
 
 const mockSegment = {
@@ -241,26 +249,26 @@ describe("TrainingStore – updateTraining", () => {
   });
 });
 
-describe("TrainingStore – getSegmentsByTraining", () => {
+describe("TrainingStore – getSegmentsByTrainingId", () => {
   it("sets trainingSegments on success", async () => {
     const { trainingService } = await import("./training.service");
-    vi.mocked(trainingService.getSegmentsByTraining).mockResolvedValue([
+    vi.mocked(trainingService.getSegmentsByTrainingId).mockResolvedValue([
       mockSegment,
     ] as never);
 
-    await trainingStore.getSegmentsByTraining(1);
+    await trainingStore.getSegmentsByTrainingId(1);
 
-    expect(trainingService.getSegmentsByTraining).toHaveBeenCalledWith(1);
+    expect(trainingService.getSegmentsByTrainingId).toHaveBeenCalledWith(1);
     expect(trainingStore.trainingSegments).toEqual([mockSegment]);
   });
 
   it("rejects on service error", async () => {
     const { trainingService } = await import("./training.service");
-    vi.mocked(trainingService.getSegmentsByTraining).mockRejectedValue(
+    vi.mocked(trainingService.getSegmentsByTrainingId).mockRejectedValue(
       new Error("Server error"),
     );
 
-    await expect(trainingStore.getSegmentsByTraining(1)).rejects.toThrow();
+    await expect(trainingStore.getSegmentsByTrainingId(1)).rejects.toThrow();
   });
 });
 
@@ -318,7 +326,7 @@ describe("TrainingStore – createSegment", () => {
   it("refreshes the segment list on success", async () => {
     const { trainingService } = await import("./training.service");
     vi.mocked(trainingService.createSegment).mockResolvedValue(1 as never);
-    vi.mocked(trainingService.getSegmentsByTraining).mockResolvedValue([
+    vi.mocked(trainingService.getSegmentsByTrainingId).mockResolvedValue([
       mockSegment,
     ] as never);
 
@@ -327,7 +335,7 @@ describe("TrainingStore – createSegment", () => {
     expect(trainingService.createSegment).toHaveBeenCalledWith(
       mockExerciseSegmentPayload,
     );
-    expect(trainingService.getSegmentsByTraining).toHaveBeenCalledWith(1);
+    expect(trainingService.getSegmentsByTrainingId).toHaveBeenCalledWith(1);
   });
 
   it("rejects on service error", async () => {
@@ -339,7 +347,7 @@ describe("TrainingStore – createSegment", () => {
     await expect(
       trainingStore.createSegment(mockExerciseSegmentPayload),
     ).rejects.toThrow();
-    expect(trainingService.getSegmentsByTraining).not.toHaveBeenCalled();
+    expect(trainingService.getSegmentsByTrainingId).not.toHaveBeenCalled();
   });
 });
 
@@ -347,16 +355,17 @@ describe("TrainingStore – updateSegment", () => {
   it("refreshes the segment list on success", async () => {
     const { trainingService } = await import("./training.service");
     vi.mocked(trainingService.updateSegment).mockResolvedValue(true as never);
-    vi.mocked(trainingService.getSegmentsByTraining).mockResolvedValue([
+    vi.mocked(trainingService.getSegmentsByTrainingId).mockResolvedValue([
       mockSegment,
     ] as never);
 
-    await trainingStore.updateSegment(9, 1, { duration_minutes: 45 });
+    await trainingStore.updateSegment(9, 1, mockUpdatedSegmentPayload);
 
-    expect(trainingService.updateSegment).toHaveBeenCalledWith(9, {
-      duration_minutes: 45,
-    });
-    expect(trainingService.getSegmentsByTraining).toHaveBeenCalledWith(1);
+    expect(trainingService.updateSegment).toHaveBeenCalledWith(
+      9,
+      mockUpdatedSegmentPayload,
+    );
+    expect(trainingService.getSegmentsByTrainingId).toHaveBeenCalledWith(1);
   });
 
   it("rejects on service error", async () => {
@@ -366,9 +375,9 @@ describe("TrainingStore – updateSegment", () => {
     );
 
     await expect(
-      trainingStore.updateSegment(9, 1, { duration_minutes: 45 }),
+      trainingStore.updateSegment(9, 1, mockUpdatedSegmentPayload),
     ).rejects.toThrow();
-    expect(trainingService.getSegmentsByTraining).not.toHaveBeenCalled();
+    expect(trainingService.getSegmentsByTrainingId).not.toHaveBeenCalled();
   });
 });
 
@@ -376,14 +385,14 @@ describe("TrainingStore – deleteSegment", () => {
   it("refreshes the segment list on success", async () => {
     const { trainingService } = await import("./training.service");
     vi.mocked(trainingService.deleteSegment).mockResolvedValue(true as never);
-    vi.mocked(trainingService.getSegmentsByTraining).mockResolvedValue(
+    vi.mocked(trainingService.getSegmentsByTrainingId).mockResolvedValue(
       [] as never,
     );
 
     await trainingStore.deleteSegment(9, 1);
 
     expect(trainingService.deleteSegment).toHaveBeenCalledWith(9);
-    expect(trainingService.getSegmentsByTraining).toHaveBeenCalledWith(1);
+    expect(trainingService.getSegmentsByTrainingId).toHaveBeenCalledWith(1);
   });
 
   it("rejects on service error", async () => {
@@ -393,6 +402,6 @@ describe("TrainingStore – deleteSegment", () => {
     );
 
     await expect(trainingStore.deleteSegment(9, 1)).rejects.toThrow();
-    expect(trainingService.getSegmentsByTraining).not.toHaveBeenCalled();
+    expect(trainingService.getSegmentsByTrainingId).not.toHaveBeenCalled();
   });
 });

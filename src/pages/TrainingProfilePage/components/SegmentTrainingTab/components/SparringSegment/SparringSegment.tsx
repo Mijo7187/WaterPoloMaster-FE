@@ -9,6 +9,7 @@ import {
 
 import { SparringSegmentHeader } from "./components/SparringHeader/SparringHeader";
 import { SparringScoreboard } from "./components/SparringScoreboard/SparringScoreboard";
+import { useStopwatch } from "./useStopwatch";
 
 // export const SparringSegment: FC<ISparringSegmentProps> = observer(
 //   ({ training, segment }) => {
@@ -200,10 +201,12 @@ interface ISparringSegmentProps {
   segment: IGetSparringSegment;
 }
 
-const SparringSegment: FC<ISparringSegmentProps> = ({ training, segment }) => {
+const SparringSegment: FC<ISparringSegmentProps> = ({ segment }) => {
+  const stopwatch = useStopwatch();
+
   return (
     <>
-      <SparringScoreboard segment={segment} />
+      <SparringScoreboard segment={segment} stopwatch={stopwatch} />
     </>
   );
 };
