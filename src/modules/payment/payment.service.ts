@@ -6,7 +6,11 @@ import {
 } from "@stores";
 
 import { paymentRepo } from "./payment.repo";
-import type { IGetPayment, IPostPayment } from "./payment.types";
+import type {
+  IGetPayment,
+  IPostPayment,
+  IPutPayment,
+} from "./payment.types";
 
 class PaymentService {
   getPaymentList = (filters?: object): IApiPaginatedResponse<IGetPayment> =>
@@ -18,7 +22,7 @@ class PaymentService {
   createPayment = (payload: IPostPayment): IApiPostResponse =>
     paymentRepo.createPayment(payload);
 
-  updatePayment = (id: string, payload: IPostPayment): IApiNoContentResponse =>
+  updatePayment = (id: string, payload: IPutPayment): IApiNoContentResponse =>
     paymentRepo.updatePayment(id, payload);
 }
 

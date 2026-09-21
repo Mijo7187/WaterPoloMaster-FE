@@ -7,16 +7,25 @@ import {
   IApiPostResponse,
 } from "@stores";
 
-import { TRAINING_ENDPOINTS } from "./training.constants";
 import {
   FTrainingList,
   FTrainingUsersList,
   FUsersNotInTraining,
   IGetTraining,
+  IGetTrainingSegmente,
   IGetTrainingUsersList,
   IPostTraining,
+  IPostTrainingSegment,
   IPostTrainingUsersList,
 } from "./training.types";
+
+const TRAINING_ENDPOINTS = {
+  TRAINING: "/training/",
+  TRAINING_USERS_LIST: "/training-users/",
+  USERS_NOT_IN_TRAINING: "/training-users/users-not-in-training",
+  TRAINING_SEGMENTS: "/training-segment/",
+  SEGMENTS_BY_TRAINING: "/training-segment/by-training/",
+};
 
 // #region General
 
@@ -65,6 +74,30 @@ const getUsersNotInTraining = (
 
 // #endregion User
 
+// #region Segments
+
+const getSegmentsByTrainingId = (
+  trainingId: number,
+): IApiGetResponse<IGetTrainingSegmente[]> =>
+  axiosMain.get(`${TRAINING_ENDPOINTS.SEGMENTS_BY_TRAINING}${trainingId}`);
+
+const getSegmentById = (id: number): IApiGetResponse<IGetTrainingSegmente> =>
+  axiosMain.get(`${TRAINING_ENDPOINTS.TRAINING_SEGMENTS}${id}`);
+
+const createSegment = (payload: IPostTrainingSegment): IApiPostResponse =>
+  axiosMain.post(TRAINING_ENDPOINTS.TRAINING_SEGMENTS, payload);
+
+const updateSegment = (
+  id: number,
+  payload: IPostTrainingSegment,
+): IApiNoContentResponse =>
+  axiosMain.patch(`${TRAINING_ENDPOINTS.TRAINING_SEGMENTS}${id}`, payload);
+
+const deleteSegment = (id: number): IApiNoContentResponse =>
+  axiosMain.delete(`${TRAINING_ENDPOINTS.TRAINING_SEGMENTS}${id}`);
+
+// #endregion Segments
+
 export const trainingRepo = {
   getTrainingsList,
   getTrainingById,
@@ -74,4 +107,9 @@ export const trainingRepo = {
   createTrainingUsersList,
   deleteTrainingUsersList,
   getUsersNotInTraining,
+  getSegmentsByTrainingId,
+  getSegmentById,
+  createSegment,
+  updateSegment,
+  deleteSegment,
 };

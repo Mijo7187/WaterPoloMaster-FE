@@ -1,16 +1,16 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { observer } from "mobx-react-lite";
 import { UrlTabs } from "@components/UrlComponents";
-import { UxPageHeader } from "@components/UxComponents";
+import { UxButton, UxPageHeader } from "@components/UxComponents";
 import { companyStore } from "@modules/company";
 import { CompanyTypeEnum } from "@modules/company/company.types";
-import { TabsTypeEnum } from "@stores";
+import { modalStore, ModalTypeEnum, TabsTypeEnum } from "@stores";
 
+import { CompanyContractTab } from "./components/CompanyContractTab/CompanyContractTab";
 import { CompanyInformationTab } from "./components/CompanyInformationTab/CompanyInformationTab";
 import { CompanyPaymentTab } from "./components/CompanyPaymentTab/CompanyPaymentTab";
-import { CompanyQuarterTab } from "./components/CompanyQuarterTab/CompanyQuarterTab";
 import { CompanyTournamentTab } from "./components/CompanyTournamentTab/CompanyTournamentTab";
 import { CompanyTrainingTab } from "./components/CompanyTrainingTab/CompanyTrainingTab";
 import { CompanyUsersTab } from "./components/CompanyUsersTab/CompanyUsersTab";
@@ -22,6 +22,9 @@ export const CompaniesProfilePage: FC = observer(() => {
   const company = companyStore.getterCompany;
   const companyType = company.company_type;
 
+  const onAddUserClick = () => {
+    modalStore.openModal(ModalTypeEnum.USER_MODAL);
+  };
   useEffect(() => {
     if (id) {
       void companyStore.getCompanyById(id);
@@ -62,16 +65,16 @@ export const CompaniesProfilePage: FC = observer(() => {
     trainingTab,
     paymentTab,
     {
-      key: "quarter",
-      label: "Kvartal",
-      children: <CompanyQuarterTab companyId={id} />,
+      key: "contract",
+      label: "Ugovori",
+      children: <CompanyContractTab companyId={id} />,
     },
     usersTab,
   ];
 
   const poolItems = [paymentTab, informationTab, usersTab, trainingTab];
-
   const items = companyType === CompanyTypeEnum.POOL ? poolItems : clubItems;
+  const [selectedTab, setSelectedTab] = useState<string>(items[0].key);
 
   return (
     <div>
@@ -80,6 +83,16 @@ export const CompaniesProfilePage: FC = observer(() => {
         items={items}
         defaultValue={items[0].key}
         testId={TabsTypeEnum.COMPANY}
+        onChange={(value) => {
+          setSelectedTab(value);
+        }}
+        tabBarExtraContent={
+          selectedTab === "users" && (
+            <UxButton testId={"add-user"} onClick={onAddUserClick}>
+              + dodaj korisnika
+            </UxButton>
+          )
+        }
       />
     </div>
   );

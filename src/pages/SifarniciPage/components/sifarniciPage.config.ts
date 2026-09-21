@@ -1,3 +1,4 @@
+import { authStore } from "@modules/auth/auth.store";
 import {
   CITY_FILTERS_INITIAL_STATE,
   CITY_INITIAL_STATE,
@@ -6,6 +7,14 @@ import {
   COUNTRY_FILTERS_INITIAL_STATE,
   COUNTRY_INITIAL_STATE,
 } from "@modules/sifarnici/country/country.constants";
+import {
+  EXERCISE_OPTION_FILTERS_INITIAL_STATE,
+  EXERCISE_OPTION_INITIAL_STATE,
+} from "@modules/sifarnici/exerciseOption/exerciseOption.constants";
+import {
+  SELECTION_FILTERS_INITIAL_STATE,
+  SELECTION_INITIAL_STATE,
+} from "@modules/sifarnici/selection/selection.constants";
 import {
   SifarniciFiltersMapConfig,
   SifarniciModalMapConfig,
@@ -23,6 +32,16 @@ import {
   COUNTRY_FORM_FIELDS,
   COUNTRY_TABLE_COLUMNS,
 } from "./components/Country/Country";
+import {
+  EXERCISE_OPTION_FILTER_FIELDS,
+  EXERCISE_OPTION_FORM_FIELDS,
+  EXERCISE_OPTION_TABLE_COLUMNS,
+} from "./components/ExerciseOption/ExerciseOption";
+import {
+  SELECTION_FILTER_FIELDS,
+  SELECTION_FORM_FIELDS,
+  SELECTION_TABLE_COLUMNS,
+} from "./components/Selection/Selection";
 
 export const SIFARNIK_MODAL_CONFIG_DATA: SifarniciModalMapConfig = {
   [SifarniciTypeEnum.CITY]: {
@@ -37,18 +56,24 @@ export const SIFARNIK_MODAL_CONFIG_DATA: SifarniciModalMapConfig = {
     formInitialState: COUNTRY_INITIAL_STATE,
     width: 700,
   },
-  // [SifarniciTypeEnum.TRAINING_TYPE]: {
-  //   title: "Tip treninga",
-  //   components: TRAINING_TYPE_FORM_FIELDS,
-  //   formInitialState: TRAINING_TYPE_INITIAL_STATE,
-  //   width: 700,
-  // },
-  // [SifarniciTypeEnum.SWIMMING_DISCIPLINE]: {
-  //   title: "Plivačka disciplina",
-  //   components: SWIMMING_DISCIPLINE_FORM_FIELDS,
-  //   formInitialState: SWIMMING_DISCIPLINE_INITIAL_STATE,
-  //   width: 700,
-  // },
+  [SifarniciTypeEnum.EXERCISE_OPTION]: {
+    title: "Opcija vežbe",
+    components: EXERCISE_OPTION_FORM_FIELDS,
+    formInitialState: EXERCISE_OPTION_INITIAL_STATE,
+    width: 700,
+    extraValues: () => {
+      return { company_id: authStore.authUser.company_id };
+    },
+  },
+  [SifarniciTypeEnum.SELECTION]: {
+    title: "Selekcija",
+    components: SELECTION_FORM_FIELDS,
+    formInitialState: SELECTION_INITIAL_STATE,
+    width: 700,
+    extraValues: () => {
+      return { company_id: authStore.authUser.company_id };
+    },
+  },
 };
 
 export const SIFARNIK_FILTERS_CONFIG_DATA: SifarniciFiltersMapConfig = {
@@ -60,21 +85,21 @@ export const SIFARNIK_FILTERS_CONFIG_DATA: SifarniciFiltersMapConfig = {
     components: COUNTRY_FILTER_FIELDS,
     filtersInitialState: COUNTRY_FILTERS_INITIAL_STATE,
   },
-  // [SifarniciTypeEnum.TRAINING_TYPE]: {
-  //   components: TRAINING_TYPE_FILTER_FIELDS,
-  //   filtersInitialState: TRAINING_TYPE_FILTERS_INITIAL_STATE,
-  // },
-  // [SifarniciTypeEnum.SWIMMING_DISCIPLINE]: {
-  //   components: SWIMMING_DISCIPLINE_FILTER_FIELDS,
-  //   filtersInitialState: SWIMMING_DISCIPLINE_FILTERS_INITIAL_STATE,
-  // },
+  [SifarniciTypeEnum.EXERCISE_OPTION]: {
+    components: EXERCISE_OPTION_FILTER_FIELDS,
+    filtersInitialState: EXERCISE_OPTION_FILTERS_INITIAL_STATE,
+  },
+  [SifarniciTypeEnum.SELECTION]: {
+    components: SELECTION_FILTER_FIELDS,
+    filtersInitialState: SELECTION_FILTERS_INITIAL_STATE,
+  },
 };
 
 export const SIFARNIK_TABLE_CONFIG_DATA: SifarniciTableMapConfig = {
   [SifarniciTypeEnum.CITY]: CITY_TABLE_COLUMNS,
   [SifarniciTypeEnum.COUNTRY]: COUNTRY_TABLE_COLUMNS,
-  // [SifarniciTypeEnum.TRAINING_TYPE]: TRAINING_TYPE_TABLE_COLUMNS,
-  // [SifarniciTypeEnum.SWIMMING_DISCIPLINE]: SWIMMING_DISCIPLINE_TABLE_COLUMNS,
+  [SifarniciTypeEnum.EXERCISE_OPTION]: EXERCISE_OPTION_TABLE_COLUMNS,
+  [SifarniciTypeEnum.SELECTION]: SELECTION_TABLE_COLUMNS,
 };
 
 const makeSifarniciSelectOptions = () =>

@@ -1,6 +1,7 @@
 import { ColumnsType } from "antd/es/table";
 import { IGetCountry } from "@modules/sifarnici/country/country.types";
-import { ICrudOptionsConfig, TypeOfFormEnum } from "@stores";
+import { FilterConfig, ICrudOptionsConfig, TypeOfFormEnum } from "@stores";
+import { FILTER_NAME } from "@stores/filters/filtersOptions.constants";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 
 // #region Table
@@ -31,15 +32,7 @@ export const COUNTRY_FORM_FIELDS = (): ICrudOptionsConfig[] => {
 // #endregion Form
 
 // #region Filters
-export const COUNTRY_FILTER_FIELDS = (): ICrudOptionsConfig[] => {
-  return [
-    {
-      typeOfForm: TypeOfFormEnum.INPUT,
-      testId: "country-name",
-      formName: "name__ilike",
-      label: "Naziv",
-      rules: [REQUIRED_FIELD_RULE(true)],
-    },
-  ];
+export const COUNTRY_FILTER_FIELDS = (): FilterConfig[] => {
+  return [{ ...FILTER_NAME, testId: "country-name", colSpan: 6 }];
 };
 // #endregion Filters

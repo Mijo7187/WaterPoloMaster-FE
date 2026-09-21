@@ -1,0 +1,9 @@
+.wrapper {
+  width: 100%;
+  flex: 1;
+  min-width: 0;
+
+  :global(.ant-form-item) {
+    margin-bottom: 0px !important;
+  }
+}

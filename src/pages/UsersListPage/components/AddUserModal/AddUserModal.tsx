@@ -3,14 +3,23 @@ import { useForm } from "antd/es/form/Form";
 import { observer } from "mobx-react-lite";
 import { UserForm } from "@components/PagesComponents/User/UserForm/UserForm";
 import { UxBaseModal, UxButton } from "@components/UxComponents";
+import { authStore } from "@modules/auth/auth.store";
+import { companyStore, IGetCompany } from "@modules/company";
 import { IPostUser, USER_INITIAL_STATE, usersStore } from "@modules/users";
+import { RoutePathsEnum } from "@router/router.types";
 import { ModalTypeEnum } from "@stores";
 
 const AddUserForm = observer(() => {
   const [userForm] = useForm();
+  const pathName = window.location.pathname;
 
   const onFinish = (user: IPostUser) => {
-    void usersStore.createUser(user);
+    void usersStore.createUser({
+      ...user,
+      company_id: pathName.includes(RoutePathsEnum.COMPANY_PROFILE)
+        ? (companyStore.getterCompany as IGetCompany).id
+        : authStore.authUser.company_id,
+    });
   };
   return (
     <>

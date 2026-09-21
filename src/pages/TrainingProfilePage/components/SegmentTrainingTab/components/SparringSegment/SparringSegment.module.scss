@@ -1,0 +1,350 @@
+@use "@styles/colors";
+@use "@styles/variables";
+@use "@styles/mixins";
+
+// ─── Scoreboard (the hero) ───────────────────────────────────────────────────
+
+.board {
+  position: relative;
+  overflow: hidden;
+  border-radius: variables.$radius-20;
+  padding: variables.$spacing-25 variables.$spacing-20;
+  background:
+    radial-gradient(
+      120% 140% at 50% -20%,
+      rgba(colors.$yellow, 0.14) 0%,
+      rgba(colors.$yellow, 0) 55%
+    ),
+    linear-gradient(160deg, #0a1418 0%, colors.$black 70%);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+// Thin animated "LIVE" accent line across the top.
+.board::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    colors.$yellow 0%,
+    colors.$confirm-light 50%,
+    colors.$yellow 100%
+  );
+  opacity: 0.85;
+}
+
+.liveRow {
+  @include mixins.xy-center;
+  gap: variables.$spacing-5;
+  margin-bottom: variables.$spacing-15;
+}
+
+.liveDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: colors.$alert-light;
+  box-shadow: 0 0 0 0 rgba(colors.$alert-light, 0.7);
+  animation: pulse 1.6s infinite;
+}
+
+.liveLabel {
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 11px,
+    $line-height: 14px,
+    $letter-spacing: 2px
+  );
+  color: colors.$white;
+  text-transform: uppercase;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(colors.$alert-light, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(colors.$alert-light, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(colors.$alert-light, 0);
+  }
+}
+
+// Score row: HOME | score · timer | AWAY
+.scoreRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: variables.$spacing-15;
+}
+
+.team {
+  @include mixins.typography(
+    $font-weight: variables.$semi-bold,
+    $font-size: 18px,
+    $line-height: 24px
+  );
+  color: colors.$white;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.teamHome {
+  text-align: right;
+}
+
+.teamAway {
+  text-align: left;
+}
+
+.teamBadge {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-bottom: variables.$spacing-5;
+  border-radius: variables.$radius-20;
+  background: rgba(colors.$yellow, 0.12);
+  color: colors.$yellow;
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 10px,
+    $line-height: 16px,
+    $letter-spacing: 1px
+  );
+  text-transform: uppercase;
+}
+
+.center {
+  @include mixins.xy-center;
+  flex-direction: column;
+  gap: variables.$spacing-5;
+}
+
+.score {
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 52px,
+    $line-height: 56px
+  );
+  color: colors.$white;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.scoreSep {
+  color: colors.$yellow;
+  margin: 0 6px;
+}
+
+.timer {
+  @include mixins.typography(
+    $font-weight: variables.$semi-bold,
+    $font-size: 20px,
+    $line-height: 24px,
+    $letter-spacing: 1px
+  );
+  padding: 2px 14px;
+  border-radius: variables.$radius-20;
+  background: rgba(colors.$white, 0.08);
+  color: colors.$yellow;
+  font-variant-numeric: tabular-nums;
+}
+
+.timerIdle {
+  color: colors.$grey-light;
+}
+
+// ─── Controls ────────────────────────────────────────────────────────────────
+
+.controls {
+  @include mixins.xy-center;
+  gap: variables.$spacing-10;
+  margin-top: variables.$spacing-20;
+  flex-wrap: wrap;
+}
+
+// ─── Event buttons (left / right) ────────────────────────────────────────────
+
+.eventButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: variables.$spacing-15;
+  margin-top: variables.$spacing-20;
+}
+
+.eventBtn {
+  cursor: pointer;
+  border: none;
+  border-radius: variables.$radius-10;
+  padding: variables.$spacing-15;
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 15px,
+    $line-height: 20px
+  );
+  color: colors.$white;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    opacity 0.12s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: variables.$spacing-10;
+}
+
+.eventBtnHome {
+  background: linear-gradient(135deg, #14343a 0%, #0a1c20 100%);
+  box-shadow: inset 0 0 0 1px rgba(colors.$yellow, 0.4);
+}
+
+.eventBtnAway {
+  background: linear-gradient(135deg, #3a2a14 0%, #201608 100%);
+  box-shadow: inset 0 0 0 1px rgba(colors.$yellow, 0.4);
+}
+
+.eventBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 0 1px colors.$yellow,
+    0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.eventBtn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+// ─── Timeline (FlashScore feed) ──────────────────────────────────────────────
+
+.timeline {
+  margin-top: variables.$spacing-20;
+  display: flex;
+  flex-direction: column;
+  gap: variables.$spacing-10;
+}
+
+.timelineEmpty {
+  @include mixins.xy-center;
+  padding: variables.$spacing-30;
+  color: colors.$grey;
+  @include mixins.typography($font-size: 13px, $line-height: 18px);
+}
+
+.timelineRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: variables.$spacing-10;
+}
+
+.timelineSide {
+  display: flex;
+  align-items: center;
+  gap: variables.$spacing-10;
+  padding: variables.$spacing-10 variables.$spacing-15;
+  border-radius: variables.$radius-10;
+  background: colors.$off-white;
+  box-shadow: inset 0 0 0 1px colors.$grey-light;
+}
+
+.timelineSideHome {
+  justify-content: flex-end;
+  grid-column: 1;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.timelineSideAway {
+  justify-content: flex-start;
+  grid-column: 3;
+}
+
+.timelineGoal {
+  background: rgba(colors.$yellow, 0.14);
+  box-shadow: inset 0 0 0 1px colors.$yellow;
+}
+
+.eventIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.eventMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.eventPlayer {
+  @include mixins.typography(
+    $font-weight: variables.$semi-bold,
+    $font-size: 14px,
+    $line-height: 18px
+  );
+  color: colors.$text-main;
+}
+
+.eventType {
+  @include mixins.typography($font-size: 12px, $line-height: 16px);
+  color: colors.$grey-dark;
+}
+
+.minuteChip {
+  @include mixins.xy-center;
+  grid-column: 2;
+  min-width: 44px;
+  padding: 2px 8px;
+  border-radius: variables.$radius-20;
+  background: colors.$black;
+  color: colors.$yellow;
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 12px,
+    $line-height: 18px
+  );
+  font-variant-numeric: tabular-nums;
+}
+
+.removeEvent {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: colors.$grey;
+  padding: 0 4px;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.removeEvent:hover {
+  color: colors.$alert-light;
+}
+
+// ─── Modal add-event rows ────────────────────────────────────────────────────
+
+.modalMinute {
+  @include mixins.x-center;
+  gap: variables.$spacing-10;
+  margin-bottom: variables.$spacing-15;
+  color: colors.$grey-dark;
+}
+
+.modalMinuteValue {
+  @include mixins.typography(
+    $font-weight: variables.$bold,
+    $font-size: 16px,
+    $line-height: 20px
+  );
+  color: colors.$black;
+  font-variant-numeric: tabular-nums;
+}
+
+.modalRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: variables.$spacing-10;
+  align-items: center;
+  margin-bottom: variables.$spacing-10;
+}

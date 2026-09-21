@@ -7,9 +7,9 @@ import { UxPageHeader } from "@components/UxComponents";
 import { usersStore } from "@modules/users";
 import { TabsTypeEnum } from "@stores";
 
+import { UserContractTab } from "./components/UserContractTab/UserContractTab";
 import { UserInfoTab } from "./components/UserInfoTab/UserInfoTab";
 import { UserPaymentTab } from "./components/UserPaymentTab/UserPaymentTab";
-import { UserQuarterTab } from "./components/UserQuarterTab/UserQuarterTab";
 import { UserTournamentTab } from "./components/UserTournamentTab/UserTournamentTab";
 import { UserTrainingTab } from "./components/UserTrainingTab/UserTrainingTab";
 
@@ -38,9 +38,9 @@ export const UserProfilePage: FC = observer(() => {
       children: <UserTrainingTab userId={id} />,
     },
     {
-      key: "quarter",
-      label: "Kvartal",
-      children: <UserQuarterTab userId={id} />,
+      key: "contract",
+      label: "Ugovori",
+      children: <UserContractTab userId={id} />,
     },
     {
       key: "tournament",

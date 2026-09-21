@@ -1,10 +1,13 @@
 import { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
-import { UxCard } from "@components/UxComponents";
+import { UrlPagination } from "@components/UrlComponents";
+import { UxFilterTableWrapper } from "@components/UxComponents";
 import { companyStore, IGetCompany } from "@modules/company";
 import { paymentStore } from "@modules/payment/payment.store";
+import { PaymentFilters } from "@pages/PaymentsListPage/components/PaymentFilters/PaymentFilters";
 import { PaymentTable } from "@pages/PaymentsListPage/components/PaymentTable/PaymentTable";
+import { PaginationEnum } from "@stores";
 
 interface ICompanyPaymentTabProps {
   companyId: number;
@@ -23,8 +26,16 @@ export const CompanyPaymentTab: FC<ICompanyPaymentTabProps> = observer(() => {
   }, [walletId]);
 
   return (
-    <UxCard testId={"company-payment"}>
-      <PaymentTable />
-    </UxCard>
+    <UxFilterTableWrapper
+      filters={<PaymentFilters handleFiltersChange={fetchPayment} />}
+      table={<PaymentTable />}
+      pagination={
+        <UrlPagination
+          testId="company-payment-pagination"
+          paginationName={PaginationEnum.PAYMENT_PAGINATION}
+          handlePaginationChange={fetchPayment}
+        />
+      }
+    />
   );
 });

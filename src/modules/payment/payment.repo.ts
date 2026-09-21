@@ -7,7 +7,7 @@ import {
 } from "@stores";
 
 import { PAYMENT_ENDPOINTS } from "./payment.constants";
-import { IGetPayment, IPostPayment } from "./payment.types";
+import { IGetPayment, IPostPayment, IPutPayment } from "./payment.types";
 
 const getPaymentList = (filters?: object): IApiPaginatedResponse<IGetPayment> =>
   axiosMain.get(PAYMENT_ENDPOINTS.PAYMENT, { params: filters });
@@ -20,7 +20,7 @@ const createPayment = (payload: IPostPayment): IApiPostResponse =>
 
 const updatePayment = (
   id: string,
-  payload: IPostPayment,
+  payload: IPutPayment,
 ): IApiNoContentResponse =>
   axiosMain.put(`${PAYMENT_ENDPOINTS.PAYMENT}${id}`, payload);
 

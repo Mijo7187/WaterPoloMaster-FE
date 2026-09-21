@@ -1,13 +1,17 @@
 import to from "await-to-js";
 import { makeAutoObservable } from "mobx";
 import {
+  FilterGroupsEnum,
   IBaseStoreConfig,
   INoContentResponse,
   IPaginatedResponse,
   IPostResponse,
   modalStore,
   ModalTypeEnum,
+  PaginationEnum,
+  paginationStore,
 } from "@stores";
+import { filtersStore } from "@stores/filters/filters.store";
 
 import { COMPANY_INITIAL_STATE } from "./company.constants";
 import { companyService } from "./company.service";
@@ -37,11 +41,19 @@ class CompanyStore implements IBaseStoreConfig<CompanyStore> {
   getCompanies = async (filters?: object) => {
     this.isLoading = true;
     const [err, res] = await to<IPaginatedResponse<IGetCompany>>(
-      companyService.getCompanies(filters),
+      companyService.getCompanies({
+        ...filtersStore.getFilterGroupValues(FilterGroupsEnum.COMPANY),
+        ...paginationStore.getRequestPaginationParams(
+          PaginationEnum.COMPANY_PAGINATION,
+        ),
+        ...filters,
+      }),
     );
     if (err) return Promise.reject(err);
     // this.handleChange("companiesList", res as unknown as IGetCompany[]);
     this.handleChange("companiesList", res.items);
+    paginationStore.set(PaginationEnum.COMPANY_PAGINATION, res.pagination);
+    this.isLoading = false;
   };
 
   async getCompanyById(id: number) {

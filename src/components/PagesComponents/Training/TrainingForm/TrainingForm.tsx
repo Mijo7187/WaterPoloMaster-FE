@@ -8,6 +8,7 @@ import {
   UxFormScrollSelect,
   UxFormSelect,
 } from "@components/UxFormComponents";
+import { authStore } from "@modules/auth/auth.store";
 import { CompanyTypeEnum } from "@modules/company/company.types";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { TRAINING_INITIAL_STATE } from "@modules/training/training.constants";
@@ -40,18 +41,6 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
         layout="vertical"
       >
         <Row gutter={16}>
-          {/* <Col span={24}>
-            <UxFormScrollSelect
-              storeKey={"training_type"}
-              formName="training_type_id"
-              objName={"training_type"}
-              testId={"training_type"}
-              sifarnikName={SifarniciTypeEnum.TRAINING_TYPE}
-              label={"Tip treninga"}
-              filtersForGet={{ company_id: authStore.getAuthUser.company_id }}
-              rules={[REQUIRED_FIELD_RULE(true)]}
-            />
-          </Col> */}
           <Col span={24}>
             <UxFormScrollSelect
               storeKey={`pool`}
@@ -62,6 +51,21 @@ export const TrainingForm: FC<ITrainingFormProps> = observer(
               filtersForGet={{ company_type: CompanyTypeEnum.POOL }}
               rules={[REQUIRED_FIELD_RULE(true)]}
               testId={"pool"}
+            />
+          </Col>
+
+          <Col span={24}>
+            <UxFormScrollSelect
+              storeKey={"training_season"}
+              formName="season_id"
+              objName={"season"}
+              sifarnikName={SifarniciTypeEnum.SEASON}
+              label={"Sezona"}
+              filtersForGet={{
+                company_id: authStore.getAuthUser.company_id,
+              }}
+              rules={[REQUIRED_FIELD_RULE(true)]}
+              testId={"training-season"}
             />
           </Col>
 

@@ -4,7 +4,7 @@ import { Row, Space } from "antd";
 import { observer } from "mobx-react-lite";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { UrlPagination } from "@components/UrlComponents";
-import { UxButton } from "@components/UxComponents";
+import { UxButton, UxFilterTableWrapper } from "@components/UxComponents";
 import { UxSelect } from "@components/UxFormComponents";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
 import { SIFARNIK_SELECT_OPTIONS } from "@pages/SifarniciPage/components/sifarniciPage.config";
@@ -12,6 +12,7 @@ import { modalStore, ModalTypeEnum, PaginationEnum } from "@stores";
 import { handleSearchOptions } from "@utils/handleSearchOptions";
 
 import { SifarniciCrudModal } from "./components/SifarniciCrudModal/SifarniciCrudModal";
+import { SifarniciFilters } from "./components/SifarniciFilters/SifarniciFilters";
 import { SifarniciTable } from "./components/SifarniciTable/SifarniciTable";
 import { useSifarniciHook } from "./hooks/useSifarniciHook";
 
@@ -67,11 +68,23 @@ export const SifarniciPage: FC = observer(() => {
         sifarnik_type={sifarnikType}
       />
 
-      <SifarniciTable sifarnikType={sifarnikType} />
-      <UrlPagination
-        handlePaginationChange={fetchSifarnikList}
-        paginationName={PaginationEnum.SIFARNICI_PAGINATION}
-        testId={PaginationEnum.SIFARNICI_PAGINATION}
+      <UxFilterTableWrapper
+        filters={
+          // key → fresh form (and filter store group) on every šifarnik switch
+          <SifarniciFilters
+            key={sifarnikType}
+            sifarnikType={sifarnikType}
+            fetchSifarnikList={fetchSifarnikList}
+          />
+        }
+        table={<SifarniciTable sifarnikType={sifarnikType} />}
+        pagination={
+          <UrlPagination
+            handlePaginationChange={fetchSifarnikList}
+            paginationName={PaginationEnum.SIFARNICI_PAGINATION}
+            testId={PaginationEnum.SIFARNICI_PAGINATION}
+          />
+        }
       />
       <SifarniciCrudModal sifarnikType={sifarnikType} />
     </>

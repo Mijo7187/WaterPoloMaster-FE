@@ -1,8 +1,9 @@
 import { FormInstance } from "antd";
 import { ColumnsType } from "antd/es/table";
-import { FCity, IGetCity } from "@modules/sifarnici/city/city.types";
+import { IGetCity } from "@modules/sifarnici/city/city.types";
 import { SifarniciTypeEnum } from "@modules/sifarnici/sifarnici.types";
-import { ICrudOptionsConfig, TypeOfFormEnum } from "@stores";
+import { FilterConfig, ICrudOptionsConfig, TypeOfFormEnum } from "@stores";
+import { FILTER_NAME } from "@stores/filters/filtersOptions.constants";
 import { REQUIRED_FIELD_RULE } from "@utils/formRules";
 // #region Table
 export const CITY_TABLE_COLUMNS = (): ColumnsType<IGetCity> => [
@@ -49,18 +50,8 @@ export const CITY_FORM_FIELDS = (
 // #endregion Modal
 
 // #region Filters
-export const CITY_FILTER_FIELDS = (
-  _: FormInstance<FCity>,
-): ICrudOptionsConfig[] => {
-  return [
-    {
-      typeOfForm: TypeOfFormEnum.INPUT,
-      testId: "city-name",
-      formName: "name__ilike",
-      label: "Naziv",
-      rules: [REQUIRED_FIELD_RULE(true)],
-    },
-  ];
+export const CITY_FILTER_FIELDS = (): FilterConfig[] => {
+  return [{ ...FILTER_NAME, testId: "city-name", colSpan: 6 }];
 };
 
 // #endregion Filters

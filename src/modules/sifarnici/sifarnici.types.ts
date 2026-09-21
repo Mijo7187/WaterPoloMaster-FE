@@ -1,28 +1,45 @@
 import { FormInstance } from "antd";
 import { ColumnsType } from "antd/es/table";
 import { IGetCompany } from "@modules/company/company.types";
-import { ICrudOptionsConfig, IGetPagination, IPostPagination } from "@stores";
+import { IGetContractInstallment } from "@modules/contractInstallment/contractInstallment.types";
+import { IGetMembership } from "@modules/membership/membership.types";
+import { IGetSeason } from "@modules/season/season.types";
+import { IGetTournament } from "@modules/tournament/tournament.types";
+import { IGetTraining } from "@modules/training/training.types";
+import { IGetUser } from "@modules/users/users.types";
+import {
+  FilterConfig,
+  ICrudOptionsConfig,
+  IGetPagination,
+  IPostPagination,
+} from "@stores";
 
 import { FCity, IGetCity, IPostCity } from "./city/city.types";
 import { FCountry, IGetCountry, IPostCountry } from "./country/country.types";
 import {
-  FSwimmingDiscipline,
-  IGetSwimmingDiscipline,
-  IPostSwimmingDiscipline,
-} from "./swimmingDiscipline/swimmingDiscipline.types";
+  FExerciseOption,
+  IGetExerciseOption,
+  IPostExerciseOption,
+} from "./exerciseOption/exerciseOption.types";
 import {
-  FTrainingType,
-  IGetTrainingType,
-  IPostTrainingType,
-} from "./trainingType/trainingType.types";
+  FSelection,
+  IGetSelection,
+  IPostSelection,
+} from "./selection/selection.types";
 
 export enum SifarniciTypeEnum {
   COMPANY = "COMPANY",
   CITY = "CITY",
   COUNTRY = "COUNTRY",
-  // TRAINING_TYPE = "TRAINING_TYPE",
-  // SWIMMING_DISCIPLINE = "SWIMMING_DISCIPLINE",
-  USER_NOT_IN_QUARTER = "USER_NOT_IN_QUARTER",
+  EXERCISE_OPTION = "EXERCISE_OPTION",
+  USER = "USER",
+  SEASON = "SEASON",
+  SELECTION = "SELECTION",
+  MEMBERSHIP = "MEMBERSHIP",
+  // The three payable sources behind the payment payable picker.
+  CONTRACT_INSTALLMENT = "CONTRACT_INSTALLMENT",
+  TOURNAMENT = "TOURNAMENT",
+  TRAINING = "TRAINING",
 }
 
 // #region SELECT SCROLL
@@ -31,8 +48,14 @@ export type IGetSifarnikType =
   | IGetCity
   | IGetCompany
   | IGetCountry
-  | IGetTrainingType
-  | IGetSwimmingDiscipline;
+  | IGetExerciseOption
+  | IGetSelection
+  | IGetUser
+  | IGetSeason
+  | IGetMembership
+  | IGetContractInstallment
+  | IGetTournament
+  | IGetTraining;
 
 interface ISifarniciSelectConfig {
   labelAccessor: string[] | ((item: unknown) => React.ReactNode);
@@ -64,8 +87,8 @@ export interface SifarniciValueConfig<T = unknown> {
 export type IPostSifarnikType =
   | IPostCity
   | IPostCountry
-  | IPostTrainingType
-  | IPostSwimmingDiscipline;
+  | IPostExerciseOption
+  | IPostSelection;
 
 export type SifarniciModalMapConfig = Partial<
   Record<SifarniciTypeEnum, ISifarniciModalConfig>
@@ -76,16 +99,21 @@ export interface ISifarniciModalConfig {
   components: (form: FormInstance) => ICrudOptionsConfig[];
   formInitialState: IPostSifarnikType;
   width?: string | number;
+  extraValues?: () => Record<string, unknown>;
   // tableColumns: () => ColumnsType<any>;
 }
 
-export type FSifarnici = FCity | FCountry | FTrainingType | FSwimmingDiscipline;
+export type FSifarnici =
+  | FCity
+  | FCountry
+  | FExerciseOption
+  | FSelection;
 export type SifarniciFiltersMapConfig = Partial<
   Record<SifarniciTypeEnum, ISifarniciFiltersConfig>
 >;
 export interface ISifarniciFiltersConfig {
   filtersInitialState: FSifarnici;
-  components: (form: FormInstance) => ICrudOptionsConfig[];
+  components: () => FilterConfig[];
 }
 
 export type SifarniciTableMapConfig = Partial<

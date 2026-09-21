@@ -19,10 +19,11 @@ interface ISifarniciFormProps {
   formInitialState: IPostSifarnikType;
   sifarnikType: SifarniciTypeEnum;
   onCancel: () => void;
+  extraValues?: () => Record<string, unknown>;
 }
 
 export const SifarniciForm: FC<ISifarniciFormProps> = observer(
-  ({ components, formInitialState, sifarnikType, onCancel }) => {
+  ({ components, formInitialState, sifarnikType, onCancel, extraValues }) => {
     const [form] = useForm();
     const [searchParams] = useSearchParams();
     const sifarnik_id = searchParams.get("sifarnik_id");
@@ -45,13 +46,14 @@ export const SifarniciForm: FC<ISifarniciFormProps> = observer(
     }, [sifarnik_id]);
 
     const onFormFinish = async (values: IPostSifarnikType) => {
+      const newValues = extraValues ? { ...values, ...extraValues() } : values;
       const response = await (sifarnik_id
         ? sifarniciStore.updateSifarnik(
             sifarnikType,
             Number(sifarnik_id),
-            values,
+            newValues,
           )
-        : sifarniciStore.postSifarnik(sifarnikType, values));
+        : sifarniciStore.postSifarnik(sifarnikType, newValues));
       if (response) {
         onCancel();
         void sifarniciStore.fetchSifarnikListTable(sifarnikType);
@@ -98,10 +100,13 @@ export const SifarniciCrudModal: FC<ISifarniciCrudModalProps> = observer(
   ({ sifarnikType }) => {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const { title, components, formInitialState, width } = useMemo(() => {
-      // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-      return SIFARNIK_MODAL_CONFIG_DATA[sifarnikType] as ISifarniciModalConfig;
-    }, [sifarnikType]);
+    const { title, components, formInitialState, width, extraValues } =
+      useMemo(() => {
+        // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+        return SIFARNIK_MODAL_CONFIG_DATA[
+          sifarnikType
+        ] as ISifarniciModalConfig;
+      }, [sifarnikType]);
 
     const onCancel = () => {
       sifarniciStore.handleChange("sifarnik", formInitialState);
@@ -122,6 +127,7 @@ export const SifarniciCrudModal: FC<ISifarniciCrudModalProps> = observer(
           formInitialState={formInitialState}
           sifarnikType={sifarnikType}
           onCancel={onCancel}
+          extraValues={extraValues}
         />
       </UxBaseModal>
     );

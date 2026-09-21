@@ -1,5 +1,7 @@
+import dayjs from "dayjs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { filtersService } from "./filters.service";
 import { filtersStore } from "./filters.store";
 import { FilterGroupsEnum } from "./filters.types";
 
@@ -164,5 +166,92 @@ describe("FiltersStore – resetStore", () => {
       expect(map).toBeDefined();
       expect(typeof map?.get).toBe("function");
     });
+  });
+});
+
+describe("FiltersService – toStoreFilterEntries", () => {
+  const RANGE_KEYS: [string, string] = ["start_date", "end_date"];
+
+  it("passes a string value through", () => {
+    expect(filtersService.toStoreFilterEntries("name", "John")).toEqual([
+      ["name", "John"],
+    ]);
+  });
+
+  it("passes number and boolean values through", () => {
+    expect(filtersService.toStoreFilterEntries("age", 30)).toEqual([
+      ["age", 30],
+    ]);
+    expect(filtersService.toStoreFilterEntries("is_active", false)).toEqual([
+      ["is_active", false],
+    ]);
+  });
+
+  it("passes an array (multi select) through", () => {
+    expect(filtersService.toStoreFilterEntries("ids", [1, 2])).toEqual([
+      ["ids", [1, 2]],
+    ]);
+  });
+
+  it("maps empty string and null to undefined", () => {
+    expect(filtersService.toStoreFilterEntries("name", "")).toEqual([
+      ["name", undefined],
+    ]);
+    expect(filtersService.toStoreFilterEntries("name", null)).toEqual([
+      ["name", undefined],
+    ]);
+  });
+
+  it("formats a dayjs value as YYYY-MM-DD", () => {
+    expect(
+      filtersService.toStoreFilterEntries("date", dayjs("2026-03-15T10:20")),
+    ).toEqual([["date", "2026-03-15"]]);
+  });
+
+  it("splits a date range into two entries using rangeKeys", () => {
+    const range = [dayjs("2026-01-01"), dayjs("2026-01-31")];
+    expect(
+      filtersService.toStoreFilterEntries("period", range, RANGE_KEYS),
+    ).toEqual([
+      ["start_date", "2026-01-01"],
+      ["end_date", "2026-01-31"],
+    ]);
+  });
+
+  it("sets both range keys to undefined when the range is cleared", () => {
+    expect(
+      filtersService.toStoreFilterEntries("period", null, RANGE_KEYS),
+    ).toEqual([
+      ["start_date", undefined],
+      ["end_date", undefined],
+    ]);
+  });
+
+  it("keeps an open-ended range (one side empty)", () => {
+    const range = [dayjs("2026-01-01"), null];
+    expect(
+      filtersService.toStoreFilterEntries("period", range, RANGE_KEYS),
+    ).toEqual([
+      ["start_date", "2026-01-01"],
+      ["end_date", undefined],
+    ]);
+  });
+});
+
+describe("FiltersStore – updateFilter with service entries", () => {
+  it("writes split range entries into the group", () => {
+    filtersService
+      .toStoreFilterEntries(
+        "period",
+        [dayjs("2026-02-01"), dayjs("2026-02-10")],
+        ["start_date", "end_date"],
+      )
+      .forEach(([key, value]) => {
+        filtersStore.updateFilter(FilterGroupsEnum.PAYMENT, key, value);
+      });
+
+    expect(filtersStore.getFilterGroupValues(FilterGroupsEnum.PAYMENT)).toEqual(
+      { start_date: "2026-02-01", end_date: "2026-02-10" },
+    );
   });
 });

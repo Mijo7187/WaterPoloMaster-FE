@@ -26,7 +26,7 @@ const mockPayment = {
   id: "550e8400-e29b-41d4-a716-446655440000",
   sender_wallet_id: "aaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
   receiver_wallet_id: "ffff-gggg-hhhh-iiii-jjjjjjjjjjjj",
-  payment_type: PaymentTypeEnum.USER_QUARTERLY_FEE,
+  payment_type: PaymentTypeEnum.USER_MEMBERSHIP_FEE,
   amount: 500,
   status: PaymentStatusEnum.PENDING,
   description: "Test payment",
